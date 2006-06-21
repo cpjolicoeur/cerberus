@@ -5,22 +5,22 @@ require 'util'
 
 module Cerberus
   class Manager
-    CERBERUS_DIR = 'C:\work\ruby\cerberus' #File.dirname(__FILE__) + '..'
-    include Util
+    CERBERUS_HOME = '~/.cerberus'
 
-    def self.project_config_path(project_name)
-      File.join(CERBERUS_DIR, 'config', project_name + '.yml')
+    def self.project_config_path(project_name, cerberus_home = CERBERUS_HOME)
+      File.join(cerberus_home, 'config', project_name + '.yml')
     end
 
     def initialize(project_name, options = {})
       @project_name = project_name
+      @cerberus_home = options[:cerberus_home] || CERBERUS_HOME
 
-      path = project_config_path(project_name)
-      raise "Configuration file for project '#{project_name}' not found in configuration directory" unless File.exists?(path)
+      path = Manager::project_config_path(project_name, @cerberus_home)
+      raise "Configuration file '#{path}' for running project not found" unless File.exists?(path)
       @config = load_yaml(path)
       raise "Repository url for project does not specified" if @config['url'].nil?
 
-      @workdir = File.join(CERBERUS_DIR, 'work', project_name)
+      @workdir = File.join(@cerberus_home, 'work', project_name)
 
       #crete dir structure
       %w(src logs).each do |dir| 
@@ -30,28 +30,30 @@ module Cerberus
     end
 
     def run!
-      Latch::fs_lock(File.join(@workdir, '.lock')) do
+#      Latch::fs_lock(File.join(@workdir, '.lock')) do
         infofile = File.join(@workdir, 'build_info')
 
         repo = Cerberus::VCS.guess_vcs(@workdir).new(@workdir, @config)
 
-        repo.update!
+        repo.update
         info = load_yaml(infofile)
         return if repo.latest_revision == info['last_build'] #there is no changes
-      end
+#      end
     end
 
-    def self.run!(project_name)
-      w = Cerberus::Runner.new(project_name)
+    def self.run!(project_name, options)
+      w = Cerberus::Manager.new(project_name, options)
       w.run!
     end
 
-    def self.add!(directory)
-      project_name = ask_user('Enter name of the project', File.basename(directory))
-      config_file = project_config_path(project_name)
+    def self.add!(directory, options)
+      project_name = ask_user('Enter name of the project', File.basename(File.expand_path(directory)), options[:quiet])
+      config_file = project_config_path(project_name, options[:cerberus_home])
       fail "Project with name '#{project_name}' already exists" if File.exists?(config_file)
       url = Cerberus::VCS.guess_vcs(directory).project_url(directory)
       config = {'url' => url}
+
+      FileUtils.mkdir_p(File.dirname(config_file))
       save_yaml(config, config_file)
     end
   end

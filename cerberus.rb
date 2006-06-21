@@ -1,1 +1,3 @@
-require File.expand_path(File.dirname(__FILE__) + "/lib/runner")
+$: << File.join(File.dirname(__FILE__), 'lib')
+
+require 'manager'

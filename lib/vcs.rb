@@ -15,7 +15,7 @@ module Cerberus
       end
 
       def latest_revision
-        svn_info(/<commit\W+revision="(\d+)">/, @path).to_i
+        Subversion::svn_info(/<commit\W+revision="(\d+)">/, @path).to_i
       end
 
       def checkout
@@ -23,15 +23,16 @@ module Cerberus
       end
 
       def self.project_url(dir)
-        svn_info(/<url>(\w)+<\/url>/, dir)
+        Subversion::svn_info(/<url>(.+)<\/url>/, dir)
       end
 
       private
       def self.svn_info(regexp, dir)
-        info = `svn info --xml #{dir}`
-        if svn_info =~ regexp
+        info_response = `svn info --xml #{dir}`
+        if info_response =~ regexp
           return $1
         else
+          puts info_response
           fail "Could not parse 'svn info' for directory #{dir}"
         end
       end

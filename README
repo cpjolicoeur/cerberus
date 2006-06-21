@@ -12,4 +12,4 @@ Describe what is is Cerberus. Link to Wikipedia. Cerberus don't let your project
 
 
 cerberus add            #Adds current project to list of watched applications
-cerberus run myproject  #Run test for some configuration
+cerberus run novagora   #Run test for some configuration
