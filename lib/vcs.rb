@@ -10,6 +10,14 @@ module Cerberus
         @url = url
       end
 
+      def update!
+        if already_checkouted(@path)
+          update 
+        else
+          checkout
+        end
+      end
+
       def update
         system "svn update #{@path}"
       end
@@ -27,6 +35,10 @@ module Cerberus
       end
 
       private
+      def already_checkouted(dir)
+        test(?d, dir + '/.svn')
+      end
+
       def self.svn_info(regexp, dir)
         info_response = `svn info --xml #{dir}`
         if info_response =~ regexp

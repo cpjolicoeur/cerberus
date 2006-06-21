@@ -23,7 +23,7 @@ module Cerberus
       @workdir = File.join(@cerberus_home, 'work', project_name)
 
       #crete dir structure
-      %w(src logs).each do |dir| 
+      %w(src logs sources).each do |dir| 
         d = File.join(@workdir, dir)
         FileUtils.mkpath(d) unless File.exists?(d)
       end
@@ -33,10 +33,10 @@ module Cerberus
 #      Latch::fs_lock(File.join(@workdir, '.lock')) do
         infofile = File.join(@workdir, 'build_info')
 
-        repo = Cerberus::VCS.guess_vcs(@workdir).new(@workdir, @config)
-
-        repo.update
         info = load_yaml(infofile)
+        repo = Cerberus::VCS.guess_vcs(@workdir).new(@workdir + '/sources', @config['url'])
+
+        repo.update!
         return if repo.latest_revision == info['last_build'] #there is no changes
 #      end
     end
