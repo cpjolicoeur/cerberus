@@ -1,14 +1,22 @@
-require 'runner'
+require 'manager'
 
-command = ARGV[0]
+module Cerberus
+  module CLI
+    def self.run(args)
+      command = args[0]
 
-fail 'Please specify command (add,run)' unless command
+      fail 'Please specify command (add,run)' unless command
 
-case command
-  when 'add'
-    Cerberus::Runner.add!(Dir.pwd)
-  when 'run'
-    Cerberus::Runner.run!(ARGV[1])
-  else
-    fail "Do not know what to do with command '#{command}'"
+      case command
+        when 'add'
+          Cerberus::Manager.add!(Dir.pwd)
+        when 'run'
+          Cerberus::Manager.run!(ARGV[1])
+        else
+          fail "Do not know what to do with command '#{command}'"
+      end
+
+    end
+  end
 end
+

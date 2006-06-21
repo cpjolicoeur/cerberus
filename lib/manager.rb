@@ -2,10 +2,11 @@ require 'yaml'
 require 'latch'
 require 'vcs'
 require 'util'
+require 'fileutils'
 
 module Cerberus
   class Manager
-    CERBERUS_HOME = '~/.cerberus'
+    CERBERUS_HOME = File.expand_path('~/.cerberus')
 
     def self.project_config_path(project_name, cerberus_home = CERBERUS_HOME)
       File.join(cerberus_home, 'config', project_name + '.yml')
@@ -23,10 +24,12 @@ module Cerberus
       @workdir = File.join(@cerberus_home, 'work', project_name)
 
       #crete dir structure
-      %w(src logs sources).each do |dir| 
+      %w(logs sources).each do |dir| 
         d = File.join(@workdir, dir)
         FileUtils.mkpath(d) unless File.exists?(d)
       end
+
+      @log = ''
     end
 
     def run!
@@ -36,17 +39,18 @@ module Cerberus
         info = load_yaml(infofile)
         repo = Cerberus::VCS.guess_vcs(@workdir).new(@workdir + '/sources', @config['url'])
 
-        repo.update!
+        @log << repo.update!
         return if repo.latest_revision == info['last_build'] #there is no changes
 #      end
     end
 
-    def self.run!(project_name, options)
+    def self.run!(project_name, options = {})
+      raise "Please specify name of the project" unless project_name
       w = Cerberus::Manager.new(project_name, options)
       w.run!
     end
 
-    def self.add!(directory, options)
+    def self.add!(directory, options = {})
       project_name = ask_user('Enter name of the project', File.basename(File.expand_path(directory)), options[:quiet])
       config_file = project_config_path(project_name, options[:cerberus_home])
       fail "Project with name '#{project_name}' already exists" if File.exists?(config_file)

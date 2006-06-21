@@ -19,7 +19,7 @@ module Cerberus
       end
 
       def update
-        system "svn update #{@path}"
+        `svn update #{@path}`
       end
 
       def latest_revision
@@ -27,7 +27,7 @@ module Cerberus
       end
 
       def checkout
-        system "svn checkout #{@url} #{@path}"
+        `svn checkout #{@url} "#{@path}"`
       end
 
       def self.project_url(dir)
@@ -40,7 +40,7 @@ module Cerberus
       end
 
       def self.svn_info(regexp, dir)
-        info_response = `svn info --xml #{dir}`
+        info_response = `svn info --xml "#{dir}"`
         if info_response =~ regexp
           return $1
         else
