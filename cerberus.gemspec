@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.add_dependency('actionmailer','>= 1.2.1')
 
   s.files = Dir.glob("{bin,doc,lib,test}/**/*").delete_if { |item| item.include?( ".svn" ) }
-  s.files += %w(LICENSE README ChangeLog) #post-install.rb
+  s.files += %w(MIT-LICENSE README ChangeLog) #post-install.rb
 
   s.bindir = "bin"
   s.executables = ["cerberus"]

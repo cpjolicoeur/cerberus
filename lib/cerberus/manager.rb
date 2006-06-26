@@ -65,11 +65,11 @@ module Cerberus
 
       case state
         when :failed
-          Notifier.deliver_failure(build, @options)
+          Notifier.deliver_failure(self, @options)
         when :revived
-          Notifier.deliver_revival(build, @options)
+          Notifier.deliver_revival(self, @options)
         when :broken
-          Notifier.deliver_broken(build, @options)
+          Notifier.deliver_broken(self, @options)
         when :unchanged, :succesful
           # Smile, be happy, it's all good
       end 
@@ -83,7 +83,8 @@ module Cerberus
       end
       
       def make_successful?
-        $?.exitstatus == 0
+        #$?.exitstatus == 0
+        not @output.include?('Test failures')
       end
   end
   
@@ -149,15 +150,22 @@ module Cerberus
   class Notifier < ActionMailer::Base
     def self.setup_context
       config_file = "#{HOME}/config.yml"
-      File.open(config_file, 'w'){ |f| YAML::dump({'mail'=>''}, f) } unless test(?f,config_file)
+      File.open(config_file, 'w') do |f| 
+        default_mail_config = {'mail'=>{'address'=>'', 'user_name'=>'', 'password'=>''}}
+        YAML::dump(default_mail_config, f)
+      end unless test(?f,config_file)
 
-      ActionMailer::Base.delivery_method = :smtp
+#      ActionMailer::Base.delivery_method = :smtp
       c = YAML::load(IO.read(config_file))['mail'] || {}
       mail_config = {}
-      c.each_pair{|key,value| mail_config[key.to_sym]=value}
+      c.each_pair{|key,value| mail_config[key.to_sym] = value}
+
+      mail_config[:authentication] = :plain
 
       ActionMailer::Base.server_settings = mail_config
     end
+
+    setup_context
 
     def failure(build, options, sent_at = Time.now)
       @subject = "[#{options[:application_name]}] Build broken by #{build.checkout.last_author} (##{build.checkout.current_revision})"
