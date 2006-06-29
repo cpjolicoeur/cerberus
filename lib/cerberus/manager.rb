@@ -105,7 +105,6 @@ module Cerberus
     def initialize(path, options = {})
       raise "Path can't be nil" unless path
       path.strip!
-      path = '"' + path + '"' if path.include?(' ')
 
       @path, @options = path, options
     end
@@ -145,7 +144,8 @@ module Cerberus
       end
       
       def execute(command, parameters = nil, pre_parameters = nil)
-        `#{@options[:env_command]}#{command} #{pre_parameters} #{@path} #{parameters}`
+        encoded_path = '"' + @path + '"' if @path.include?(' ')
+        `#{@options[:env_command]}#{command} #{pre_parameters} #{encoded_path} #{parameters}`
       end
   end
 
