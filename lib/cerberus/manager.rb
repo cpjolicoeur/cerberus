@@ -86,16 +86,17 @@ module Cerberus
     private
       def make
         Dir.chdir @options[:application_root]
-        ext = os() == :windows ? '.cmd' : ''
-        silence_stream(STDERR) {
-          @output = `#{@options[:bin_path]}rake#{ext} #{@options[:task_name]} RAILS_ENV=test`
+        ext = os() == :windows ? '.bat' : ''
+
+        @output = silence_stream(STDERR) {
+          `#{@options[:bin_path]}rake#{ext} #{@options[:task_name]} RAILS_ENV=test`
         }
         make_successful?
       end
       
       def make_successful?
-         #$?.exitstatus == 0
-         not @output.include?('Test failures')
+         $?.exitstatus == 0
+#         not @output.include?('Test failures')
 #         failure = @output !~ /( Failure:)|/
 #         return not failure
       end
@@ -170,17 +171,17 @@ module Cerberus
 
       config_file = "#{HOME}/config.yml"
       c = YAML::load(IO.read(config_file))['mail'] || {}
-      mail_config = {}
-      c.each_pair{|key,value| mail_config[key.to_sym] = value}
+      @mail_config = {}
+      c.each_pair{|key,value| @mail_config[key.to_sym] = value}
 
       [:authentication, :delivery_method].each do |key|
-        if mail_config[key]
-          mail_config[key] = mail_config[key].to_sym
+        if @mail_config[key]
+          @mail_config[key] = @mail_config[key].to_sym
         end
       end
 
-      ActionMailer::Base.delivery_method = mail_config[:delivery_method] if mail_config[:delivery_method]
-      ActionMailer::Base.server_settings = mail_config
+      ActionMailer::Base.delivery_method = @mail_config[:delivery_method] if @mail_config[:delivery_method]
+      ActionMailer::Base.server_settings = @mail_config
     end
 
     def failure(build, options)
@@ -203,8 +204,9 @@ module Cerberus
       @subject = "[#{options[:application_name]}] " + @subject
       @body    = [ build.checkout.last_commit_message, build.output ].join("\n\n")
 
-      @recipients, @from, @sent_on = options[:recipients], options[:sender], Time.now
+      @recipients, @sent_on = options[:recipients], Time.now
 
+      @from = options[:sender] || @mail_config[:sender] || "'Cerberus' <cerberus@example.com>"
       raise "Please specify recipient addresses for application '#{options[:application_name]}'" unless options[:recipients]
     end
   end

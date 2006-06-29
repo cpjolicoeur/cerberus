@@ -25,7 +25,7 @@ module Cerberus
 
           :application_name => args[1], 
           :recipients       => ENV['RECIPIENTS'], 
-          :sender           => ENV['SENDER'] || "'Continuous Builder' <cb@example.com>"
+          :sender           => ENV['SENDER']
         })
 
         build.run
