@@ -1,0 +1,80 @@
+SVN-fs-dump-format-version: 2
+
+UUID: 3ede5f56-4031-f743-bcde-a87e4ff3590e
+
+Revision-number: 0
+Prop-content-length: 56
+Content-length: 56
+
+K 8
+svn:date
+V 27
+2006-06-29T09:59:06.497680Z
+PROPS-END
+
+Revision-number: 1
+Prop-content-length: 113
+Content-length: 113
+
+K 7
+svn:log
+V 10
+Added test
+K 10
+svn:author
+V 8
+Apomozov
+K 8
+svn:date
+V 27
+2006-06-29T10:48:02.581619Z
+PROPS-END
+
+Node-path: Rakefile
+Node-kind: file
+Node-action: add
+Prop-content-length: 10
+Text-content-length: 220
+Text-content-md5: b3f8886d55aca8f73578c7a896d1779a
+Content-length: 230
+
+PROPS-END
+require 'rake'
+require 'rake/testtask'
+
+task :default => :test
+
+desc "Run the unit tests in test/unit"
+Rake::TestTask.new(:test) do |t|
+  t.libs << "test"
+  t.pattern = 'test/*_test.rb'
+  t.verbose = true
+end
+
+
+Node-path: test
+Node-kind: dir
+Node-action: add
+Prop-content-length: 10
+Content-length: 10
+
+PROPS-END
+
+
+Node-path: test/a_test.rb
+Node-kind: file
+Node-action: add
+Prop-content-length: 10
+Text-content-length: 101
+Text-content-md5: 566f0fba7037bdfe73a4dc77368dabdc
+Content-length: 111
+
+PROPS-END
+require 'test/unit'
+
+class ATest < Test::Unit::TestCase
+  def test_ok
+    assert true
+  end
+end
+

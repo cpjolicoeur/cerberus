@@ -1,9 +1,10 @@
+require 'rubygems'
 require 'action_mailer'
 require 'fileutils'
 require 'cerberus/utils'
 
 module Cerberus
-  HOME = File.expand_path('~/.cerberus')
+  HOME = File.expand_path(ENV['CERBERUS_HOME'] || '~/.cerberus')
 
   class Add
     include Cerberus::Utils
@@ -19,6 +20,13 @@ module Cerberus
       }
 
       FileUtils.mkpath "#{HOME}/config"
+
+      config_file = "#{HOME}/config.yml"
+      File.open(config_file, 'w') do |f| 
+        default_mail_config = {'mail'=>{'address'=>'', 'user_name'=>'', 'password'=>''}}
+        YAML::dump(default_mail_config, f)
+      end unless test(?f,config_file)
+      
       config_name = "#{HOME}/config/#{options[:application_name]}.yml"
       say "Application #{options[:application_name]} already present in Cerberus" if File.exists?(config_name)
       File.open(config_name, 'w') {|f|
@@ -78,18 +86,27 @@ module Cerberus
     private
       def make
         Dir.chdir @options[:application_root]
-        @output = `#{@options[:bin_path]}rake #{@options[:task_name]} RAILS_ENV=test`
+        ext = os() == :windows ? '.cmd' : ''
+        silence_stream(STDERR) {
+          @output = `#{@options[:bin_path]}rake#{ext} #{@options[:task_name]} RAILS_ENV=test`
+        }
         make_successful?
       end
       
       def make_successful?
-        #$?.exitstatus == 0
-        not @output.include?('Test failures')
+         #$?.exitstatus == 0
+         not @output.include?('Test failures')
+#         failure = @output !~ /( Failure:)|/
+#         return not failure
       end
   end
   
   class Checkout
     def initialize(path, options = {})
+      raise "Path can't be nil" unless path
+      path.strip!
+      path = '"' + path + '"' if path.include?(' ')
+
       @path, @options = path, options
     end
 
@@ -128,7 +145,7 @@ module Cerberus
       end
       
       def execute(command, parameters = nil, pre_parameters = nil)
-        `#{@options[:env_command]}#{command} #{pre_parameters} "#{@path}" #{parameters}`
+        `#{@options[:env_command]}#{command} #{pre_parameters} #{@path} #{parameters}`
       end
   end
 
@@ -148,44 +165,47 @@ module Cerberus
   end
 
   class Notifier < ActionMailer::Base
-    def self.setup_context
-      config_file = "#{HOME}/config.yml"
-      File.open(config_file, 'w') do |f| 
-        default_mail_config = {'mail'=>{'address'=>'', 'user_name'=>'', 'password'=>''}}
-        YAML::dump(default_mail_config, f)
-      end unless test(?f,config_file)
+    def initialize(*args)
+      super(*args)
 
-#      ActionMailer::Base.delivery_method = :smtp
+      config_file = "#{HOME}/config.yml"
       c = YAML::load(IO.read(config_file))['mail'] || {}
       mail_config = {}
       c.each_pair{|key,value| mail_config[key.to_sym] = value}
 
-      mail_config[:authentication] = :plain
+      [:authentication, :delivery_method].each do |key|
+        if mail_config[key]
+          mail_config[key] = mail_config[key].to_sym
+        end
+      end
 
+      ActionMailer::Base.delivery_method = mail_config[:delivery_method] if mail_config[:delivery_method]
       ActionMailer::Base.server_settings = mail_config
     end
 
-    setup_context
-
-    def failure(build, options, sent_at = Time.now)
-      @subject = "[#{options[:application_name]}] Build broken by #{build.checkout.last_author} (##{build.checkout.current_revision})"
-      @body    = [ build.checkout.last_commit_message, build.output ].join("\n\n")
-
-      @recipients, @from, @sent_on = options[:recipients], options[:sender], sent_at
+    def failure(build, options)
+      @subject = "Build broken by #{build.checkout.last_author} (##{build.checkout.current_revision})"
+      send_message(build, options)
     end
     
-    def broken(build, options, sent_at = Time.now)
-      @subject = "[#{options[:application_name]}] Build still broken (##{build.checkout.current_revision})"
-      @body    = [ build.checkout.last_commit_message, build.output ].join("\n\n")
-
-      @recipients, @from, @sent_on = options[:recipients], options[:sender], sent_at
+    def broken(build, options)
+      @subject = "Build still broken (##{build.checkout.current_revision})"
+      send_message(build, options)
     end
     
-    def revival(build, options, sent_at = Time.now)
-      @subject = "[#{options[:application_name]}] Build fixed by #{build.checkout.last_author} (##{build.checkout.current_revision})"
-      @body    = [ build.checkout.last_commit_message ].join("\n\n")
+    def revival(build, options)
+      @subject = "Build fixed by #{build.checkout.last_author} (##{build.checkout.current_revision})"
+      send_message(build, options)
+    end
 
-      @recipients, @from, @sent_on = options[:recipients], options[:sender], sent_at
+    private
+    def send_message(build, options)
+      @subject = "[#{options[:application_name]}] " + @subject
+      @body    = [ build.checkout.last_commit_message, build.output ].join("\n\n")
+
+      @recipients, @from, @sent_on = options[:recipients], options[:sender], Time.now
+
+      raise "Please specify recipient addresses for application '#{options[:application_name]}'" unless options[:recipients]
     end
   end
 end
