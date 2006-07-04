@@ -1,4 +1,3 @@
 + move gemspec to Rakefile
 + write readme
 + Use Cerberus for itself
-+ configure sender from options

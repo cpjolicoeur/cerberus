@@ -1,52 +1,55 @@
 Cerberus developed by Anatol Pomozov (anatol.pomozov@gmail.com) and shared under MIT license.
 
-Cerberus is continuous integration software. For more CI theory read this document.
+Cerberus is continuous integration (CI) software. Cerberus periodically runs tests from your application and if
+those broken then it sends notification to developers.
 
-Requirements: ruby 1.8.2 or higher
+For more CI theory read this document from Martin Fowler 
+http://www.martinfowler.com/articles/continuousIntegration.html.
+
+Requirements: 
+  ruby - 1.8.2 or higher
+  rake - 0.7 or higher
+  svn client - 1.2 or higher
 
 
-Describe what is is Cerberus. Link to Wikipedia. Cerberus don't let your project go into the world of chaos and death.
+What 'Cerberus' name means?
+Quote from Wikipedia (http://en.wikipedia.org/wiki/Cerberus)
 
+Cerberus or Kerberos (Kerberos, demon of the pit), was the hound of Hades-a monstrous three-headed dog (sometimes said to have 50 or 100 heads) with a snake for a tail and innumerable snake heads on his back.
+He guarded the gate to Hades (the Greek underworld) and ensured that the dead could not leave and the living could not enter. His brother was Orthrus. He is the offspring of Echidna and Typhon.
+
+
+So this software will be guard for you project and Cerberus will not allow your project go to world of dead.
+
+
+
+To use Cerberus it is very easy. First you need to install it. Easiest way - install it with RubyGems package manager
+
+'gem install cerberus'
+
+then you need to add project that will be watched by Cerberus. Do it by
 
 cerberus add (DIR|SVN_URL)?    #Adds current project to list of watched applications
-cerberus build PROJECT_NAME    #Run project
 
-
-
-
-
-
-
-set HOME
-
-
-
-
-
-This is Cerberus application that help us keep application in a good shape.
-
-It is Continues Integration software, that runs tests after each source-code change.
-
-Just install *.gem file that i sending you and then
-
-  cerberus add <SVN_URL>
-
-After that in ~/.cerberus/config you will see <PROJECT>.yml config file for your application.
-Edit "recipients" line in that file and add any emails where you want to send mails
-
-Also you need to configure mail server. You need to edit ~/.cerberus/config.yml for that. This is my config content
-
+as second parameted you could pass URL to subversion repository or directory with checkouted project.
+Go to ~./cerberus and edit config.yml file (only once after install Cerberus). Enter your configuration options there
+like email server, password, user_name and other options. See ActiveMailer description - Cerberus uses it as notification
+layer. Mine config file looks like this
 mail:
-  address: 10.159.228.243
+  address: mail.somesever.com
   user_name: anatol
   password: anatol
-  domain: my.mail
+  domain: somesever.com
   authentication: login
 
-you need add similar config file with your options.
 
-You could check your application by running
-  cerberus build <PROJECT>
-but better to add cerberus invocation to Cron. Run it each 15 minutes will be ok.
+Also go to ~/.cerberus/config/<PROJECT_NAME>.yml and configure list of recipients for this project
+
+And then run cerberus 
+
+cerberus build PROJECT_NAME    #Run project
+
+It will run tests for your app and if they are broken - recipients recieve mails.
+But of course better run Cerberus automatically from Cron. Run it each 10 minutes for project will be ok.
 
 Well, thats all. If you have any questions, proposals - just let me know.

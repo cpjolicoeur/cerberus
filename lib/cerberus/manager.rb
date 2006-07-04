@@ -29,11 +29,9 @@ module Cerberus
       
       config_name = "#{HOME}/config/#{options[:application_name]}.yml"
       say "Application #{options[:application_name]} already present in Cerberus" if File.exists?(config_name)
-      File.open(config_name, 'w') {|f|
-        YAML::dump(config, f)
-      }
+      File.open(config_name, 'w') {|f| YAML::dump(config, f) }
 
-      puts "Application '#{options[:application_name]}' was successfully added to Cerberus"
+      puts "Application '#{options[:application_name]}' was successfully added to Cerberus" unless options[:quiet]
     end
   end
 
@@ -50,16 +48,17 @@ module Cerberus
 
       @status = Status.new("#{HOME}/work/#{application_name}/status.log")
 
-      options[:application_root] = "#{HOME}/work/#{application_name}/sources"
+      @options[:application_root] = "#{HOME}/work/#{application_name}/sources"
       @checkout = Checkout.new(options[:application_root], options)
       @checkout.update!
     end
  
     def run
-      previous_status = @status.recall
       
       state = 
-      if checkout.has_changes?
+      if checkout.has_changes? or not @status.recall
+        previous_status = @status.recall
+
         if status = make
           @status.keep(:succesful)
           previous_status == :failed ? :revived : :succesful
@@ -88,26 +87,23 @@ module Cerberus
         Dir.chdir @options[:application_root]
         ext = os() == :windows ? '.bat' : ''
 
-        @output = silence_stream(STDERR) {
-          `#{@options[:bin_path]}rake#{ext} #{@options[:task_name]} RAILS_ENV=test`
+        silence_stream(STDERR) {
+          @output = `#{@options[:bin_path]}rake#{ext} #{@options[:task_name]} RAILS_ENV=test`
         }
         make_successful?
       end
       
       def make_successful?
-         $?.exitstatus == 0
-#         not @output.include?('Test failures')
-#         failure = @output !~ /( Failure:)|/
-#         return not failure
+         $?.exitstatus == 0 and not @output.include?('Test failures')
       end
   end
   
   class Checkout
     def initialize(path, options = {})
       raise "Path can't be nil" unless path
-      path.strip!
 
-      @path, @options = path, options
+      @path, @options = path.strip, options
+      @encoded_path = (@path.include?(' ') ? "\"#{@path}\"" : @path)
     end
 
     def update!
@@ -145,8 +141,7 @@ module Cerberus
       end
       
       def execute(command, parameters = nil, pre_parameters = nil)
-        encoded_path = '"' + @path + '"' if @path.include?(' ')
-        `#{@options[:env_command]}#{command} #{pre_parameters} #{encoded_path} #{parameters}`
+        `#{@options[:bin_path]}#{command} #{pre_parameters} #{@encoded_path} #{parameters}`
       end
   end
 
@@ -166,24 +161,6 @@ module Cerberus
   end
 
   class Notifier < ActionMailer::Base
-    def initialize(*args)
-      super(*args)
-
-      config_file = "#{HOME}/config.yml"
-      c = YAML::load(IO.read(config_file))['mail'] || {}
-      @mail_config = {}
-      c.each_pair{|key,value| @mail_config[key.to_sym] = value}
-
-      [:authentication, :delivery_method].each do |key|
-        if @mail_config[key]
-          @mail_config[key] = @mail_config[key].to_sym
-        end
-      end
-
-      ActionMailer::Base.delivery_method = @mail_config[:delivery_method] if @mail_config[:delivery_method]
-      ActionMailer::Base.server_settings = @mail_config
-    end
-
     def failure(build, options)
       @subject = "Build broken by #{build.checkout.last_author} (##{build.checkout.current_revision})"
       send_message(build, options)
@@ -201,6 +178,8 @@ module Cerberus
 
     private
     def send_message(build, options)
+      load_config
+
       @subject = "[#{options[:application_name]}] " + @subject
       @body    = [ build.checkout.last_commit_message, build.output ].join("\n\n")
 
@@ -208,6 +187,24 @@ module Cerberus
 
       @from = options[:sender] || @mail_config[:sender] || "'Cerberus' <cerberus@example.com>"
       raise "Please specify recipient addresses for application '#{options[:application_name]}'" unless options[:recipients]
+    end
+
+    def load_config
+      unless @mail_config
+        config_file = "#{HOME}/config.yml"
+        c = YAML::load(IO.read(config_file))['mail'] || {}
+        @mail_config = {}
+        c.each_pair{|key,value| @mail_config[key.to_sym] = value}
+
+        [:authentication, :delivery_method].each do |key|
+          if @mail_config[key]
+            @mail_config[key] = @mail_config[key].to_sym
+          end
+        end
+
+        ActionMailer::Base.delivery_method = @mail_config[:delivery_method] if @mail_config[:delivery_method]
+        ActionMailer::Base.server_settings = @mail_config
+      end
     end
   end
 end

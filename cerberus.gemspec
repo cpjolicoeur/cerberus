@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = ">=1.8.2"
 
-  s.summary = "Cerberus is a simple Continuous Integration that could be easily run from Cron."
+  s.summary = "Cerberus is a Continuous Integration that could be easily run from Cron."
 
   s.add_dependency('actionmailer','>= 1.2.1')
 
@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
 
   s.author = "Anatol pomozov"
   s.email = "anatol.pomozov@gmail.com"
-#   s.homepage = "http://rubyforge.org/projects/cerberus"
+  s.homepage = "http://rubyforge.org/projects/cerberus"
   s.rubyforge_project = "cerberus"
 end
 

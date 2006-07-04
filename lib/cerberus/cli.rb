@@ -12,21 +12,21 @@ module Cerberus
       when 'add'
         path = args[1] || Dir.pwd
         
-        Cerberus::Add.new(path, {
+        Cerberus::Add.new(path,
           :application_name => ENV['APPLICATION_NAME'],
           :recipients       => ENV['RECIPIENTS']
-        })
+        )
       when 'build'
         say HELP if args.length < 2
 
-        build = Cerberus::Build.new(args[1], {
+        build = Cerberus::Build.new(args[1],
           :task_name        => ENV['RAKE_TASK'] || '',
           :bin_path         => ENV['BIN_PATH']  || ("/usr/local/bin/" if os() == :unix),
 
           :application_name => args[1], 
           :recipients       => ENV['RECIPIENTS'], 
           :sender           => ENV['SENDER']
-        })
+        )
 
         build.run
       else
