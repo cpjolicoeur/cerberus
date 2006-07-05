@@ -13,7 +13,7 @@ module Cerberus
       checkout = Checkout.new(path, options)
       say "Can't find any svn application under #{path}" unless checkout.url
 
-      options[:application_name] ||= File.basename(path)
+      options[:application_name] ||= File.basename(path).strip
       config = {
         'url' => checkout.url,
         'recipients' => options[:recipients]
@@ -79,7 +79,7 @@ module Cerberus
           Notifier.deliver_broken(self, @options)
         when :unchanged, :succesful
           # Smile, be happy, it's all good
-      end 
+      end unless @options[:dry_run] 
     end
  
     private
@@ -94,7 +94,7 @@ module Cerberus
       end
       
       def make_successful?
-         $?.exitstatus == 0 and not @output.include?('Test failures')
+         $?.exitstatus == 0 and not @output.include?('rake aborted!')
       end
   end
   

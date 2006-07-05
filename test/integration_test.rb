@@ -24,7 +24,6 @@ class IntegrationTest < Test::Unit::TestCase
     assert File.exists?(HOME + '/config/svn_repo.yml')
     assert_equal SVN_URL, YAML::load(IO.read(HOME + '/config/svn_repo.yml'))['url']
 
-    #FIXME why it does not working?
     run_cerb("build svn_repo")
     assert File.exists?(HOME + '/work/svn_repo/status.log')
     assert_equal 'succesful', IO.read(HOME + '/work/svn_repo/status.log')
