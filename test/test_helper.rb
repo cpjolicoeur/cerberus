@@ -4,7 +4,7 @@ class Test::Unit::TestCase
   TEMP_DIR = File.expand_path(File.dirname(__FILE__)) + '/__workdir'
 
   SVN_REPO = TEMP_DIR + '/svn_repo'
-  SVN_URL = 'file:///' + SVN_REPO.gsub(/\\/,'/')
+  SVN_URL = 'file:///' + SVN_REPO.gsub(/\\/,'/').gsub(' ', '%20')
 
   HOME = TEMP_DIR + '/home'
   ENV['CERBERUS_HOME'] = HOME
@@ -28,7 +28,7 @@ class Test::Unit::TestCase
 
   CERBERUS_PATH = File.expand_path(File.dirname(__FILE__) + '/../')
   def run_cerb(args)
-    `ruby -I#{CERBERUS_PATH}/lib #{CERBERUS_PATH}/bin/cerberus #{args}`
+    `ruby -I"#{CERBERUS_PATH}/lib" "#{CERBERUS_PATH}/bin/cerberus" #{args}`
   end
 
   def silence_stream(stream)
