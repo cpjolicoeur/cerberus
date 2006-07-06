@@ -1,6 +1,9 @@
 $:.unshift File.dirname(__FILE__) + '/../lib'
+require 'cerberus/utils'
 
 class Test::Unit::TestCase
+  include Cerberus::Utils
+
   TEMP_DIR = File.expand_path(File.dirname(__FILE__)) + '/__workdir'
 
   SVN_REPO = TEMP_DIR + '/svn_repo'
@@ -55,5 +58,9 @@ end"
     yield
 
     FileUtils.rm test_case_name
+  end
+
+  def add_application(app_name, url)
+    dump_yml(HOME + "/config/#{app_name}.yml", 'url' => url)
   end
 end

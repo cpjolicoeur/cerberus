@@ -9,20 +9,20 @@ class IntegrationTest < Test::Unit::TestCase
     output = run_cerb("  add   #{SVN_URL}  ")
     assert_match /was successfully added/, output
     assert File.exists?(HOME + '/config/svn_repo.yml')
-    assert_equal SVN_URL, YAML::load(IO.read(HOME + '/config/svn_repo.yml'))['url']
+    assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['url']
 
     #try to add second time
     output = run_cerb("add #{SVN_URL}")
     assert_match /already present/, output
     assert File.exists?(HOME + '/config/svn_repo.yml')
-    assert_equal SVN_URL, YAML::load(IO.read(HOME + '/config/svn_repo.yml'))['url']
+    assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['url']
   end
 
   def test_run_project
     output = run_cerb("   add    #{SVN_URL}    ")
     assert_match /was successfully added/, output
     assert File.exists?(HOME + '/config/svn_repo.yml')
-    assert_equal SVN_URL, YAML::load(IO.read(HOME + '/config/svn_repo.yml'))['url']
+    assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['url']
 
     run_cerb("build svn_repo")
     assert File.exists?(HOME + '/work/svn_repo/status.log')

@@ -23,16 +23,18 @@ So this software will be guard for you project and Cerberus will not allow your 
 
 
 
-To use Cerberus it is very easy. First you need to install it. Easiest way - install it with RubyGems package manager
+To use Cerberus it is very easy. First install it. Easiest way to do it through RubyGems package manager
 
 'gem install cerberus'
 
 then you need to add project that will be watched by Cerberus. Do it by
 
-cerberus add (DIR|SVN_URL)?    #Adds current project to list of watched applications
+cerberus add (DIR|SVN_URL)?    #Adds project to list of watched applications
 
 as second parameted you could pass URL to subversion repository or directory with checkouted project.
-Go to ~./cerberus and edit config.yml file (only once after install Cerberus). Enter your configuration options there
+If this parameted absent then would be added project from current directory
+
+Go to ~./cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here
 like email server, password, user_name and other options. See ActiveMailer description - Cerberus uses it as notification
 layer. Mine config file looks like this
 mail:
@@ -42,14 +44,14 @@ mail:
   domain: somesever.com
   authentication: login
 
-
-Also go to ~/.cerberus/config/<PROJECT_NAME>.yml and configure list of recipients for this project
+Also go to ~/.cerberus/config/<PROJECT_NAME>.yml and add comma-separated list of recipients for this project
 
 And then run cerberus 
 
 cerberus build PROJECT_NAME    #Run project
 
-It will run tests for your app and if they are broken - recipients recieve mails.
+It will check latest sources and run tests for your app. If tests are broken - recipients will recieve notifications.
+
 But of course better run Cerberus automatically from Cron. Run it each 10 minutes for project will be ok.
 
 Well, thats all. If you have any questions, proposals - just let me know.

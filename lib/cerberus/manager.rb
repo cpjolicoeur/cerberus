@@ -1,37 +1,41 @@
 require 'rubygems'
 require 'action_mailer'
 require 'fileutils'
+
 require 'cerberus/utils'
+require 'cerberus/constants'
 
 module Cerberus
-  HOME = File.expand_path(ENV['CERBERUS_HOME'] || '~/.cerberus')
-
   class Add
     include Cerberus::Utils
 
     def initialize(path, options = {})
-      checkout = Checkout.new(path, options)
-      say "Can't find any svn application under #{path}" unless checkout.url
+      @path, @options = path, options
+    end
 
-      options[:application_name] ||= File.basename(path).strip
+    def run
+      checkout = Checkout.new(@path, @options)
+      say "Can't find any svn application under #{@path}" unless checkout.url
+
+      @options[:application_name] ||= File.basename(@path).strip
       config = {
         'url' => checkout.url,
-        'recipients' => options[:recipients]
+        'recipients' => @options[:recipients]
       }
 
-      FileUtils.mkpath "#{HOME}/config"
-
-      config_file = "#{HOME}/config.yml"
-      File.open(config_file, 'w') do |f| 
-        default_mail_config = {'mail'=>{'address'=>'', 'user_name'=>'', 'password'=>''}}
-        YAML::dump(default_mail_config, f)
-      end unless test(?f,config_file)
+      create_default_config
       
-      config_name = "#{HOME}/config/#{options[:application_name]}.yml"
-      say "Application #{options[:application_name]} already present in Cerberus" if File.exists?(config_name)
-      File.open(config_name, 'w') {|f| YAML::dump(config, f) }
+      config_name = "#{HOME}/config/#{@options[:application_name]}.yml"
+      say "Application #{@options[:application_name]} already present in Cerberus" if File.exists?(config_name)
 
-      puts "Application '#{options[:application_name]}' was successfully added to Cerberus" unless options[:quiet]
+      dump_yml(config_name, config)
+      puts "Application '#{@options[:application_name]}' was successfully added to Cerberus" unless @options[:quiet]
+    end
+
+    private
+    def create_default_config
+      default_mail_config = {'mail'=>{'address'=>'', 'user_name'=>'', 'password'=>''}}
+      dump_yml(CONFIG_FILE, default_mail_config, false)
     end
   end
 
@@ -44,7 +48,7 @@ module Cerberus
       say "Project #{application_name} does not present in Cerberus" unless File.exists?(config_name)
 
       @options  = options
-      YAML::load(IO.read(config_name)).each_pair{|k,v| @options[k.to_sym] = v}
+      load_yml(config_name).each_pair{|k,v| @options[k.to_sym] = v}
 
       @status = Status.new("#{HOME}/work/#{application_name}/status.log")
 
@@ -55,10 +59,10 @@ module Cerberus
  
     def run
       
-      state = 
-      if checkout.has_changes? or not @status.recall
-        previous_status = @status.recall
+      previous_status = @status.recall
 
+      state = 
+      if checkout.has_changes? or not previous_status
         if status = make
           @status.keep(:succesful)
           previous_status == :failed ? :revived : :succesful
@@ -78,8 +82,10 @@ module Cerberus
         when :broken
           Notifier.deliver_broken(self, @options)
         when :unchanged, :succesful
+          Notifier.deliver_setup(self, @options) unless previous_status  #If it first time we build application then let everyone to know that we have Cerberus now
+
           # Smile, be happy, it's all good
-      end unless @options[:dry_run] 
+      end unless @options[:quiet]
     end
  
     private
@@ -128,7 +134,13 @@ module Cerberus
     end
  
     def last_commit_message
-      execute("svn log", " -rHEAD -v")
+      message = execute("svn log", " -rHEAD -v")
+      #strip first line that contains command line (svn log -rHEAD ...)
+      if ((idx = message.index('-'*60)) != 0 )
+        message[idx..-1]
+      else
+        message
+      end
     end
  
     def last_author
@@ -161,6 +173,8 @@ module Cerberus
   end
 
   class Notifier < ActionMailer::Base
+    include Cerberus::Utils
+    
     def failure(build, options)
       @subject = "Build broken by #{build.checkout.last_author} (##{build.checkout.current_revision})"
       send_message(build, options)
@@ -173,6 +187,11 @@ module Cerberus
     
     def revival(build, options)
       @subject = "Build fixed by #{build.checkout.last_author} (##{build.checkout.current_revision})"
+      send_message(build, options)
+    end
+
+    def setup(build, options)
+      @subject = "Cerberus set up for project (##{build.checkout.current_revision})"
       send_message(build, options)
     end
 
@@ -191,8 +210,7 @@ module Cerberus
 
     def load_config
       unless @mail_config
-        config_file = "#{HOME}/config.yml"
-        c = YAML::load(IO.read(config_file))['mail'] || {}
+        c = load_yml(CONFIG_FILE)['mail'] || {}
         @mail_config = {}
         c.each_pair{|key,value| @mail_config[key.to_sym] = value}
 

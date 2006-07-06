@@ -1,3 +1,5 @@
-+ move gemspec to Rakefile
-+ write readme
-+ Use Cerberus for itself
++ Add support of ENV variables entered from command line
++ Added support of checking if some executable present (like 'rake' works for some machines, but 'rake.bat' for others)
++ Save logs of application to work directory
++ Load options hierarchically CONFIG > APPLICATION_CONFIG > COMMAND_LINE_OPTIONS
++ Add file lock (extract from first revisions of Cerberus)
