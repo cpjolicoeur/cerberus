@@ -22,7 +22,7 @@ class FunctionalTest < Test::Unit::TestCase
   def test_build
     add_application('myapp', SVN_URL)
     
-    build = Cerberus::Build.new('myapp')
+    build = Cerberus::Build.new('myapp', :quiet => true)
     build.run
 
     status_file = HOME + '/work/myapp/status.log'
@@ -30,7 +30,7 @@ class FunctionalTest < Test::Unit::TestCase
     assert_equal 'succesful', IO.read(status_file)
 
     FileUtils.rm status_file
-    build = Cerberus::Build.new('myapp')
+    build = Cerberus::Build.new('myapp', :quiet => true)
     build.run
     assert File.exists?(status_file)
 
@@ -60,7 +60,7 @@ class FunctionalTest < Test::Unit::TestCase
   def test_have_no_awkward_header
     add_application('myapp', SVN_URL)
     
-    build = Cerberus::Build.new('myapp')
+    build = Cerberus::Build.new('myapp', :quiet => true)
     build.run
 
     assert build.checkout.last_commit_message !~ /-rHEAD -v/

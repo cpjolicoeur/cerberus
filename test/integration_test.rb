@@ -19,10 +19,7 @@ class IntegrationTest < Test::Unit::TestCase
   end
 
   def test_run_project
-    output = run_cerb("   add    #{SVN_URL}    ")
-    assert_match /was successfully added/, output
-    assert File.exists?(HOME + '/config/svn_repo.yml')
-    assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['url']
+    add_application('svn_repo', SVN_URL, 'quiet' => true)
 
     run_cerb("build svn_repo")
     assert File.exists?(HOME + '/work/svn_repo/status.log')

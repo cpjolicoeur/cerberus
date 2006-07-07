@@ -60,7 +60,9 @@ end"
     FileUtils.rm test_case_name
   end
 
-  def add_application(app_name, url)
-    dump_yml(HOME + "/config/#{app_name}.yml", 'url' => url)
+  def add_application(app_name, url, options = {})
+    opt = options.dup
+    opt['url'] = url
+    dump_yml(HOME + "/config/#{app_name}.yml", opt)
   end
 end
