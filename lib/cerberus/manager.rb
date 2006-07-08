@@ -134,9 +134,9 @@ module Cerberus
     end
  
     def last_commit_message
-      message = execute("svn log", " -rHEAD -v")
-      #strip first line that contains command line (svn log -rHEAD ...)
-      if ((idx = message.index('-'*60)) != 0 )
+      message = execute("svn log", "--limit 1 -v")
+      #strip first line that contains command line itself (svn log --limit ...)
+      if ((idx = message.index('-'*72)) != 0 )
         message[idx..-1]
       else
         message
