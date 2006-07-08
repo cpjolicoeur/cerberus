@@ -1,6 +1,7 @@
 require 'cerberus/manager'
 require 'cerberus/utils'
 require 'cerberus/version'
+require 'cerberus/constants'
 
 module Cerberus
   class CLI     
@@ -25,7 +26,8 @@ module Cerberus
       when 'build'
         say HELP if args.length < 2
 
-        command = Cerberus::Build.new(args[1],
+        application_name = args[1]
+        command = Cerberus::Build.new(application_name,
           :task_name        => ENV['RAKE_TASK'] || '',
           :bin_path         => ENV['BIN_PATH']  || ("/usr/local/bin/" if os() == :unix),
 
@@ -34,7 +36,16 @@ module Cerberus
           :sender           => ENV['SENDER']
         )
 
-        command.run
+        begin
+          command.run
+        rescue Exception => e
+          File.open("#{HOME}/work/#{application_name}/error.log", File::WRONLY|File::APPEND|File::CREAT) {|f| 
+            f.puts Time.now.strftime("%a, %d %b %Y %H:%M:%S %z")
+            f.puts e.message
+            f.puts e.backtrace.collect{|line| ' '*5 + line}
+            f.puts "\n"
+          }
+        end
       end
     end
   end
