@@ -91,16 +91,31 @@ module Cerberus
     private
       def make
         Dir.chdir @options[:application_root]
-        ext = os() == :windows ? '.bat' : ''
 
         silence_stream(STDERR) {
-          @output = `#{@options[:bin_path]}rake#{ext} #{@options[:task_name]} RAILS_ENV=test`
+          @output = `#{@options[:bin_path]}#{choose_rake_exec()} #{@options[:task_name]} RAILS_ENV=test`
         }
         make_successful?
       end
       
       def make_successful?
          $?.exitstatus == 0 and not @output.include?('rake aborted!')
+      end
+
+      def choose_rake_exec
+        ext = ['']
+
+        if os() == :windows 
+          ext << '.bat' << '.cmd'
+        end
+
+        ext.each{|e|
+          begin
+            out = `rake#{e} --version`
+            return "rake#{e}" if out =~ /rake/
+          rescue
+          end
+        }
       end
   end
   
