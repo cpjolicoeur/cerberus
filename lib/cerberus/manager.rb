@@ -92,9 +92,8 @@ module Cerberus
       def make
         Dir.chdir @options[:application_root]
 
-        silence_stream(STDERR) {
-          @output = `#{@options[:bin_path]}#{choose_rake_exec()} #{@options[:task_name]} RAILS_ENV=test`
-        }
+        @output = `#{@options[:bin_path]}#{choose_rake_exec()} #{@options[:task_name]} RAILS_ENV=test 2>&1`
+
         make_successful?
       end
       

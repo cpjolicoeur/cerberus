@@ -14,15 +14,6 @@ module Cerberus
       end
     end
 
-    def silence_stream(stream)
-      old_stream = stream.dup
-      stream.reopen(os == :windows ? 'NUL:' : '/dev/null')
-      stream.sync = true
-      yield
-    ensure
-      stream.reopen(old_stream)
-    end
-
     def dump_yml(file, what, overwrite = true)
       if overwrite or not File.exists?(file)
         FileUtils.mkpath(File.dirname(file))

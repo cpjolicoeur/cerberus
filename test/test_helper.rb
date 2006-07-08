@@ -34,15 +34,6 @@ class Test::Unit::TestCase
     `ruby -I"#{CERBERUS_PATH}/lib" "#{CERBERUS_PATH}/bin/cerberus" #{args}`
   end
 
-  def silence_stream(stream)
-    old_stream = stream.dup
-    stream.reopen(os == :windows ? 'NUL:' : '/dev/null')
-    stream.sync = true
-    yield
-  ensure
-    stream.reopen(old_stream)
-  end
-
   def add_test_case_to_project(project_name, content)
     test_case_name = "#{HOME}/work/#{project_name}/sources/test/#{rand(10000)}_test.rb"
     File.open(test_case_name, 'w') { |f|
