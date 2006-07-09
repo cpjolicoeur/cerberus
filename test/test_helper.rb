@@ -7,7 +7,7 @@ class Test::Unit::TestCase
   TEMP_DIR = File.expand_path(File.dirname(__FILE__)) + '/__workdir'
 
   SVN_REPO = TEMP_DIR + '/svn_repo'
-  SVN_URL = 'file:///' + SVN_REPO.gsub(/\\/,'/').gsub(' ', '%20')
+  SVN_URL = 'file:///' + SVN_REPO.gsub(/\\/,'/').gsub(/^\//,'').gsub(' ', '%20')
 
   HOME = TEMP_DIR + '/home'
   ENV['CERBERUS_HOME'] = HOME
