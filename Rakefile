@@ -29,7 +29,7 @@ end
 
 desc "Clean all generated files"
 task :clean => :clobber_package do
-  FileUtils.rm_rf './test/__workdir'
+  rm_rf './test/__workdir'
 end
 
 

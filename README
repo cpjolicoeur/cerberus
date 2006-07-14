@@ -1,7 +1,7 @@
 Cerberus developed by Anatol Pomozov (anatol.pomozov@gmail.com) and shared under MIT license.
 
-Cerberus is continuous integration (CI) software. Cerberus periodically runs tests from your application and if
-those broken then it sends notification to developers.
+Cerberus is continuous integration (CI) software. Cerberus could be periodically run from scheduler 
+and check if aolication tests are broken. If it happend then Cerberus sends notification to developers.
 
 For more CI theory read this document from Martin Fowler 
 http://www.martinfowler.com/articles/continuousIntegration.html.
@@ -19,11 +19,10 @@ Cerberus or Kerberos (Kerberos, demon of the pit), was the hound of Hades-a mons
 He guarded the gate to Hades (the Greek underworld) and ensured that the dead could not leave and the living could not enter. His brother was Orthrus. He is the offspring of Echidna and Typhon.
 
 
-So this software will be guard for you project and Cerberus will not allow your project go to world of dead.
+So Cerberus will guard your tests and not allow your project to go to the world of dead.
 
 
-
-To use Cerberus it is very easy. First install it. Easiest way to do it through RubyGems package manager
+To use Cerberus it is very easy. First install it. Easiest way to do it through RubyGems package manager.
 
 'gem install cerberus'
 
@@ -31,7 +30,7 @@ then you need to add project that will be watched by Cerberus. Do it by
 
 cerberus add (DIR|SVN_URL)?    #Adds project to list of watched applications
 
-as second parameted you could pass URL to subversion repository or directory with checkouted project.
+as second parameted you could pass URL to subversion repository or directory with working SVN folder.
 If this parameted absent then would be added project from current directory
 
 Go to ~./cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here
@@ -45,12 +44,13 @@ mail:
   authentication: login
 
 Also go to ~/.cerberus/config/<PROJECT_NAME>.yml and add comma-separated list of recipients for this project
+You could also change <PROJECT_NAME> to any other name. This name what Cerberus will use.
 
-And then run cerberus 
+And then run Cerberus 
 
 cerberus build PROJECT_NAME    #Run project
 
-It will check latest sources and run tests for your app. If tests are broken - recipients will recieve notifications.
+It will check out latest sources and run tests for your app. If tests are broken - recipients will recieve notifications.
 
 But of course better run Cerberus automatically from Cron. Run it each 10 minutes for project will be ok.
 

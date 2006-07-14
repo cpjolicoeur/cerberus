@@ -1,4 +1,7 @@
 $:.unshift File.dirname(__FILE__) + '/../lib'
+require 'test/unit'
+require 'fileutils'
+
 require 'cerberus/utils'
 
 class Test::Unit::TestCase
@@ -20,14 +23,6 @@ class Test::Unit::TestCase
   end
 
   refresh_subversion
-
-  def setup
-    FileUtils.rm_rf HOME
-  end
-
-  def teardown
-    FileUtils.rm_rf HOME
-  end
 
   CERBERUS_PATH = File.expand_path(File.dirname(__FILE__) + '/../')
   def run_cerb(args)
@@ -54,6 +49,8 @@ end"
   def add_application(app_name, url, options = {})
     opt = options.dup
     opt['url'] = url
+    opt['recipients'] = 'somebody@com.com'
+    opt['mail'] = {'delivery_method' => 'test'}
     dump_yml(HOME + "/config/#{app_name}.yml", opt)
   end
 end

@@ -28,9 +28,8 @@ module Cerberus
 
         application_name = args[1]
         command = Cerberus::Build.new(application_name,
-          :task_name        => ENV['RAKE_TASK'] || '',
+          :rake_task        => ENV['RAKE_TASK'] || '',
           :bin_path         => ENV['BIN_PATH']  || '',
-
           :application_name => args[1], 
           :recipients       => ENV['RECIPIENTS'], 
           :sender           => ENV['SENDER']

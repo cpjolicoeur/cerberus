@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Cerberus
   module Utils
     def say(info)

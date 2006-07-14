@@ -1,10 +1,16 @@
-require 'fileutils'
-require 'test/unit'
-require 'yaml'
-
 require 'test_helper'
 
+require 'yaml'
+
 class IntegrationTest < Test::Unit::TestCase
+  def setup
+    FileUtils.rm_rf HOME
+  end
+
+  def teardown
+    FileUtils.rm_rf HOME
+  end
+
   def test_add_project_as_url
     output = run_cerb("  add   #{SVN_URL}  ")
     assert_match /was successfully added/, output
