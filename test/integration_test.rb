@@ -24,6 +24,17 @@ class IntegrationTest < Test::Unit::TestCase
     assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['url']
   end
 
+  def test_add_project_with_parameters
+    output = run_cerb("  add   #{SVN_URL}  APPLICATION_NAME=hello_world RECIPIENTS=aa@gmail.com")
+    assert_match /was successfully added/, output
+
+    assert File.exists?(HOME + '/config/hello_world.yml')
+    cfg = load_yml(HOME + '/config/hello_world.yml')
+
+    assert_equal SVN_URL, cfg['url']
+    assert_equal 'aa@gmail.com', cfg['recipients']
+  end
+
   def test_run_project
     add_application('svn_repo', SVN_URL, 'quiet' => true)
 

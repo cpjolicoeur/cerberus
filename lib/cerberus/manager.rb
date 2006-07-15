@@ -18,7 +18,7 @@ module Cerberus
       checkout = Checkout.new(@path, @config)
       say "Can't find any svn application under #{@path}" unless checkout.url
 
-      application_name = @config[:application_name] || File.basename(@path).strip
+      application_name = @config[:application_name] || File.basename(File.expand_path(@path)).strip
 
       create_default_config
       
@@ -45,7 +45,7 @@ module Cerberus
             'password'=>'secret_password',
             'authentication' => 'plain'
           }, 
-          'sender' => 'Cerberus'}
+          'sender' => "'Cerberus' <cerberus@example.com>"}
       dump_yml(CONFIG_FILE, default_mail_config, false)
     end
   end
@@ -226,7 +226,11 @@ module Cerberus
     private
     def send_message(build, options)
       mail_config = options[:mail] || {}
-      ActionMailer::Base.delivery_method = mail_config[:delivery_method].to_sym if mail_config[:delivery_method]
+      [:authentication, :delivery_method].each do |k|
+        mail_config[k] = mail_config[k].to_sym if mail_config[k]
+      end
+
+      ActionMailer::Base.delivery_method = mail_config[:delivery_method] if mail_config[:delivery_method]
       ActionMailer::Base.server_settings = mail_config
 
       @subject = "[#{options[:application_name]}] " + @subject

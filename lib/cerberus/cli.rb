@@ -10,42 +10,47 @@ module Cerberus
     def initialize(*args)
       say HELP if args.empty?
 
-      command = args[0]
+      command = args.shift
       say HELP unless %w(add build).include?(command)
+
+      cli_options = extract_options(args)
 
       case command
       when 'add'
-        path = args[1] || Dir.pwd
+        path = args.shift || Dir.pwd
         
-        command = Cerberus::Add.new(path,
-          :application_name => ENV['APPLICATION_NAME'],
-          :recipients       => ENV['RECIPIENTS']
-        )
-
+        command = Cerberus::Add.new(path, cli_options)
         command.run
       when 'build'
-        say HELP if args.length < 2
+        say HELP if args.empty?
 
-        application_name = args[1]
-        command = Cerberus::Build.new(application_name,
-          :rake_task        => ENV['RAKE_TASK'] || '',
-          :bin_path         => ENV['BIN_PATH']  || '',
-          :application_name => args[1], 
-          :recipients       => ENV['RECIPIENTS'], 
-          :sender           => ENV['SENDER']
-        )
-
+        application_name  = args.shift
         begin
+          command = Cerberus::Build.new(application_name, cli_options)
           command.run
         rescue Exception => e
-          File.open("#{HOME}/work/#{application_name}/error.log", File::WRONLY|File::APPEND|File::CREAT) {|f| 
+          File.open("#{HOME}/work/#{application_name}/error.log", File::WRONLY|File::APPEND|File::CREAT) do |f| 
             f.puts Time.now.strftime("%a, %d %b %Y %H:%M:%S %z")
             f.puts e.message
             f.puts e.backtrace.collect{|line| ' '*5 + line}
             f.puts "\n"
-          }
+          end
         end
       end
+    end
+
+    private 
+    def extract_options(args)
+      result = {}
+      args_copy = args.dup
+      args_copy.each do |arg|
+        if arg =~ /^(\w+)=(.*)$/
+          result[$1.downcase.to_sym] = $2
+          args.delete(arg)
+        end
+      end
+
+      result
     end
   end
 

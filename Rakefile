@@ -17,7 +17,6 @@ RELEASE_NAME  = "REL #{PKG_VERSION}"
 RUBY_FORGE_PROJECT = "cerberus"
 RUBY_FORGE_USER    = "anatol"
 
-
 task :default => [:test, :clean]
 
 desc "Run the unit tests in test/unit"
@@ -54,7 +53,7 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.add_dependency 'rake', '>= 0.7.1'
 
   s.files = Dir.glob("{bin,doc,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
-  s.files += %w(MIT-LICENSE README ChangeLog Rakefile)
+  s.files += %w(LICENSE README CHANGES Rakefile)
 
   s.bindir = "bin"
   s.executables = ["cerberus"]
@@ -81,117 +80,39 @@ Rake::GemPackageTask.new(GEM_SPEC) do |p|
   p.need_zip = true
 end
 
-desc "Publish the release files to RubyForge."
-task :release => [:package] do
-  files = ["gem", "tgz", "zip"].map { |ext| "pkg/#{PKG_FILE_NAME}.#{ext}" }
+task :install => [:clean, :test, :package] do
+  system "gem install pkg/#{PKG_NAME}-#{PKG_VERSION}.gem"
+end
 
-  if RUBY_FORGE_PROJECT then
-    require 'net/http'
-    require 'open-uri'
+task :uninstall => [:clean] do
+  system "gem uninstall #{PKG_NAME}"
+end
 
-    project_uri = "http://rubyforge.org/projects/#{RUBY_FORGE_PROJECT}/"
-    project_data = open(project_uri) { |data| data.read }
-    group_id = project_data[/[?&]group_id=(\d+)/, 1]
-    raise "Couldn't get group id" unless group_id
+task :reinstall => [:uninstall, :install] do
+end
 
-    # This echos password to shell which is a bit sucky
-    if ENV["RUBY_FORGE_PASSWORD"]
-      password = ENV["RUBY_FORGE_PASSWORD"]
-    else
-      print "#{RUBY_FORGE_USER}@rubyforge.org's password: "
-      password = STDIN.gets.chomp
-    end
+task :release_files => [:clean, :package] do
+  project = MetaProject::Project::XForge::RubyForge.new(RUBY_FORGE_PROJECT)
 
-    login_response = Net::HTTP.start("rubyforge.org", 80) do |http|
-      data = [
-        "login=1",
-        "form_loginname=#{RUBY_FORGE_USER}",
-        "form_pw=#{password}"
-      ].join("&")
-      http.post("/account/login.php", data)
-    end
+  release_files = FileList[
+    "pkg/#{PKG_FILE_NAME}.gem",
+    "pkg/#{PKG_FILE_NAME}.zip",
+    "pkg/#{PKG_FILE_NAME}.tgz"
+  ]
 
-    cookie = login_response["set-cookie"]
-    raise "Login failed" unless cookie
-    headers = { "Cookie" => cookie }
+  Rake::XForge::Release.new(project) do |release|
+    # If you omit user_name and/or password, you'll be prompted at the command line.
+    release.user_name = RUBY_FORGE_USER
+    release.password = ENV['RUBYFORGE_PASSWORD']
+    release.files = release_files.to_a
+    release.release_name = "MetaProject #{PKG_VERSION}"
+  end
 
-    release_uri = "http://rubyforge.org/frs/admin/?group_id=#{group_id}"
-    release_data = open(release_uri, headers) { |data| data.read }
-    package_id = release_data[/[?&]package_id=(\d+)/, 1]
-    raise "Couldn't get package id" unless package_id
-
-    first_file = true
-    release_id = ""
-
-    files.each do |filename|
-      basename  = File.basename(filename)
-      file_ext  = File.extname(filename)
-      file_data = File.open(filename, "rb") { |file| file.read }
-
-      puts "Releasing #{basename}..."
-
-      release_response = Net::HTTP.start("rubyforge.org", 80) do |http|
-        release_date = Time.now.strftime("%Y-%m-%d %H:%M")
-        type_map = {
-          ".zip"    => "3000",
-          ".tgz"    => "3110",
-          ".gz"     => "3110",
-          ".gem"    => "1400"
-        }; type_map.default = "9999"
-        type = type_map[file_ext]
-        boundary = "rubyqMY6QN9bp6e4kS21H4y0zxcvoor"
-
-        query_hash = if first_file then
-          {
-            "group_id" => group_id,
-            "package_id" => package_id,
-            "release_name" => RELEASE_NAME,
-            "release_date" => release_date,
-            "type_id" => type,
-            "processor_id" => "8000", # Any
-            "release_notes" => "",
-            "release_changes" => "",
-            "preformatted" => "1",
-            "submit" => "1"
-          }
-        else
-          {
-            "group_id" => group_id,
-            "release_id" => release_id,
-            "package_id" => package_id,
-            "step2" => "1",
-            "type_id" => type,
-            "processor_id" => "8000", # Any
-            "submit" => "Add This File"
-          }
-        end
-
-        query = "?" + query_hash.map do |(name, value)|
-          [name, URI.encode(value)].join("=")
-        end.join("&")
-
-        data = [
-          "--" + boundary,
-          "Content-Disposition: form-data; name=\"userfile\"; filename=\"#{basename}\"",
-          "Content-Type: application/octet-stream",
-          "Content-Transfer-Encoding: binary",
-          "", file_data, ""
-          ].join("\x0D\x0A")
-
-        release_headers = headers.merge(
-          "Content-Type" => "multipart/form-data; boundary=#{boundary}"
-        )
-
-        target = first_file ? "/frs/admin/qrs.php" : "/frs/admin/editrelease.php"
-        http.post(target + query, data, release_headers)
-      end
-
-      if first_file then
-        release_id = release_response.body[/release_id=(\d+)/, 1]
-        raise("Couldn't get release id") unless release_id
-      end
-
-      first_file = false
-    end
+  Rake::XForge::NewsPublisher.new(project) do |publisher|
+    # Never hardcode user name and password in the Rakefile!
+    publisher.user_name = RUBY_FORGE_USER
+    publisher.password = ENV['RUBYFORGE_PASSWORD']
+    publisher.subject = "Cerberus #{PKG_VERSION} Released"
+    publisher.details = "Today, Cerberus #{PKG_VERSION} was released to the ..."
   end
 end

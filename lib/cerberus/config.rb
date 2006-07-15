@@ -17,5 +17,14 @@ module Cerberus
     def [](name)
       @config[name]
     end
+
+    private
+    def symbolize_hash(hash)
+      hash.each_pair{|k,v|
+        if v === Hash
+          hash[k] = HashWithIndifferentAccess.new(symbolize_hash(v))
+        end
+      }
+    end
   end
 end

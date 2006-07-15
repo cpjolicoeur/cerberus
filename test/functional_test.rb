@@ -13,14 +13,24 @@ class FunctionalTest < Test::Unit::TestCase
     FileUtils.rm_rf HOME
   end
 
-  def test_add
+  def test_add_by_url
     assert !File.exists?(HOME + '/config/svn_repo.yml')
 
-    add = Cerberus::Add.new("    #{SVN_URL}   ", :quiet => true)
-    add.run
+    command = Cerberus::Add.new("    #{SVN_URL}   ", :quiet => true)
+    command.run
 
     assert File.exists?(HOME + '/config/svn_repo.yml')
     assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['url']
+
+    assert File.exists?(HOME + '/config.yml')
+  end
+
+  def test_add_by_dir
+    command = Cerberus::Add.new(File.dirname(__FILE__) + '/..', :quiet => true)
+    command.run
+
+    assert File.exists?(HOME + '/config/cerberus.yml')
+    assert_match %r{svn(\+ssh)?://(\w+@)?rubyforge.org/var/svn/cerberus}, load_yml(HOME + '/config/cerberus.yml')['url']
 
     assert File.exists?(HOME + '/config.yml')
   end

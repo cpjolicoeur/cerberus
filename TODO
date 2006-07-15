@@ -2,3 +2,4 @@
 + Save logs of application to work directory
 + Load options hierarchically CONFIG > APPLICATION_CONFIG > COMMAND_LINE_OPTIONS
 + Add file lock (extract from first revisions of Cerberus)
++ Generate HTML file from Readme + FAQ and out to http://cerberus.rubyforge.org

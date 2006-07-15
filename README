@@ -1,7 +1,7 @@
 Cerberus developed by Anatol Pomozov (anatol.pomozov@gmail.com) and shared under MIT license.
 
 Cerberus is continuous integration (CI) software. Cerberus could be periodically run from scheduler 
-and check if aolication tests are broken. If it happend then Cerberus sends notification to developers.
+and check if application tests are broken. If it happend then Cerberus sends notification to developers.
 
 For more CI theory read this document from Martin Fowler 
 http://www.martinfowler.com/articles/continuousIntegration.html.
