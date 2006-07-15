@@ -88,10 +88,18 @@ task :uninstall => [:clean] do
   system "gem uninstall #{PKG_NAME}"
 end
 
+desc "Look for TODO and FIXME tags in the code"
+task :todo do
+  Pathname.new(File.dirname(__FILE__)).egrep(/#.*(FIXME|TODO|TBD|DEPRECATED)/) do |match|
+    puts match
+  end
+end
+
 task :reinstall => [:uninstall, :install] do
 end
 
 task :release_files => [:clean, :package] do
+  require 'meta_project'
   project = MetaProject::Project::XForge::RubyForge.new(RUBY_FORGE_PROJECT)
 
   release_files = FileList[
@@ -101,18 +109,21 @@ task :release_files => [:clean, :package] do
   ]
 
   Rake::XForge::Release.new(project) do |release|
-    # If you omit user_name and/or password, you'll be prompted at the command line.
     release.user_name = RUBY_FORGE_USER
     release.password = ENV['RUBYFORGE_PASSWORD']
     release.files = release_files.to_a
-    release.release_name = "MetaProject #{PKG_VERSION}"
+    release.package_name    = PKG_NAME
+    release.release_name = "Cerberus #{PKG_VERSION}"
   end
 
+end
+
+task :publish_news do
+  require 'meta_project'
   Rake::XForge::NewsPublisher.new(project) do |publisher|
-    # Never hardcode user name and password in the Rakefile!
     publisher.user_name = RUBY_FORGE_USER
     publisher.password = ENV['RUBYFORGE_PASSWORD']
     publisher.subject = "Cerberus #{PKG_VERSION} Released"
-    publisher.details = "Today, Cerberus #{PKG_VERSION} was released to the ..."
+    publisher.details = "I am glad to announce first public release of Cerberus tool. Version #{PKG_VERSION} is out. Cerberus is a simple command-line Continuous integration tool for Ruby project. Install Cerberus with 'gem install cerberus' then add project 'cerberus add SVN_URL' and then build it 'cerberus build YOUR_PROJECT_NAME'"
   end
 end

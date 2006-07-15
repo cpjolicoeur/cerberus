@@ -1,5 +1,7 @@
-== Version *SVN*
-
+= Cerberus Changelog
 
 == Version 0.1.0
-* First public release of Cerberus CI tool. See README file for more info.
+
+Initial version of Cerberus tool
+
+* Implemented functionality required by Continuous Integration tool.
