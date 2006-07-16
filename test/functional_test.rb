@@ -2,8 +2,6 @@ require 'test_helper'
 
 require 'cerberus/cli'
 
-#require 'mocks/notifier'
-
 class FunctionalTest < Test::Unit::TestCase
   def setup
     FileUtils.rm_rf HOME
@@ -41,7 +39,7 @@ class FunctionalTest < Test::Unit::TestCase
 
   def test_build
     add_application('myapp', SVN_URL)
-    
+
     build = Cerberus::Build.new('myapp')
     build.run
     assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
@@ -85,7 +83,7 @@ class FunctionalTest < Test::Unit::TestCase
 
   def test_have_no_awkward_header
     add_application('myapp', SVN_URL)
-    
+
     build = Cerberus::Build.new('myapp')
     build.run
 

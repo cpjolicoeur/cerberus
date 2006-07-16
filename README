@@ -1,7 +1,4 @@
-Cerberus developed by Anatol Pomozov (anatol.pomozov@gmail.com) and shared under MIT license.
-
-Cerberus is continuous integration (CI) software. Cerberus could be periodically run from scheduler 
-and check if application tests are broken. If it happend then Cerberus sends notification to developers.
+Cerberus is a Continuous Integration (CI) software. Cerberus could be periodically run from scheduler and check if application tests are broken. If it happens then Cerberus will send notification to developers. Cerberus perfectly works both on Windows and *nix platforms.
 
 For more CI theory read this document from Martin Fowler 
 http://www.martinfowler.com/articles/continuousIntegration.html.
@@ -11,7 +8,6 @@ Requirements:
   rake - 0.7 or higher
   svn client - 1.2 or higher
 
-
 What 'Cerberus' name means?
 Quote from Wikipedia (http://en.wikipedia.org/wiki/Cerberus)
 
@@ -19,23 +15,22 @@ Cerberus or Kerberos (Kerberos, demon of the pit), was the hound of Hades-a mons
 He guarded the gate to Hades (the Greek underworld) and ensured that the dead could not leave and the living could not enter. His brother was Orthrus. He is the offspring of Echidna and Typhon.
 
 
-So Cerberus will guard your tests and not allow your project to go to the world of dead.
-
+So Cerberus will guard your tests and not allow your project to go to the world of dead. 
 
 To use Cerberus it is very easy. First install it. Easiest way to do it through RubyGems package manager.
 
 'gem install cerberus'
 
+or get Cerberus distribution package right from download page http://rubyforge.org/frs/?group_id=1794
+
 then you need to add project that will be watched by Cerberus. Do it by
 
-cerberus add (DIR|SVN_URL)?    #Adds project to list of watched applications
+cerberus add (DIR|SVN_URL) APPLICATION_NAME=some_app RECIPIENTS=dev1@project.com,dev2@project.com
 
-as second parameted you could pass URL to subversion repository or directory with working SVN folder.
-If this parameted absent then would be added project from current directory
+as second parameter you could pass URL to subversion repository or directory with working SVN folder.
 
-Go to ~./cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here
-like email server, password, user_name and other options. See ActiveMailer description - Cerberus uses it as notification
-layer. Mine config file looks like this
+Go to ~./cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here like email server, password, user_name and other options. See ActiveMailer description - Cerberus uses it as notification layer. My config file looks like this
+
 mail:
   address: mail.somesever.com
   user_name: anatol
@@ -43,15 +38,14 @@ mail:
   domain: somesever.com
   authentication: login
 
-Also go to ~/.cerberus/config/<PROJECT_NAME>.yml and add comma-separated list of recipients for this project
-You could also change <PROJECT_NAME> to any other name. This name what Cerberus will use.
+Also check ~/.cerberus/config/<APPLICATION_NAME>.yml and make sure that you have right options.
 
 And then run Cerberus 
 
-cerberus build PROJECT_NAME    #Run project
+cerberus build APPLICATION_NAME    #Run project
 
-It will check out latest sources and run tests for your app. If tests are broken - recipients will recieve notifications.
+It will check out latest sources and run tests for your application. If tests are broken - recipients will receive notifications.
 
-But of course better run Cerberus automatically from Cron. Run it each 10 minutes for project will be ok.
+But of course better run Cerberus automatically from Cron. Run Cerberus for project each 10 minutes would be ok.
 
 Well, thats all. If you have any questions, proposals - just let me know.

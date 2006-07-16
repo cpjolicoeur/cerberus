@@ -40,7 +40,7 @@ GEM_SPEC = Gem::Specification.new do |s|
 
   s.summary = "Cerberus is a Continuous Integration tool that could be easily run from Cron."
   s.description = <<-DESC.strip.gsub(/\n\s+/, " ")
-    Cerberus is a Continuous Integration software for Ruby projects. CI helps you keep your project 
+    Cerberus is a Continuous Integration software for Ruby projects. CI helps you keep your project
     in a good shape.
 
     For now Cerberus only work with projects that use Subversion but in the future it would be provided
@@ -70,7 +70,7 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.author = "Anatol Pomozov"
   s.email = "anatol.pomozov@gmail.com"
   s.homepage = "http://rubyforge.org/projects/cerberus"
-  s.rubyforge_project = "cerberus"
+  s.rubyforge_project = RUBY_FORGE_PROJECT
 end
 
 
