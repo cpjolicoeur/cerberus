@@ -26,11 +26,15 @@ class FunctionalTest < Test::Unit::TestCase
   end
 
   def test_add_by_dir
-    command = Cerberus::Add.new(File.dirname(__FILE__) + '/..', :quiet => true)
+    sources_dir = File.dirname(__FILE__) + '/..'
+
+    command = Cerberus::Add.new(sources_dir, :quiet => true)
     command.run
 
-    assert File.exists?(HOME + '/config/cerberus.yml')
-    assert_match %r{svn(\+ssh)?://(\w+@)?rubyforge.org/var/svn/cerberus}, load_yml(HOME + '/config/cerberus.yml')['url']
+    project_config = HOME + "/config/#{File.basename(File.expand_path(sources_dir))}.yml" #name of added application should be calculated from File System path
+
+    assert File.exists?(project_config)
+    assert_match %r{svn(\+ssh)?://(\w+@)?rubyforge.org/var/svn/cerberus}, load_yml(project_config)['url']
 
     assert File.exists?(HOME + '/config.yml')
   end
