@@ -18,7 +18,7 @@ module Cerberus
       checkout = Checkout.new(@path, @config)
       say "Can't find any svn application under #{@path}" unless checkout.url
 
-      application_name = @config[:application_name] || File.basename(File.expand_path(@path)).strip
+      application_name = @config[:application_name] || extract_project_name(@path)
 
       create_default_config
       
@@ -34,6 +34,11 @@ module Cerberus
     end
 
     private
+    def extract_project_name(path)
+      path = File.expand_path(path) if test(?d, path)
+      File.basename(path).strip
+    end
+    
     def create_default_config
       default_mail_config = 
         {'mail'=>

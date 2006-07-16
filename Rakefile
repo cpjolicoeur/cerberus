@@ -120,6 +120,8 @@ end
 
 task :publish_news do
   require 'meta_project'
+
+  project = MetaProject::Project::XForge::RubyForge.new(RUBY_FORGE_PROJECT)
   Rake::XForge::NewsPublisher.new(project) do |publisher|
     publisher.user_name = RUBY_FORGE_USER
     publisher.password = ENV['RUBYFORGE_PASSWORD']
