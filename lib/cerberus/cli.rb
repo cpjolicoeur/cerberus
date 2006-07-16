@@ -25,8 +25,9 @@ module Cerberus
         say HELP if args.empty?
 
         application_name  = args.shift
+        command = Cerberus::Build.new(application_name, cli_options)
+
         begin
-          command = Cerberus::Build.new(application_name, cli_options)
           command.run
         rescue Exception => e
           File.open("#{HOME}/work/#{application_name}/error.log", File::WRONLY|File::APPEND|File::CREAT) do |f| 
