@@ -42,4 +42,10 @@ class IntegrationTest < Test::Unit::TestCase
     assert File.exists?(HOME + '/work/svn_repo/status.log')
     assert_equal 'succesful', IO.read(HOME + '/work/svn_repo/status.log')
   end
+
+  def test_run_unexist_project
+    output = run_cerb("build some_project")
+    assert_equal 'Project some_project does not present in Cerberus', output.strip
+    assert !test(?d, HOME + '/work/some_project')
+  end
 end

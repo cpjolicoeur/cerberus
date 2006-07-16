@@ -67,14 +67,15 @@ module Cerberus
       @status = Status.new("#{app_root}/status.log")
 
       @checkout = Checkout.new(@config[:application_root], @config)
-      @checkout.update!
     end
  
     def run
+      @checkout.update!
+
       previous_status = @status.recall
 
       state = 
-      if checkout.has_changes? or not previous_status
+      if @checkout.has_changes? or not previous_status
         if status = make
           @status.keep(:succesful)
           previous_status == :failed ? :revived : :succesful

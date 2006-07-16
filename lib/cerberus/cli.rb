@@ -25,8 +25,8 @@ module Cerberus
         say HELP if args.empty?
 
         application_name  = args.shift
-        command = Cerberus::Build.new(application_name, cli_options)
 
+        command = Cerberus::Build.new(application_name, cli_options)
         begin
           command.run
         rescue Exception => e
