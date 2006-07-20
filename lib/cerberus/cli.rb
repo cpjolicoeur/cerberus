@@ -11,7 +11,7 @@ module Cerberus
       say HELP if args.empty?
 
       command = args.shift
-      say HELP unless %w(add build).include?(command)
+      say HELP unless %w(add build buildall).include?(command)
 
       cli_options = extract_options(args)
 

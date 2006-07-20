@@ -4,7 +4,7 @@ module Cerberus
   module Notifier
     class Email
       def self.notify(state, build, options)
-        configure(options)
+        Email.configure(options)
         ActionMailerNotifier.deliver_message(state, build, options)
       end
 
