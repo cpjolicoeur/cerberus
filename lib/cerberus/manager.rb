@@ -1,10 +1,11 @@
 require 'rubygems'
-require 'action_mailer'
 require 'fileutils'
 
 require 'cerberus/utils'
 require 'cerberus/constants'
 require 'cerberus/config'
+
+require 'cerberus/notifier/email'
 
 module Cerberus
   class Add
@@ -75,36 +76,40 @@ module Cerberus
     end
  
     def run
-      @checkout.update!
+      begin
+        previous_status = @status.recall
+        @checkout.update!
 
-      previous_status = @status.recall
-
-      state = 
-      if @checkout.has_changes? or not previous_status
-        if status = make
-          @status.keep(:succesful)
-          previous_status == :failed ? :revived : :succesful
-        else
-          @status.keep(:failed)
-          previous_status == :failed ? :broken : :failed
-        end
-      else
-        :unchanged
-      end
-
-      case state
-        when :failed
-          Notifier.deliver_failure(self, @config)
-        when :revived
-          Notifier.deliver_revival(self, @config)
-        when :broken
-          Notifier.deliver_broken(self, @config)
-        when :unchanged, :succesful
-          unless previous_status  #If it first time we build application then let everyone to know that we have Cerberus now
-            Notifier.deliver_setup(self, @config)
+        state = 
+        if @checkout.has_changes? or not previous_status
+          if status = make
+            @status.keep(:succesful)
+            case previous_status
+            when :failed
+              :revival
+            when :succesful
+              :succesful
+            when false
+              :setup
+            end
+          else
+            @status.keep(:failed)
+            previous_status == :failed ? :broken : :failure
           end
+        else
+          :unchanged
+        end
 
-          # Smile, be happy, it's all good
+        if [:failure, :broken, :revival, :setup].include?(state)
+          Cerberus::Notifier::Email.notify(state, self, @config)
+        end
+      rescue Exception => e
+        File.open("#{HOME}/work/#{@config[:application_name]}/error.log", File::WRONLY|File::APPEND|File::CREAT) do |f| 
+          f.puts Time.now.strftime("%a, %d %b %Y %H:%M:%S %z")
+          f.puts e.message
+          f.puts e.backtrace.collect{|line| ' '*5 + line}
+          f.puts "\n"
+        end
       end
     end
  
@@ -137,6 +142,23 @@ module Cerberus
         }
       end
   end
+
+  class BuildAll
+    def initialize(cli_options = {})
+      @cli_options = cli_options
+    end
+
+    def run
+      Dir["#{HOME}/config/*.yml"].each do |fn|
+        fn =~ %r{#{HOME}/config/(.*).yml}
+        application_name = $1
+
+        command = Cerberus::Build.new(application_name, @cli_options)
+        command.run
+      end
+    end
+  end
+
   
   class Checkout
     def initialize(path, options = {})
@@ -203,49 +225,6 @@ module Cerberus
     def recall
       value = File.exists?(@path) ? File.read(@path) : false
       value.blank? ? false : value.to_sym
-    end
-  end
-
-  class Notifier < ActionMailer::Base
-    include Cerberus::Utils
-    
-    def failure(build, options)
-      @subject = "Build broken by #{build.checkout.last_author} (##{build.checkout.current_revision})"
-      send_message(build, options)
-    end
-    
-    def broken(build, options)
-      @subject = "Build still broken (##{build.checkout.current_revision})"
-      send_message(build, options)
-    end
-    
-    def revival(build, options)
-      @subject = "Build fixed by #{build.checkout.last_author} (##{build.checkout.current_revision})"
-      send_message(build, options)
-    end
-
-    def setup(build, options)
-      @subject = "Cerberus set up for project (##{build.checkout.current_revision})"
-      send_message(build, options)
-    end
-
-    private
-    def send_message(build, options)
-      mail_config = options[:mail] || {}
-      [:authentication, :delivery_method].each do |k|
-        mail_config[k] = mail_config[k].to_sym if mail_config[k]
-      end
-
-      ActionMailer::Base.delivery_method = mail_config[:delivery_method] if mail_config[:delivery_method]
-      ActionMailer::Base.server_settings = mail_config
-
-      @subject = "[#{options[:application_name]}] " + @subject
-      @body    = [ build.checkout.last_commit_message, build.output ].join("\n\n")
-
-      @recipients, @sent_on = options[:recipients], Time.now
-
-      @from = options[:sender] || "'Cerberus' <cerberus@example.com>"
-      raise "Please specify recipient addresses for application '#{options[:application_name]}'" unless options[:recipients]
     end
   end
 end

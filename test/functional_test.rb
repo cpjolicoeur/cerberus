@@ -91,4 +91,20 @@ class FunctionalTest < Test::Unit::TestCase
     assert build.checkout.last_commit_message !~ /-rHEAD -v/
     assert_equal 0, build.checkout.last_commit_message.index('-' * 72)
   end
+
+  def test_have_no_awkward_header
+    add_application('myapp1', SVN_URL)
+    add_application('myapp2', SVN_URL)
+    add_application('myapp3', SVN_URL)
+    add_application('myapp4', SVN_URL)
+
+    build = Cerberus::BuildAll.new
+    build.run
+
+    for i in 1..4 do
+      status_file = HOME + "/work/myapp#{i}/status.log"
+      assert File.exists?(status_file)
+      assert_equal 'succesful', IO.read(status_file)
+    end
+  end
 end

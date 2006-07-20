@@ -27,16 +27,10 @@ module Cerberus
         application_name  = args.shift
 
         command = Cerberus::Build.new(application_name, cli_options)
-        begin
-          command.run
-        rescue Exception => e
-          File.open("#{HOME}/work/#{application_name}/error.log", File::WRONLY|File::APPEND|File::CREAT) do |f| 
-            f.puts Time.now.strftime("%a, %d %b %Y %H:%M:%S %z")
-            f.puts e.message
-            f.puts e.backtrace.collect{|line| ' '*5 + line}
-            f.puts "\n"
-          end
-        end
+        command.run
+      when 'buildall'
+        command = Cerberus::BuildAll.new(cli_options)
+        command.run
       end
     end
 
