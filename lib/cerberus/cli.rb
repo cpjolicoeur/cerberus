@@ -56,6 +56,7 @@ module Cerberus
       cerberus add <URL>      --- add project from svn repository to list watched of applications
       cerberus add <PATH>     --- add project from local path to list of watched applications
       cerberus build <APPLICATION_NAME>  --- build watched application
+      cerberus buildall       --- build all watched applications
 
     Version #{Cerberus::VERSION::STRING}
   }.gsub("\n    ","\n")

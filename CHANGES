@@ -1,8 +1,10 @@
 = Cerberus Changelog
 
 == Version 0.1.1
+Minor improvements
 
 * Added 'buildall' command that build all projects added to Cerberus repository.
+* Fixed tests on *nix
 
 == Version 0.1.0
 Initial version of Cerberus tool
