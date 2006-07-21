@@ -125,7 +125,7 @@ task :publish_news do
   Rake::XForge::NewsPublisher.new(project) do |publisher|
     publisher.user_name = RUBY_FORGE_USER
     publisher.password = ENV['RUBYFORGE_PASSWORD']
-    publisher.subject = "Cerberus #{PKG_VERSION} Released"
-    publisher.details = "I am glad to announce first public release of Cerberus tool. Version #{PKG_VERSION} is out. Cerberus is a simple command-line Continuous integration tool for Ruby project. Install Cerberus with 'gem install cerberus' then add project 'cerberus add SVN_URL' and then build it 'cerberus build YOUR_PROJECT_NAME'"
+    publisher.subject = "[ANN] Cerberus #{PKG_VERSION} Released"
+    publisher.details = IO.read(File.dirname(__FILE__) + '/README')
   end
 end

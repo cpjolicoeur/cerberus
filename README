@@ -44,8 +44,11 @@ And then run Cerberus
 
 cerberus build APPLICATION_NAME    #Run project
 
+or
+
+cerberus buildall     #Run all available projects
+
+
 It will check out latest sources and run tests for your application. If tests are broken - recipients will receive notifications.
 
 But of course better run Cerberus automatically from Cron. Run Cerberus for project each 10 minutes would be ok.
-
-Well, thats all. If you have any questions, proposals - just let me know.
