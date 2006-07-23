@@ -90,9 +90,7 @@ end
 
 desc "Look for TODO and FIXME tags in the code"
 task :todo do
-  Pathname.new(File.dirname(__FILE__)).egrep(/#.*(FIXME|TODO|TBD|DEPRECATED)/) do |match|
-    puts match
-  end
+  FileList.new(File.dirname(__FILE__)+'/**/*.rb').egrep(/#.*(FIXME|TODO|TBD|DEPRECATED)/i) 
 end
 
 task :reinstall => [:uninstall, :install] do
