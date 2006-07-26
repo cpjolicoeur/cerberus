@@ -6,3 +6,5 @@
 + Add possibility to save history logs to separate folder
 + Make possibility to run each test (not only latest for that moment)
 + Add possibility to send messages over Jabber (using xmmp4r)
+
++ Use webgen for generating site

@@ -1,10 +1,11 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/test_helper'
 
 require 'cerberus/cli'
 
 class FunctionalTest < Test::Unit::TestCase
   def setup
     FileUtils.rm_rf HOME
+    ActionMailer::Base.deliveries.clear
   end
 
   def teardown
@@ -92,7 +93,7 @@ class FunctionalTest < Test::Unit::TestCase
     assert_equal 0, build.checkout.last_commit_message.index('-' * 72)
   end
 
-  def test_have_no_awkward_header
+  def test_batch_running
     add_application('myapp1', SVN_URL)
     add_application('myapp2', SVN_URL)
     add_application('myapp3', SVN_URL)

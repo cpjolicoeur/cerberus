@@ -28,7 +28,9 @@ end
 
 desc "Clean all generated files"
 task :clean => :clobber_package do
-  rm_rf './test/__workdir'
+  rm_rf "#{File.dirname(__FILE__)}/test/__workdir"
+  rm_rf "#{File.dirname(__FILE__)}/coverage"
+  rm_rf "#{File.dirname(__FILE__)}/doc/site/output"
 end
 
 
@@ -93,7 +95,21 @@ task :todo do
   FileList.new(File.dirname(__FILE__)+'/**/*.rb').egrep(/#.*(FIXME|TODO|TBD|DEPRECATED)/i) 
 end
 
-task :reinstall => [:uninstall, :install] do
+task :reinstall => [:uninstall, :install]
+
+task :site_webgen do
+  sh %{pushd doc/site; webgen; scp -r output/* #{RUBY_FORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBY_FORGE_PROJECT}/; popd }
+end
+
+require 'rcov/rcovtask'
+Rcov::RcovTask.new do |t|
+  t.test_files = FileList['test/*_test.rb']
+  t.output_dir = File.dirname(__FILE__) + "/coverage"
+  t.verbose = true
+end
+
+task :site_coverage => [:rcov] do
+  sh %{ scp -r test/coverage/* #{RUBY_FORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBY_FORGE_PROJECT}/coverage/ }
 end
 
 task :release_files => [:clean, :package] do
