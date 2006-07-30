@@ -51,8 +51,10 @@ GEM_SPEC = Gem::Specification.new do |s|
     Cerberus could be easily invoked from Cron (for Unix) or nnCron (for Windows) utilities.
   DESC
 
-  s.add_dependency 'actionmailer', '>= 1.2.1'
+  s.add_dependency 'actionmailer', '>= 1.2.3'
   s.add_dependency 'rake', '>= 0.7.1'
+  s.add_dependency 'jabber4r', '>= 0.8.0'
+  s.add_dependency 'Ruby-IRC', '>= 1.0.3'
 
   s.files = Dir.glob("{bin,doc,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
   s.files += %w(LICENSE README CHANGES Rakefile)
@@ -101,11 +103,14 @@ task :site_webgen do
   sh %{pushd doc/site; webgen; scp -r output/* #{RUBY_FORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBY_FORGE_PROJECT}/; popd }
 end
 
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |t|
-  t.test_files = FileList['test/*_test.rb']
-  t.output_dir = File.dirname(__FILE__) + "/coverage"
-  t.verbose = true
+begin
+  require 'rcov/rcovtask'
+  Rcov::RcovTask.new do |t|
+    t.test_files = FileList['test/*_test.rb']
+    t.output_dir = File.dirname(__FILE__) + "/coverage"
+    t.verbose = true
+  end
+rescue Object
 end
 
 task :site_coverage => [:rcov] do
