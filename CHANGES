@@ -1,5 +1,9 @@
 = Cerberus Changelog
 
+== Version 0.2.0
+
+* Added automatic subversion cleanup to avoid repository locking after Cedrberus process termination
+
 == Version 0.1.1
 Minor improvements
 
