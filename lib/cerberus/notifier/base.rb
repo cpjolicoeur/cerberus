@@ -1,4 +1,4 @@
-require 'action_mailer'
+require 'cerberus/version'
 
 class Cerberus::Notifier::Base
   def self.formatted_message(state, build, options)
@@ -17,7 +17,8 @@ class Cerberus::Notifier::Base
     end
 
     subject = "[#{options[:application_name]}] #{subject}"
-    body    = [ build.checkout.last_commit_message, build.output ].join("\n\n")
+    generated_by = "--\nCerberus #{Cerberus::VERSION::STRING}, http://rubyforge.org/projects/cerberus"
+    body = [ build.checkout.last_commit_message, build.output, generated_by ].join("\n\n")
 
     return subject, body
   end
