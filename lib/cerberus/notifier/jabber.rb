@@ -4,8 +4,8 @@ require 'cerberus/notifier/base'
 class Cerberus::Notifier::Jabber < Cerberus::Notifier::Base
   def self.notify(state, build, options)
     begin
-      jabber_options = options[:notifier][:jabber]
-      subject,body = Base.formatted_message(state, build, options)
+      jabber_options = options[:notifier, :jabber]
+      subject,body = Cerberus::Notifier::Base.formatted_message(state, build, options)
 
       session = Jabber::Session.bind(jabber_options[:jid], jabber_options[:password])
       jabber_options[:recipients].split(',').each do |address|

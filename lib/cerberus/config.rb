@@ -14,8 +14,13 @@ module Cerberus
       @config.merge!(cli_options)
     end
 
-    def [](name)
-      @config[name]
+    def [](*path)
+      c = @config
+      path.each{|p|
+        c = c[p]
+        return if c.nil?
+      }
+      c
     end
 
     private

@@ -14,6 +14,7 @@ class Test::Unit::TestCase
 
   HOME = TEMP_DIR + '/home'
   ENV['CERBERUS_HOME'] = HOME
+  ENV['CERBERUS_ENV'] = 'TEST'
 
   def self.refresh_subversion
     FileUtils.rm_rf TEMP_DIR
@@ -47,10 +48,12 @@ end"
   end
 
   def add_application(app_name, url, options = {})
-    opt = options.dup
-    opt['url'] = url
-    opt['recipients'] = 'somebody@com.com'
-    opt['mail'] = {'delivery_method' => 'test'}
+    opt = options.merge(
+      'scm'=>{'url'=>url}, 
+      'notifier'=>{
+        'mail'=>{'recipients'=>'somebody@com.com', 'delivery_method' => 'test'}
+    })
+
     dump_yml(HOME + "/config/#{app_name}.yml", opt)
   end
 end

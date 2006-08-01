@@ -1,4 +1,4 @@
-Cerberus is a Continuous Integration (CI) software. Cerberus could be periodically run from scheduler and check if application tests are broken. If it happens then Cerberus will send notification to developers. Cerberus perfectly works both on Windows and *nix platforms.
+Cerberus is a Continuous Builder software. Cerberus could be periodically run from scheduler and check if application tests are broken. If it happens then Cerberus will send notification to developers. Cerberus perfectly works both on Windows and *nix platforms.
 
 For more CI theory read this document from Martin Fowler 
 http://www.martinfowler.com/articles/continuousIntegration.html.

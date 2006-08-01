@@ -19,17 +19,17 @@ module Cerberus
       when 'add'
         path = args.shift || Dir.pwd
         
-        command = Cerberus::Add.new(path, cli_options)
+        command = Cerberus::AddCommand.new(path, cli_options)
         command.run
       when 'build'
         say HELP if args.empty?
 
         application_name  = args.shift
 
-        command = Cerberus::Build.new(application_name, cli_options)
+        command = Cerberus::BuildCommand.new(application_name, cli_options)
         command.run
       when 'buildall'
-        command = Cerberus::BuildAll.new(cli_options)
+        command = Cerberus::BuildAllCommand.new(cli_options)
         command.run
       end
     end

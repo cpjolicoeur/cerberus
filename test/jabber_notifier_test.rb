@@ -6,7 +6,7 @@ require 'mock/build'
 
 class JabberNotifierTest < Test::Unit::TestCase
   def test_notifier
-    options = {:notifier => {:jabber => {:recipients => ' jit1@google.com, another@google.com '}}, :application_name => 'MegaApp'}
+    options = Cerberus::Config.new(nil, :notifier => {:jabber => {:recipients => ' jit1@google.com, another@google.com '}}, :application_name => 'MegaApp')
     build = DummyBuild.new('last message', 'this is output', 1232, 'anatol')
 
     Cerberus::Notifier::Jabber.notify(:setup, build, options)

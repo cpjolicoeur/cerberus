@@ -5,10 +5,24 @@ require 'cerberus/utils'
 require 'cerberus/constants'
 require 'cerberus/config'
 
-require 'cerberus/notifier/email'
+require 'cerberus/notifier/mail'
+require 'cerberus/notifier/jabber'
+require 'cerberus/notifier/irc'
+require 'cerberus/scm/svn'
 
 module Cerberus
-  class Add
+  SCM_TYPES = {
+    'svn' => Cerberus::SCM::SVN
+  }
+
+  NOTIFIER_TYPES = {
+    'mail' => Cerberus::Notifier::Mail,
+    'jabber' => Cerberus::Notifier::Jabber,
+    'irc' => Cerberus::Notifier::IRC,
+  }
+
+  class AddCommand
+    EXAMPLE_CONFIG = File.expand_path(File.dirname(__FILE__) + '/config.example.yml')
     include Cerberus::Utils
 
     def initialize(path, cli_options = {})
@@ -16,19 +30,23 @@ module Cerberus
     end
 
     def run
-      checkout = Checkout.new(@path, @config)
-      say "Can't find any svn application under #{@path}" unless checkout.url
+      scm_type = @config[:scm] || 'svn'
+      say "SCM #{scm_type} not supported" unless SCM_TYPES[scm_type]
+
+      scm = SCM_TYPES[scm_type].new(@path, @config)
+      say "Can't find any #{scm_type} application under #{@path}" unless scm.url
 
       application_name = @config[:application_name] || extract_project_name(@path)
 
-      create_default_config
+      create_example_config
       
       config_name = "#{HOME}/config/#{application_name}.yml"
       say "Application #{application_name} already present in Cerberus" if File.exists?(config_name)
 
-      app_config = {
-        'url' => checkout.url,
-        'recipients' => @config[:recipients]
+      app_config = { 'scm' => {
+          'url' => scm.url,
+          'type' =>  scm_type },
+          'notifier' => {'mail' => {'recipients' => @config[:recipients]}}
       }
       dump_yml(config_name, app_config)
       puts "Application '#{application_name}' was successfully added to Cerberus" unless @config[:quiet]
@@ -39,26 +57,16 @@ module Cerberus
       path = File.expand_path(path) if test(?d, path)
       File.basename(path).strip
     end
-    
-    def create_default_config
-      default_mail_config = 
-        {'mail'=>
-          { 'delivery_method'=>'smtp', 
-            'address'=>'somserver.com', 
-            'port' => 25, 
-            'domain'=>'somserver.com', 
-            'user_name'=>'secret_user', 
-            'password'=>'secret_password',
-            'authentication' => 'plain'
-          }, 
-          'sender' => "'Cerberus' <cerberus@example.com>"}
-      dump_yml(CONFIG_FILE, default_mail_config, false)
+
+    def create_example_config
+      FileUtils.mkpath(HOME) unless test(?d, HOME)
+      FileUtils.cp(EXAMPLE_CONFIG, CONFIG_FILE) unless test(?f, CONFIG_FILE)
     end
   end
 
-  class Build
+  class BuildCommand
     include Cerberus::Utils
-    attr_reader :output, :success, :checkout, :status
+    attr_reader :output, :success, :scm, :status
 
     def initialize(application_name, cli_options = {})
       unless File.exists?("#{HOME}/config/#{application_name}.yml")
@@ -72,16 +80,16 @@ module Cerberus
 
       @status = Status.new("#{app_root}/status.log")
 
-      @checkout = Checkout.new(@config[:application_root], @config)
+      @scm = SCM_TYPES[@config[:scm, :type] || 'svn'].new(@config[:application_root], @config)
     end
  
     def run
       begin
         previous_status = @status.recall
-        @checkout.update!
+        @scm.update!
 
         state = 
-        if @checkout.has_changes? or not previous_status
+        if @scm.has_changes? or not previous_status
           if status = make
             @status.keep(:succesful)
             case previous_status
@@ -101,14 +109,22 @@ module Cerberus
         end
 
         if [:failure, :broken, :revival, :setup].include?(state)
-          Cerberus::Notifier::Email.notify(state, self, @config)
+          NOTIFIER_TYPES.each_pair do |key, clazz|
+            unless @config[:notifier, key, :recipients].blank?
+              clazz.notify(state, self, @config)
+            end
+          end
         end
       rescue Exception => e
-        File.open("#{HOME}/work/#{@config[:application_name]}/error.log", File::WRONLY|File::APPEND|File::CREAT) do |f| 
-          f.puts Time.now.strftime("%a, %d %b %Y %H:%M:%S %z")
-          f.puts e.message
-          f.puts e.backtrace.collect{|line| ' '*5 + line}
-          f.puts "\n"
+        if ENV['CERBERUS_ENV'] == 'TEST'
+          raise e
+        else
+          File.open("#{HOME}/work/#{@config[:application_name]}/error.log", File::WRONLY|File::APPEND|File::CREAT) do |f| 
+            f.puts Time.now.strftime("%a, %d %b %Y %H:%M:%S %z")
+            f.puts e.message
+            f.puts e.backtrace.collect{|line| ' '*5 + line}
+            f.puts "\n"
+          end
         end
       end
     end
@@ -116,9 +132,7 @@ module Cerberus
     private
       def make
         Dir.chdir @config[:application_root]
-
-        @output = `#{@config[:bin_path]}#{choose_rake_exec()} #{@config[:rake_task]} 2>&1`
-
+        @output = `#{@config[:bin_path]}#{choose_rake_exec()} #{@config[:builder, :rake, :task]} 2>&1`
         make_successful?
       end
       
@@ -135,7 +149,7 @@ module Cerberus
 
         ext.each{|e|
           begin
-            out = `rake#{e} --version`
+            out = `#{@config[:bin_path]}rake#{e} --version`
             return "rake#{e}" if out =~ /rake/
           rescue
           end
@@ -143,7 +157,7 @@ module Cerberus
       end
   end
 
-  class BuildAll
+  class BuildAllCommand
     def initialize(cli_options = {})
       @cli_options = cli_options
     end
@@ -153,65 +167,10 @@ module Cerberus
         fn =~ %r{#{HOME}/config/(.*).yml}
         application_name = $1
 
-        command = Cerberus::Build.new(application_name, @cli_options)
+        command = Cerberus::BuildCommand.new(application_name, @cli_options)
         command.run
       end
     end
-  end
-
-  
-  class Checkout
-    def initialize(path, options = {})
-      raise "Path can't be nil" unless path
-
-      @path, @options = path.strip, options
-      @encoded_path = (@path.include?(' ') ? "\"#{@path}\"" : @path)
-    end
-
-    def update!
-      if test(?d, @path + '/.svn')
-        execute("svn cleanup") #TODO check first that it was locked
-        @status = execute("svn update")
-      else
-        FileUtils.mkpath(@path) unless test(?d,@path)
-        @status = execute("svn checkout", nil, @options[:url])
-      end
-    end
-
-    def has_changes?
-      @status =~ /[A-Z]\s+[\w\/]+/
-    end
-
-    def current_revision
-      info['Revision'].to_i
-    end
- 
-    def url
-      info['URL']
-    end
- 
-    def last_commit_message
-      message = execute("svn log", "--limit 1 -v")
-      #strip first line that contains command line itself (svn log --limit ...)
-      if ((idx = message.index('-'*72)) != 0 )
-        message[idx..-1]
-      else
-        message
-      end
-    end
- 
-    def last_author
-      info['Last Changed Author']
-    end
-
-    private
-      def info
-        @info ||= YAML.load(execute("svn info"))
-      end
-      
-      def execute(command, parameters = nil, pre_parameters = nil)
-        `#{@options[:bin_path]}#{command} #{pre_parameters} #{@encoded_path} #{parameters}`
-      end
   end
 
   class Status

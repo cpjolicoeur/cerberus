@@ -15,13 +15,13 @@ class IntegrationTest < Test::Unit::TestCase
     output = run_cerb("  add   #{SVN_URL}  ")
     assert_match /was successfully added/, output
     assert File.exists?(HOME + '/config/svn_repo.yml')
-    assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['url']
+    assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['scm']['url']
 
     #try to add second time
     output = run_cerb("add #{SVN_URL}")
     assert_match /already present/, output
     assert File.exists?(HOME + '/config/svn_repo.yml')
-    assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['url']
+    assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['scm']['url']
   end
 
   def test_add_project_with_parameters
@@ -31,8 +31,8 @@ class IntegrationTest < Test::Unit::TestCase
     assert File.exists?(HOME + '/config/hello_world.yml')
     cfg = load_yml(HOME + '/config/hello_world.yml')
 
-    assert_equal SVN_URL, cfg['url']
-    assert_equal 'aa@gmail.com', cfg['recipients']
+    assert_equal SVN_URL, cfg['scm']['url']
+    assert_equal 'aa@gmail.com', cfg['notifier']['mail']['recipients']
   end
 
   def test_run_project

@@ -1,0 +1,20 @@
+#Copy this file to config.yml and configure notification services
+notifier:
+  mail:
+    delivery_method: smtp
+    address: smtp.mymail.com
+    port: 2525
+    domain: mymail.com
+    user_name: cerberus
+    password: somepass
+    authentication: plain
+    sender: "'Cerberus Builder' <cerberus@mymail.com>"
+  jabber:
+    jid: cerberus@gtalk.google.com
+    port: 5222
+    password: mypass
+    digest: false
+  irc:
+    nick: cerberus
+    server: freenode.org
+    port: 5223

@@ -1,9 +1,9 @@
 + Save logs of application to work directory
 + Add file lock (extract from first revisions of Cerberus)
 + Make possibility to run each test (not only latest for that moment)
-+ Add possibility to send messages over Jabber (using xmmp4r)
 + Add flag verbose (from command line)
 + Save svn di not only for latest revision but from latest successfull. For that we need to store version of latest successful rev.
++ Add support of sending to GMail using gmailer.gem
 
 + Use webgen for generating site
 + Generate HTML file from Readme + FAQ and deploy to http://cerberus.rubyforge.org
