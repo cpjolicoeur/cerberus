@@ -32,7 +32,7 @@ class IntegrationTest < Test::Unit::TestCase
     cfg = load_yml(HOME + '/config/hello_world.yml')
 
     assert_equal SVN_URL, cfg['scm']['url']
-    assert_equal 'aa@gmail.com', cfg['notifier']['mail']['recipients']
+    assert_equal 'aa@gmail.com', cfg['publisher']['mail']['recipients']
   end
 
   def test_run_project

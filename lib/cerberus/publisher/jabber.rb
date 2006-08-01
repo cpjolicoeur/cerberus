@@ -1,11 +1,11 @@
 require 'jabber4r/jabber4r'
-require 'cerberus/notifier/base'
+require 'cerberus/publisher/base'
 
-class Cerberus::Notifier::Jabber < Cerberus::Notifier::Base
+class Cerberus::Publisher::Jabber < Cerberus::Publisher::Base
   def self.notify(state, build, options)
     begin
-      jabber_options = options[:notifier, :jabber]
-      subject,body = Cerberus::Notifier::Base.formatted_message(state, build, options)
+      jabber_options = options[:publisher, :jabber]
+      subject,body = Cerberus::Publisher::Base.formatted_message(state, build, options)
 
       session = Jabber::Session.bind(jabber_options[:jid], jabber_options[:password])
       jabber_options[:recipients].split(',').each do |address|

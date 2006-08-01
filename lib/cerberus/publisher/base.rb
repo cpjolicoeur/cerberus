@@ -1,6 +1,6 @@
 require 'cerberus/version'
 
-class Cerberus::Notifier::Base
+class Cerberus::Publisher::Base
   def self.formatted_message(state, build, options)
     subject = 
     case state

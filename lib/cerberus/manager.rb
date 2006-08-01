@@ -5,9 +5,9 @@ require 'cerberus/utils'
 require 'cerberus/constants'
 require 'cerberus/config'
 
-require 'cerberus/notifier/mail'
-require 'cerberus/notifier/jabber'
-require 'cerberus/notifier/irc'
+require 'cerberus/publisher/mail'
+require 'cerberus/publisher/jabber'
+require 'cerberus/publisher/irc'
 require 'cerberus/scm/svn'
 
 module Cerberus
@@ -15,10 +15,10 @@ module Cerberus
     'svn' => Cerberus::SCM::SVN
   }
 
-  NOTIFIER_TYPES = {
-    'mail' => Cerberus::Notifier::Mail,
-    'jabber' => Cerberus::Notifier::Jabber,
-    'irc' => Cerberus::Notifier::IRC,
+  PUBLISHER_TYPES = {
+    'mail' => Cerberus::Publisher::Mail,
+    'jabber' => Cerberus::Publisher::Jabber,
+    'irc' => Cerberus::Publisher::IRC,
   }
 
   class AddCommand
@@ -46,7 +46,7 @@ module Cerberus
       app_config = { 'scm' => {
           'url' => scm.url,
           'type' =>  scm_type },
-          'notifier' => {'mail' => {'recipients' => @config[:recipients]}}
+          'publisher' => {'mail' => {'recipients' => @config[:recipients]}}
       }
       dump_yml(config_name, app_config)
       puts "Application '#{application_name}' was successfully added to Cerberus" unless @config[:quiet]
@@ -109,8 +109,8 @@ module Cerberus
         end
 
         if [:failure, :broken, :revival, :setup].include?(state)
-          NOTIFIER_TYPES.each_pair do |key, clazz|
-            unless @config[:notifier, key, :recipients].blank?
+          PUBLISHER_TYPES.each_pair do |key, clazz|
+            unless @config[:publisher, key, :recipients].blank?
               clazz.notify(state, self, @config)
             end
           end

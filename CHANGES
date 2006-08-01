@@ -4,7 +4,7 @@
 
 * Configuration structure has been greatly changed since 0.1.1 version
 * Added automatic subversion cleanup to avoid repository locking after Cedrberus process termination
-* Added Jabber notifier
+* Added Jabber publisher
 
 == Version 0.1.1
 Minor improvements

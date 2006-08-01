@@ -1,4 +1,6 @@
 $:.unshift File.dirname(__FILE__) + '/../lib'
+
+require 'rubygems'
 require 'test/unit'
 require 'fileutils'
 
@@ -50,7 +52,7 @@ end"
   def add_application(app_name, url, options = {})
     opt = options.merge(
       'scm'=>{'url'=>url}, 
-      'notifier'=>{
+      'publisher'=>{
         'mail'=>{'recipients'=>'somebody@com.com', 'delivery_method' => 'test'}
     })
 

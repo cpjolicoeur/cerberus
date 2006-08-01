@@ -28,3 +28,12 @@ module Cerberus
     end
   end
 end
+
+alias __exec `
+def `(cmd)
+  begin
+    __exec(cmd)
+  rescue Exception => e           
+    raise "Unable to execute: #{cmd}"
+  end
+end

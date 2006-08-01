@@ -1,15 +1,15 @@
 require File.dirname(__FILE__) + '/test_helper'
 
-require 'cerberus/notifier/jabber'
+require 'cerberus/publisher/jabber'
 require 'mock/jabber4r'
 require 'mock/build'
 
-class JabberNotifierTest < Test::Unit::TestCase
-  def test_notifier
-    options = Cerberus::Config.new(nil, :notifier => {:jabber => {:recipients => ' jit1@google.com, another@google.com '}}, :application_name => 'MegaApp')
+class JabberPublisherTest < Test::Unit::TestCase
+  def test_publisher
+    options = Cerberus::Config.new(nil, :publisher => {:jabber => {:recipients => ' jit1@google.com, another@google.com '}}, :application_name => 'MegaApp')
     build = DummyBuild.new('last message', 'this is output', 1232, 'anatol')
 
-    Cerberus::Notifier::Jabber.notify(:setup, build, options)
+    Cerberus::Publisher::Jabber.notify(:setup, build, options)
 
     messages = Jabber::Protocol::Message.messages
     assert_equal 2, messages.size

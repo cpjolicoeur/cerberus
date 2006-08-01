@@ -1,5 +1,5 @@
 #Copy this file to config.yml and configure notification services
-notifier:
+publisher:
   mail:
     delivery_method: smtp
     address: smtp.mymail.com
