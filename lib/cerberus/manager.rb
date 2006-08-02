@@ -111,7 +111,9 @@ module Cerberus
         if [:failure, :broken, :revival, :setup].include?(state)
           PUBLISHER_TYPES.each_pair do |key, clazz|
             unless @config[:publisher, key, :recipients].blank?
-              clazz.notify(state, self, @config)
+              silence_stream(STDOUT) { #some of publishers like IRC very noisy
+                clazz.publish(state, self, @config)
+              }
             end
           end
         end

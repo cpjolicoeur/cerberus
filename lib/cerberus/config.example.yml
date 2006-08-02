@@ -15,6 +15,6 @@ publisher:
     password: mypass
     digest: false
   irc:
-    nick: cerberus
-    server: freenode.org
-    port: 5223
+    nick: cerb
+    server: irc.freenode.net
+#    recipients: "#cerberus"

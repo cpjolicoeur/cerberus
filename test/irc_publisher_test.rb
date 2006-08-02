@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 require 'cerberus/publisher/irc'
+require 'cerberus/config'
 require 'mock/irc'
 require 'mock/build'
 
@@ -9,10 +10,8 @@ class IRCPublisherTest < Test::Unit::TestCase
     options = Cerberus::Config.new(nil, :publisher => {:irc => {:recipients => '#hello'}}, :application_name => 'IrcApp')
     build = DummyBuild.new('last message', 'this is output', 1232, 'anatol')
 
-    Cerberus::Publisher::IRC.notify(:setup, build, options)
+    Cerberus::Publisher::IRC.publish(:setup, build, options)
 
-    messages = IRCConnection.messages
-    assert_equal 1, messages.size
-    assert_equal 'JOIN #hello', messages[0]
+    assert IRCConnection.connected
   end
 end

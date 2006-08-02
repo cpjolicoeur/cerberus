@@ -2,7 +2,7 @@ require 'jabber4r/jabber4r'
 require 'cerberus/publisher/base'
 
 class Cerberus::Publisher::Jabber < Cerberus::Publisher::Base
-  def self.notify(state, build, options)
+  def self.publish(state, build, options)
     begin
       jabber_options = options[:publisher, :jabber]
       subject,body = Cerberus::Publisher::Base.formatted_message(state, build, options)

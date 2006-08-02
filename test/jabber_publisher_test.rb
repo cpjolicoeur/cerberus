@@ -9,7 +9,7 @@ class JabberPublisherTest < Test::Unit::TestCase
     options = Cerberus::Config.new(nil, :publisher => {:jabber => {:recipients => ' jit1@google.com, another@google.com '}}, :application_name => 'MegaApp')
     build = DummyBuild.new('last message', 'this is output', 1232, 'anatol')
 
-    Cerberus::Publisher::Jabber.notify(:setup, build, options)
+    Cerberus::Publisher::Jabber.publish(:setup, build, options)
 
     messages = Jabber::Protocol::Message.messages
     assert_equal 2, messages.size

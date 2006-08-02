@@ -2,7 +2,7 @@ require 'action_mailer'
 require 'cerberus/publisher/base'
 
 class Cerberus::Publisher::Mail < Cerberus::Publisher::Base
-  def self.notify(state, build, options)
+  def self.publish(state, build, options)
     configure(options[:publisher, :mail].dup)
     ActionMailerPublisher.deliver_message(state, build, options)
   end
