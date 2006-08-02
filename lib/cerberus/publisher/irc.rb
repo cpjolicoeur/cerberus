@@ -7,9 +7,14 @@ class Cerberus::Publisher::IRC < Cerberus::Publisher::Base
     subject,body = Cerberus::Publisher::Base.formatted_message(state, build, options)
     message = subject + "\n" + '*' * subject.length + "\n" + body
 
-    bot = IRC.new(irc_options[:nick], irc_options[:serevr], irc_options[:port], 'Cerberus continuous builder').add_channel(irc_options[:recipients])
-    IRCEvent.add_callback('join') {|event|
-      bot.send_message(event.channel, message)
+
+    bot = IRC.new(irc_options[:nick], irc_options[:server], irc_options[:port], 'Cerberus continuous builder')
+    IRCEvent.add_callback('endofmotd') { |event| 
+      bot.add_channel(irc_options[:recipients]) 
+      message.split("\n").each{|line|
+        bot.send_message(irc_options[:recipients], line)
+      }
+      bot.send_quit
     }
     bot.connect
   end

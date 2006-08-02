@@ -120,8 +120,8 @@ module Cerberus
           raise e
         else
           File.open("#{HOME}/work/#{@config[:application_name]}/error.log", File::WRONLY|File::APPEND|File::CREAT) do |f| 
-            f.puts Time.now.strftime("%a, %d %b %Y %H:%M:%S %z")
-            f.puts e.message
+            f.puts Time.now.strftime("%a, %d %b %Y %H:%M:%S  --  #{e.class}")
+            f.puts e.message unless e.message.blank?
             f.puts e.backtrace.collect{|line| ' '*5 + line}
             f.puts "\n"
           end
