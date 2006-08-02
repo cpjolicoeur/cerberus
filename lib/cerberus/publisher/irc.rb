@@ -16,6 +16,10 @@ class Cerberus::Publisher::IRC < Cerberus::Publisher::Base
       }
       bot.send_quit
     }
-    bot.connect
+    begin
+      bot.connect #Why it always fails?
+    rescue Exception => e
+      puts e.message
+    end
   end
 end
