@@ -17,6 +17,16 @@ He guarded the gate to Hades (the Greek underworld) and ensured that the dead co
 
 So Cerberus will guard your tests and not allow your project to go to the world of dead. 
 
+There is several solutions already present, why do you need to use Cerberus?
+Main advantages of Cerberus over other solutions:
+ = Cerberus could be installed on any machine not only where SVN repository located.
+ = Cerberus works not only for Rails projects, but for any other Ruby (or better to say for projects that use Rake)
+ = Cerberus multiplatform solution: it runs excellent both on *nix and Windows.
+ = Cerberus distributed via RubyGems, so it is very easy to install and very easy to update to the latest available versin
+ = Cerberus very easy start to use. Just type 'cerberus add PROJECT_URL|PROJECT_DIR'
+ = Cerberus is lightweigt solution: mots of the time ruby process even not run - Rake runs only in case if changes in project found
+
+ 
 To use Cerberus it is very easy. First install it. Easiest way to do it through RubyGems package manager.
 
 'gem install cerberus'
@@ -31,12 +41,13 @@ as second parameter you could pass URL to subversion repository or directory wit
 
 Go to ~./cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here like email server, password, user_name and other options. See ActiveMailer description - Cerberus uses it as notification layer. My config file looks like this
 
-mail:
-  address: mail.somesever.com
-  user_name: anatol
-  password: anatol
-  domain: somesever.com
-  authentication: login
+publisher:
+  mail:
+    address: mail.somesever.com
+    user_name: anatol
+    password: anatol
+    domain: somesever.com
+    authentication: login
 
 Also check ~/.cerberus/config/<APPLICATION_NAME>.yml and make sure that you have right options.
 

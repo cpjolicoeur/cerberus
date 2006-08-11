@@ -1,0 +1,45 @@
+bin_path:
+publisher:
+  active:
+  mail:
+    delivery_method: smtp                       C
+    address: mail.tut.by                        C
+    port: 2525                                  C
+    domain:                                     C
+    user_name: anatol                           C
+    password: somepass                          C
+    authentication: login                       C
+    sender: "'Cerberus' <anatol2003@tut.by>"    C
+    recipients: anatol.pomozov@gmail.com        A
+  jabber:
+    jid:                                        C
+    port:                                       C
+    password:                                   C
+    digest:                                     C
+    recipients:                                 A
+  irc:
+    nick:                                       A
+    server:                                     A
+    port:                                       A
+    channel:                                    A
+  rss:
+    file:
+scm:
+  type: svn                                     A
+  url:                                          A
+builder
+  type: rake #supported: maven2                 A
+  rake:                                         C
+    task: test                                  CA
+  maven2:  
+
+
+L - Only for command line interface
+C - Cerberus config
+A - application level config
+
+L
+recipients (add)
+verbose or quite ??(add, build)
+application_name (add)
+scm (add, default svn)

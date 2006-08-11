@@ -58,6 +58,7 @@ GEM_SPEC = Gem::Specification.new do |s|
 
   s.files = Dir.glob("{bin,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
   s.files += %w(LICENSE README CHANGES Rakefile)
+  s.files += Dir.glob("doc/*").delete_if { |item| item.include?('__workdir') }
 
   s.bindir = "bin"
   s.executables = ["cerberus"]
