@@ -56,7 +56,7 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.add_dependency 'jabber4r', '>= 0.8.0'
   s.add_dependency 'Ruby-IRC', '>= 1.0.3'
 
-  s.files = Dir.glob("{bin,doc,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
+  s.files = Dir.glob("{bin,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
   s.files += %w(LICENSE README CHANGES Rakefile)
 
   s.bindir = "bin"

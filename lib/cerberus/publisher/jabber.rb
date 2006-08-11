@@ -22,7 +22,7 @@ class Cerberus::Publisher::Jabber < Cerberus::Publisher::Base
     rescue
       if(register_if_login_fails)
         if(::Jabber::Session.register(id_resource, password))
-          Jabber.login(id_resource, password, false)
+          Cerberus::Publisher::Jabber.login(id_resource, password, false)
         else
           raise "Failed to register #{id_resource}"
         end
