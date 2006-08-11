@@ -1,5 +1,6 @@
 #Copy this file to config.yml and configure notification services
 publisher:
+  active: mail jabber rss
   mail:
     delivery_method: smtp
     address: smtp.mymail.com
@@ -17,4 +18,6 @@ publisher:
   irc:
     nick: cerb
     server: irc.freenode.net
-#    recipients: "#cerberus"
+    channel: cerberus
+  rss:
+    file: /usr/www/rss.xml

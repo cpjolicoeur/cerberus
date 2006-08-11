@@ -8,11 +8,12 @@ class Cerberus::Publisher::IRC < Cerberus::Publisher::Base
     message = subject + "\n" + '*' * subject.length + "\n" + body
 
 
+    channel = '#' + irc_options[:channel]
     bot = IRC.new(irc_options[:nick] || 'cerberus', irc_options[:server], irc_options[:port] || 6667)
     IRCEvent.add_callback('endofmotd') { |event| 
-      bot.add_channel(irc_options[:recipients]) 
+      bot.add_channel(channel) 
       message.split("\n").each{|line|
-        bot.send_message(irc_options[:recipients], line)
+        bot.send_message(channel, line)
       }
       bot.send_quit
     }

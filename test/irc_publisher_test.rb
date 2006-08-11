@@ -7,7 +7,7 @@ require 'mock/build'
 
 class IRCPublisherTest < Test::Unit::TestCase
   def test_publisher
-    options = Cerberus::Config.new(nil, :publisher => {:irc => {:recipients => '#hello'}}, :application_name => 'IrcApp')
+    options = Cerberus::Config.new(nil, :publisher => {:irc => {:channel => 'hello'}}, :application_name => 'IrcApp')
     build = DummyBuild.new('last message', 'this is output', 1232, 'anatol')
 
     Cerberus::Publisher::IRC.publish(:setup, build, options)

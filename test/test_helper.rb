@@ -53,9 +53,12 @@ end"
     opt = options.merge(
       'scm'=>{'url'=>url}, 
       'publisher'=>{
+        'active' => 'mail',
         'mail'=>{'recipients'=>'somebody@com.com', 'delivery_method' => 'test'}
     })
 
     dump_yml(HOME + "/config/#{app_name}.yml", opt)
   end
 end
+
+require 'cerberus/config'

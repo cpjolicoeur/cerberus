@@ -4,7 +4,6 @@
 + Add flag verbose (from command line)
 + Save svn di not only for latest revision but from latest successfull. For that we need to store version of latest successful rev.
 + Add support of sending to GMail using gmailer.gem
-+ Add RSS publisher, that will create RSS file
 
 + Use webgen for generating site
 + Generate HTML file from Readme + FAQ and deploy to http://cerberus.rubyforge.org

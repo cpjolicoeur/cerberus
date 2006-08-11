@@ -8,6 +8,7 @@ require 'cerberus/config'
 require 'cerberus/publisher/mail'
 require 'cerberus/publisher/jabber'
 require 'cerberus/publisher/irc'
+require 'cerberus/publisher/rss'
 require 'cerberus/scm/svn'
 
 module Cerberus
@@ -16,9 +17,10 @@ module Cerberus
   }
 
   PUBLISHER_TYPES = {
-    'mail' => Cerberus::Publisher::Mail,
-    'jabber' => Cerberus::Publisher::Jabber,
-    'irc' => Cerberus::Publisher::IRC,
+    :mail => Cerberus::Publisher::Mail,
+    :jabber => Cerberus::Publisher::Jabber,
+    :irc => Cerberus::Publisher::IRC,
+    :rss => Cerberus::Publisher::RSS
   }
 
   class AddCommand
@@ -109,12 +111,15 @@ module Cerberus
         end
 
         if [:failure, :broken, :revival, :setup].include?(state)
-          PUBLISHER_TYPES.each_pair do |key, clazz|
-            unless @config[:publisher, key, :recipients].blank?
-              silence_stream(STDOUT) { #some of publishers like IRC very noisy
+          @config[:publisher, :active].split.each do |pub|
+            silence_stream(STDOUT) { #some of publishers like IRC very noisy
+              clazz = PUBLISHER_TYPES[pub.to_sym]
+              if clazz
                 clazz.publish(state, self, @config)
-              }
-            end
+              else
+                raise "There is no such publisher: #{pub}"
+              end
+            }
           end
         end
       rescue Exception => e

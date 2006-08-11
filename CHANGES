@@ -1,10 +1,20 @@
 = Cerberus Changelog
 
 == Version 0.2.0
+Config file was changed since 0.1.1 and you need regenerate config file.
+Changing required by advanced publishing mechanism. Now it is possible to add several published to one project.
+
+Also appeared 2 publishers.
+  Jabber Publisher - all notification sended via Jabber server
+  RSS Publisher - result of build Cerberus writes to file in RSS format.
+    This feature would be useful for big open project when many users would like to see results of test-run.
+    If you publish results as RSS - then any user could subscribe to channel.
+
 
 * Configuration structure has been greatly changed since 0.1.1 version
 * Added automatic subversion cleanup to avoid repository locking after Cedrberus process termination
 * Added Jabber publisher
+* Added RSS publisher
 
 == Version 0.1.1
 Minor improvements
