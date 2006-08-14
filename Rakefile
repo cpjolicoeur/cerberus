@@ -14,8 +14,8 @@ PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 
 RELEASE_NAME  = "REL #{PKG_VERSION}"
 
-RUBY_FORGE_PROJECT = "cerberus"
-RUBY_FORGE_USER    = "anatol"
+RUBYFORGE_PROJECT = "cerberus"
+RUBYFORGE_USER    = "anatol"
 
 task :default => [:test, :clean]
 
@@ -75,7 +75,7 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.author = "Anatol Pomozov"
   s.email = "anatol.pomozov@gmail.com"
   s.homepage = "http://rubyforge.org/projects/cerberus"
-  s.rubyforge_project = RUBY_FORGE_PROJECT
+  s.rubyforge_project = RUBYFORGE_PROJECT
 end
 
 
@@ -101,7 +101,7 @@ end
 task :reinstall => [:uninstall, :install]
 
 task :site_webgen do
-  sh %{pushd doc/site; webgen; scp -r output/* #{RUBY_FORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBY_FORGE_PROJECT}/; popd }
+  sh %{pushd doc/site; webgen; scp -r output/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/; popd }
 end
 
 begin
@@ -115,12 +115,12 @@ rescue Object
 end
 
 task :site_coverage => [:rcov] do
-  sh %{ scp -r test/coverage/* #{RUBY_FORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBY_FORGE_PROJECT}/coverage/ }
+  sh %{ scp -r test/coverage/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/coverage/ }
 end
 
 task :release_files => [:clean, :package] do
   require 'meta_project'
-  project = MetaProject::Project::XForge::RubyForge.new(RUBY_FORGE_PROJECT)
+  project = MetaProject::Project::XForge::RubyForge.new(RUBYFORGE_PROJECT)
 
   release_files = FileList[
     "pkg/#{PKG_FILE_NAME}.gem",
@@ -129,7 +129,7 @@ task :release_files => [:clean, :package] do
   ]
 
   Rake::XForge::Release.new(project) do |release|
-    release.user_name = RUBY_FORGE_USER
+    release.user_name = RUBYFORGE_USER
     release.password = ENV['RUBYFORGE_PASSWORD']
     release.files = release_files.to_a
     release.package_name    = PKG_NAME
@@ -141,9 +141,9 @@ end
 task :publish_news do
   require 'meta_project'
 
-  project = MetaProject::Project::XForge::RubyForge.new(RUBY_FORGE_PROJECT)
+  project = MetaProject::Project::XForge::RubyForge.new(RUBYFORGE_PROJECT)
   Rake::XForge::NewsPublisher.new(project) do |publisher|
-    publisher.user_name = RUBY_FORGE_USER
+    publisher.user_name = RUBYFORGE_USER
     publisher.password = ENV['RUBYFORGE_PASSWORD']
     publisher.subject = "[ANN] Cerberus #{PKG_VERSION} Released"
     publisher.details = IO.read(File.dirname(__FILE__) + '/README')
