@@ -31,7 +31,7 @@ To use Cerberus it is very easy. First install it. Easiest way to do it through 
 
 'gem install cerberus'
 
-or get Cerberus distribution package right from download page http://rubyforge.org/frs/?group_id=1794
+or get Cerberus distribution package right from download page http://rubyforge.org/frs/?group_id=1794&release_id=6442
 
 then you need to add project that will be watched by Cerberus. Do it by
 

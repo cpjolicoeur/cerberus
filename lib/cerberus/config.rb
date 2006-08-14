@@ -2,16 +2,17 @@ require 'rubygems'
 require 'active_support'
 
 require 'cerberus/constants'
+require 'cerberus/utils'
 
 module Cerberus
   class Config
-    def initialize(app_name, cli_options = {})
+    def initialize(app_name = nil, cli_options = {})
       @config = HashWithIndifferentAccess.new
       if app_name
-        @config.merge!(YAML.load(IO.read(CONFIG_FILE))) if test(?f, CONFIG_FILE)
-        @config.merge!(YAML.load(IO.read(HOME + "/config/#{app_name}.yml")))
+        merge!(YAML.load(IO.read(CONFIG_FILE))) if test(?f, CONFIG_FILE)
+        merge!(YAML.load(IO.read(HOME + "/config/#{app_name}.yml")))
       end
-      @config.merge!(cli_options)
+      merge!(cli_options)
     end
 
     def [](*path)
@@ -21,6 +22,14 @@ module Cerberus
         return if c.nil?
       }
       c
+    end
+
+    def merge!(hash)          
+      @config.deep_merge!(hash)
+    end
+
+    def inspect
+      @config.inspect
     end
 
     private

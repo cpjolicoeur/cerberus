@@ -3,7 +3,10 @@ require 'cerberus/publisher/base'
 
 class Cerberus::Publisher::Mail < Cerberus::Publisher::Base
   def self.publish(state, build, options)
-    configure(options[:publisher, :mail].dup)
+    mail_opts = options[:publisher, :mail].dup
+    raise "There is no recipients provided for mail publisher" unless mail_opts[:recipients]
+
+    configure(mail_opts)
     ActionMailerPublisher.deliver_message(state, build, options)
   end
 

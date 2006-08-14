@@ -50,14 +50,18 @@ end"
   end
 
   def add_application(app_name, url, options = {})
-    opt = options.merge(
-      'scm'=>{'url'=>url}, 
-      'publisher'=>{
-        'active' => 'mail',
-        'mail'=>{'recipients'=>'somebody@com.com', 'delivery_method' => 'test'}
-    })
+    opt = {'scm'=>{'url'=>url}, 
+    'publisher'=>{
+      'mail'=>{'recipients'=>'somebody@com.com', 'delivery_method' => 'test'}
+    }}
+
+    opt.deep_merge!(options)
 
     dump_yml(HOME + "/config/#{app_name}.yml", opt)
+  end
+
+  def add_config(options)
+    dump_yml(HOME + "/config.yml", options)
   end
 end
 

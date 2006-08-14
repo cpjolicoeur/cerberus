@@ -23,4 +23,16 @@ class ConfigTest < Test::Unit::TestCase
     assert_equal 'app', cfg['g']
     assert_equal 'conf', cfg['m']
   end
+
+  def test_deep_merge
+    cfg = Cerberus::Config.new
+    cfg.merge!(:hello => {'msg' => {:a202 => 'bye'}})
+    cfg.merge!(:hello => {:msg => {:a203 => 'hello'}})
+    cfg.merge!(:hello => {:msg => {:a204 => 'another'}})
+    cfg.merge!(:hello => {:bread => {:a204 => 'bread'}})
+
+    assert_equal 'bye', cfg[:hello, :msg, :a202]
+    assert_equal 'hello', cfg[:hello, :msg, :a203]
+    assert_equal 'bread', cfg[:hello, :bread, :a204]
+  end
 end

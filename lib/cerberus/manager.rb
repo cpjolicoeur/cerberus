@@ -111,14 +111,13 @@ module Cerberus
         end
 
         if [:failure, :broken, :revival, :setup].include?(state)
-          @config[:publisher, :active].split.each do |pub|
+          active_publishers = @config[:publisher, :active] || 'mail'
+          active_publishers.split(/\W+/).each do |pub|
+            raise "Publisher have no configuration: #{pub}" unless @config[:publisher, pub]
+            clazz = PUBLISHER_TYPES[pub.to_sym]
+            raise "There is no such publisher: #{pub}" unless clazz
             silence_stream(STDOUT) { #some of publishers like IRC very noisy
-              clazz = PUBLISHER_TYPES[pub.to_sym]
-              if clazz
-                clazz.publish(state, self, @config)
-              else
-                raise "There is no such publisher: #{pub}"
-              end
+              clazz.publish(state, self, @config)
             }
           end
         end

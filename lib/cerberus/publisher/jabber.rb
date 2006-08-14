@@ -5,6 +5,8 @@ class Cerberus::Publisher::Jabber < Cerberus::Publisher::Base
   def self.publish(state, build, options)
     begin
       jabber_options = options[:publisher, :jabber]
+      raise "There is no recipients provided for Jabber publisher" unless jabber_options[:recipients]
+
       subject,body = Cerberus::Publisher::Base.formatted_message(state, build, options)
 
       session = login(jabber_options[:jid], jabber_options[:password])

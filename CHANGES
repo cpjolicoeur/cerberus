@@ -1,5 +1,11 @@
 = Cerberus Changelog
 
+== Version 0.2.1
+Minor fix release
+
+* publisher -> active flag now not mandatory. Use 'mail' publisher as active if not set any
+
+
 == Version 0.2.0
 Config file was changed since 0.1.1 and you need regenerate config files.
 Or change it by hands: see doc/OPTIONS file to list of all avalable options.

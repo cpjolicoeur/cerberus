@@ -88,13 +88,41 @@ class FunctionalTest < Test::Unit::TestCase
   end
 
   def test_have_no_awkward_header
-    add_application('myapp', SVN_URL)
+    add_application('myapp', SVN_URL, 'publisher' => {'active' => 'mail'})
 
     build = Cerberus::BuildCommand.new('myapp')
     build.run
 
     assert build.scm.last_commit_message !~ /-rHEAD -v/
     assert_equal 0, build.scm.last_commit_message.index('-' * 72)
+  end
+
+  def test_multiply_publishers_without_configuration
+    add_application('myapp', SVN_URL, 'publisher' => {'active' => 'mail ,  jabber , irc,    dddd'})
+
+    build = Cerberus::BuildCommand.new('myapp')
+
+    begin
+      build.run
+    rescue RuntimeError => e
+      assert_equal 'Publisher have no configuration: jabber', e.message
+    else
+      assert false
+    end
+  end
+
+  def test_application_and_config_together
+    add_config('publisher' => {'active' => 'jabber'})
+    add_application('myapp', SVN_URL)
+    build = Cerberus::BuildCommand.new('myapp')
+
+    begin
+      build.run
+    rescue RuntimeError => e
+      assert_equal 'Publisher have no configuration: jabber', e.message
+    else
+      assert false
+    end
   end
 
   def test_batch_running

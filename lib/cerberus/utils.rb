@@ -37,3 +37,15 @@ def `(cmd)
     raise "Unable to execute: #{cmd}"
   end
 end
+
+class Hash
+  def deep_merge!(second)
+    second.each_pair do |k,v|
+      if self[k].is_a?(Hash) and second[k].is_a?(Hash)
+        self[k].deep_merge!(second[k])
+      else
+        self[k] = second[k]
+      end
+    end
+  end
+end
