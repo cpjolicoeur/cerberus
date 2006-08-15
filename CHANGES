@@ -1,10 +1,14 @@
 = Cerberus Changelog
 
+== Version 0.2.2
+Minor fix release
+
+* Make rake executable recongnition process less verbose
+
 == Version 0.2.1
 Minor fix release
 
 * publisher -> active flag now not mandatory. Use 'mail' publisher as active if not set any
-
 
 == Version 0.2.0
 Config file was changed since 0.1.1 and you need regenerate config files.

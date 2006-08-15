@@ -153,13 +153,17 @@ module Cerberus
           ext << '.bat' << '.cmd'
         end
 
-        ext.each{|e|
-          begin
-            out = `#{@config[:bin_path]}rake#{e} --version`
-            return "rake#{e}" if out =~ /rake/
-          rescue
+        silence_stream(STDERR) {
+          ext.each do |e|
+            begin
+              out = `#{@config[:bin_path]}rake#{e} --version`
+              return "rake#{e}" if out =~ /rake/
+            rescue
+            end
           end
         }
+
+        raise "Rake builder did not find. Make sure that such script exists and have executable permissions."
       end
   end
 

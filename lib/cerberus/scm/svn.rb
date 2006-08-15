@@ -8,7 +8,7 @@ class Cerberus::SCM::SVN
 
   def update!
     if test(?d, @path + '/.svn')
-      execute("svn cleanup") #TODO check first that it was locked
+      execute("svn cleanup") #check first that it was locked
       @status = execute("svn update")
     else
       FileUtils.mkpath(@path) unless test(?d,@path)
