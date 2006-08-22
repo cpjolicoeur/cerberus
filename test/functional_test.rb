@@ -49,6 +49,11 @@ class FunctionalTest < Test::Unit::TestCase
     build = Cerberus::BuildCommand.new('myapp')
     build.run
     assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
+    output = ActionMailer::Base.deliveries[0].body
+
+    #Check outpus that run needed tasks
+    assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
+    assert output !~ /Task 'custom1' has been invoked/
 
     status_file = HOME + '/work/myapp/status.log'
     assert File.exists?(status_file)
@@ -139,5 +144,15 @@ class FunctionalTest < Test::Unit::TestCase
       assert File.exists?(status_file)
       assert_equal 'succesful', IO.read(status_file)
     end
+  end
+
+  def test_custom_task_for_rake
+    add_application('rake_cust', SVN_URL, 'builder' => {'rake' => {'task' => 'custom1 custom2'}})
+    build = Cerberus::BuildAllCommand.new
+    build.run
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    output = ActionMailer::Base.deliveries[0].body
+    assert_match /Task 'custom1' has been invoked/, output
+    assert_match /Task 'custom2' has been invoked/, output
   end
 end

@@ -27,7 +27,7 @@ publisher:
 scm:
   type: svn                                     A
   url:                                          A
-builder
+builder:
   type: rake #supported: maven2                 A
   rake:                                         C
     task: test                                  CA

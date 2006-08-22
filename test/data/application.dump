@@ -78,3 +78,50 @@ class ATest < Test::Unit::TestCase
   end
 end
 
+Revision-number: 2
+Prop-content-length: 127
+Content-length: 127
+
+K 7
+svn:log
+V 24
+Added custom rake tasks
+
+K 10
+svn:author
+V 8
+Apomozov
+K 8
+svn:date
+V 27
+2006-08-21T12:15:18.697839Z
+PROPS-END
+
+Node-path: Rakefile
+Node-kind: file
+Node-action: change
+Text-content-length: 354
+Text-content-md5: f2c9b7345783c55045e523e052ddaf9e
+Content-length: 354
+
+require 'rake'
+require 'rake/testtask'
+
+task :default => :test
+
+desc "Run the unit tests in test/unit"
+Rake::TestTask.new(:test) do |t|
+  t.libs << "test"
+  t.pattern = 'test/*_test.rb'
+  t.verbose = true
+end
+
+task :custom1 do
+  puts "Task 'custom1' has been invoked"
+end
+
+task :custom2 do
+  puts "Task 'custom2' has been invoked"
+end
+
+
