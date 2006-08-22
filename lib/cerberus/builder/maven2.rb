@@ -8,7 +8,8 @@ class Cerberus::Builder::Maven2
   def run
     Dir.chdir @config[:application_root]
     cmd = @config[:builder, :maven2, :cmd] || 'mvn'
-    @output = `#{@config[:bin_path]}#{cmd} #{@config[:builder, :maven2, :task]} 2>&1`
+    task = @config[:builder, :maven2, :task] || 'test'
+    @output = `#{@config[:bin_path]}#{cmd} #{task} 2>&1`
     successful?
   end
 
