@@ -1,9 +1,9 @@
 require 'cerberus/publisher/base'
 
 class Cerberus::Publisher::RSS < Cerberus::Publisher::Base
-  def self.publish(state, build, options)
+  def self.publish(state, manager, options)
     config = options[:publisher, :rss]
-    subject,body = Cerberus::Publisher::Base.formatted_message(state, build, options)
+    subject,body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
 
     pub_date = Time.now.iso8601
     result = <<-END

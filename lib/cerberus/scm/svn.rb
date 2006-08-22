@@ -1,8 +1,8 @@
 class Cerberus::SCM::SVN
-  def initialize(path, options = {})
+  def initialize(path, config = {})
     raise "Path can't be nil" unless path
 
-    @path, @options = path.strip, options
+    @path, @config = path.strip, config
     @encoded_path = (@path.include?(' ') ? "\"#{@path}\"" : @path)
   end
 
@@ -12,7 +12,7 @@ class Cerberus::SCM::SVN
       @status = execute("svn update")
     else
       FileUtils.mkpath(@path) unless test(?d,@path)
-      @status = execute("svn checkout", nil, @options[:scm, :url])
+      @status = execute("svn checkout", nil, @config[:scm, :url])
     end
   end
 
@@ -48,6 +48,6 @@ class Cerberus::SCM::SVN
     end
     
     def execute(command, parameters = nil, pre_parameters = nil)
-      `#{@options[:bin_path]}#{command} #{pre_parameters} #{@encoded_path} #{parameters}`
+      `#{@config[:bin_path]}#{command} #{pre_parameters} #{@encoded_path} #{parameters}`
     end
 end

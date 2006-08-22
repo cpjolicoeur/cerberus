@@ -13,7 +13,7 @@ require 'cerberus/scm/svn'
 
 module Cerberus
   SCM_TYPES = {
-    'svn' => Cerberus::SCM::SVN
+    :svn => Cerberus::SCM::SVN
   }
 
   PUBLISHER_TYPES = {
@@ -21,6 +21,11 @@ module Cerberus
     :jabber => Cerberus::Publisher::Jabber,
     :irc => Cerberus::Publisher::IRC,
     :rss => Cerberus::Publisher::RSS
+  }
+
+  BUILDER_TYPES = {
+    :maven2 => Cerberus::Builder::Maven2,
+    :rake => Cerberus::Builder::Rake
   }
 
   class AddCommand
@@ -32,10 +37,9 @@ module Cerberus
     end
 
     def run
-      scm_type = @config[:scm] || 'svn'
-      say "SCM #{scm_type} not supported" unless SCM_TYPES[scm_type]
-
-      scm = SCM_TYPES[scm_type].new(@path, @config)
+      scm_type = @config[:scm, :type] || 'svn'
+      say "SCM #{scm_type} not supported" unless SCM_TYPES[scm_type.to_sym]
+      scm = SCM_TYPES[scm_type.to_sym].new(@path, @config)
       say "Can't find any #{scm_type} application under #{@path}" unless scm.url
 
       application_name = @config[:application_name] || extract_project_name(@path)
@@ -68,7 +72,7 @@ module Cerberus
 
   class BuildCommand
     include Cerberus::Utils
-    attr_reader :output, :success, :scm, :status
+    attr_reader :builder, :success, :scm, :status
 
     def initialize(application_name, cli_options = {})
       unless File.exists?("#{HOME}/config/#{application_name}.yml")
@@ -82,7 +86,11 @@ module Cerberus
 
       @status = Status.new("#{app_root}/status.log")
 
-      @scm = SCM_TYPES[@config[:scm, :type] || 'svn'].new(@config[:application_root], @config)
+      scm_type = @config[:scm, :type] || 'svn'
+      @scm = SCM_TYPES[scm_type.to_sym].new(@config[:application_root], @config)
+
+      builder_type = @config[:builder, :type] || 'rake'
+      @builder = BUILDER_TYPES[builder_type.to_sym].new(@config)
     end
  
     def run
@@ -92,7 +100,7 @@ module Cerberus
 
         state = 
         if @scm.has_changes? or not previous_status
-          if status = make
+          if status = @builder.run
             @status.keep(:succesful)
             case previous_status
             when :failed
@@ -134,37 +142,6 @@ module Cerberus
         end
       end
     end
- 
-    private
-      def make
-        Dir.chdir @config[:application_root]
-        @output = `#{@config[:bin_path]}#{choose_rake_exec()} #{@config[:builder, :rake, :task]} 2>&1`
-        make_successful?
-      end
-      
-      def make_successful?
-         $?.exitstatus == 0 and not @output.include?('rake aborted!')
-      end
-
-      def choose_rake_exec
-        ext = ['']
-
-        if os() == :windows 
-          ext << '.bat' << '.cmd'
-        end
-
-        silence_stream(STDERR) {
-          ext.each do |e|
-            begin
-              out = `#{@config[:bin_path]}rake#{e} --version`
-              return "rake#{e}" if out =~ /rake/
-            rescue
-            end
-          end
-        }
-
-        raise "Rake builder did not find. Make sure that such script exists and have executable permissions."
-      end
   end
 
   class BuildAllCommand

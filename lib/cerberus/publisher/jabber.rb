@@ -2,12 +2,12 @@ require 'jabber4r/jabber4r'
 require 'cerberus/publisher/base'
 
 class Cerberus::Publisher::Jabber < Cerberus::Publisher::Base
-  def self.publish(state, build, options)
+  def self.publish(state, manager, options)
     begin
       jabber_options = options[:publisher, :jabber]
       raise "There is no recipients provided for Jabber publisher" unless jabber_options[:recipients]
 
-      subject,body = Cerberus::Publisher::Base.formatted_message(state, build, options)
+      subject,body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
 
       session = login(jabber_options[:jid], jabber_options[:password])
       jabber_options[:recipients].split(',').each do |address|

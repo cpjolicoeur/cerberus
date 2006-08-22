@@ -2,12 +2,12 @@ require 'action_mailer'
 require 'cerberus/publisher/base'
 
 class Cerberus::Publisher::Mail < Cerberus::Publisher::Base
-  def self.publish(state, build, options)
+  def self.publish(state, manager, options)
     mail_opts = options[:publisher, :mail].dup
     raise "There is no recipients provided for mail publisher" unless mail_opts[:recipients]
 
     configure(mail_opts)
-    ActionMailerPublisher.deliver_message(state, build, options)
+    ActionMailerPublisher.deliver_message(state, manager, options)
   end
 
   private
@@ -21,8 +21,8 @@ class Cerberus::Publisher::Mail < Cerberus::Publisher::Base
   end
 
   class ActionMailerPublisher < ActionMailer::Base
-    def message(state, build, options)
-      @subject, @body = Cerberus::Publisher::Base.formatted_message(state, build, options)
+    def message(state, manager, options)
+      @subject, @body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
       @recipients, @sent_on = options[:publisher, :mail, :recipients], Time.now
       @from = options[:publisher, :mail, :sender] || "'Cerberus' <cerberus@example.com>"
 #      raise "Please specify recipient addresses for application '#{options[:application_name]}'" unless options[:recipients]
