@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 require 'cerberus/publisher/mail'
-require 'mock/build'
+require 'mock/manager'
 
 class MailPublisherTest < Test::Unit::TestCase
   def setup
@@ -12,7 +12,7 @@ class MailPublisherTest < Test::Unit::TestCase
     options = Cerberus::Config.new(nil, :publisher => {
        :mail => {:recipients => 'anatol.pomozov@hello.com', :sender => 'haha', :delivery_method => 'test'}}, 
        :application_name => 'MyApp')
-    build = DummyBuild.new('last message', 'this is output', 1232, 'anatol')
+    build = DummyManager.new('last message', 'this is output', 1232, 'anatol')
 
     Cerberus::Publisher::Mail.publish(:setup, build, options)
 

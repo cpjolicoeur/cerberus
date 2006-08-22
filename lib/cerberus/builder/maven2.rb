@@ -13,6 +13,6 @@ class Cerberus::Builder::Maven2
   end
 
   def successful?
-    $?.exitstatus == 0 and not @output.include?('r[ERROR] BUILD FAILURE')
+    $?.exitstatus == 0 and not @output.include?('[ERROR] BUILD FAILURE')
   end
 end
