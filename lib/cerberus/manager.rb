@@ -33,16 +33,16 @@ module Cerberus
     include Cerberus::Utils
 
     def initialize(path, cli_options = {})
-      @path, @config = path, Config.new(nil, cli_options)
+      @path, @cli_options = path, HashWithIndifferentAccess.new(cli_options)
     end
 
     def run
-      scm_type = @config[:scm, :type] || 'svn'
+      scm_type = @cli_options[:scm] || 'svn'
       say "SCM #{scm_type} not supported" unless SCM_TYPES[scm_type.to_sym]
-      scm = SCM_TYPES[scm_type.to_sym].new(@path, @config)
+      scm = SCM_TYPES[scm_type.to_sym].new(@path, @cli_options)
       say "Can't find any #{scm_type} application under #{@path}" unless scm.url
 
-      application_name = @config[:application_name] || extract_project_name(@path)
+      application_name = @cli_options[:application_name] || extract_project_name(@path)
 
       create_example_config
       
@@ -52,10 +52,11 @@ module Cerberus
       app_config = { 'scm' => {
           'url' => scm.url,
           'type' =>  scm_type },
-          'publisher' => {'mail' => {'recipients' => @config[:recipients]}}
+          'publisher' => {'mail' => {'recipients' => @cli_options[:recipients]}},
+          'builder' => {'type' => @cli_options[:builder]}
       }
       dump_yml(config_name, app_config)
-      puts "Application '#{application_name}' was successfully added to Cerberus" unless @config[:quiet]
+      puts "Application '#{application_name}' was successfully added to Cerberus" unless @cli_options[:quiet]
     end
 
     private

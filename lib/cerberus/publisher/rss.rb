@@ -21,6 +21,6 @@ class Cerberus::Publisher::RSS < Cerberus::Publisher::Base
 </rss>
     END
 
-    File.open(config[:file], 'w'){|f| f.write(result)}
+    IO.write(config[:file], result)
   end
 end

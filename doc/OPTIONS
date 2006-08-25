@@ -38,8 +38,10 @@ L - Only for command line interface
 C - Cerberus config
 A - application level config
 
+
 L
 recipients (add)
 verbose or quite ??(add, build)
 application_name (add)
 scm (add, default svn)
+builder

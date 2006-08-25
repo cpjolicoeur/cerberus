@@ -6,6 +6,7 @@ Minor fix release
 * Make rake executable recongnition process less verbose
 * Refactored builder mecahnism in Cerberus. Now adding new Builder possible in much more easiest way
 * Added Maven2 builder
+* Add possibility to specify Builder type on application creation by BUILDER=xxx option
 
 == Version 0.2.1
 Minor fix release

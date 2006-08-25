@@ -25,7 +25,7 @@ class IntegrationTest < Test::Unit::TestCase
   end
 
   def test_add_project_with_parameters
-    output = run_cerb("  add   #{SVN_URL}  APPLICATION_NAME=hello_world RECIPIENTS=aa@gmail.com")
+    output = run_cerb("  add   #{SVN_URL}  APPLICATION_NAME=hello_world  RECIPIENTS=aa@gmail.com   BUILDER=maven2")
     assert_match /was successfully added/, output
 
     assert File.exists?(HOME + '/config/hello_world.yml')
@@ -33,6 +33,7 @@ class IntegrationTest < Test::Unit::TestCase
 
     assert_equal SVN_URL, cfg['scm']['url']
     assert_equal 'aa@gmail.com', cfg['publisher']['mail']['recipients']
+    assert_equal 'maven2', cfg['builder']['type']
   end
 
   def test_run_project

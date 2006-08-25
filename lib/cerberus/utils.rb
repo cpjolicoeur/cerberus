@@ -49,3 +49,9 @@ class Hash
     end
   end
 end
+
+class IO
+  def self.write(filename, str)
+    File.open(filename, 'w'){|f| f.write str}
+  end
+end
