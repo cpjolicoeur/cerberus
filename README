@@ -17,14 +17,14 @@ He guarded the gate to Hades (the Greek underworld) and ensured that the dead co
 
 So Cerberus will guard your tests and not allow your project to go to the world of dead. 
 
-There is several solutions already present, why do you need to use Cerberus?
-Main advantages of Cerberus over other solutions:
- = Cerberus could be installed on any machine not only where SVN repository located.
- = Cerberus works not only for Rails projects, but for any other Ruby (or better to say for projects that use Rake)
- = Cerberus multiplatform solution: it runs excellent both on *nix and Windows.
- = Cerberus distributed via RubyGems, so it is very easy to install and very easy to update to the latest available versin
- = Cerberus very easy start to use. Just type 'cerberus add PROJECT_URL|PROJECT_DIR'
- = Cerberus is lightweigt solution: mots of the time ruby process even not run - Rake runs only in case if changes in project found
+There are several CI solutions already present, why do you need to use Cerberus?
+Main advantages of Cerberus over other solutions are:
+ 1) Cerberus could be installed on any machine not only where SVN repository located.
+ 2) Cerberus works not only for Rails projects, but for any other Ruby projects as well as for other platforms (Maven2 for Java)
+ 3) Cerberus multiplatform solution: it runs excellent both on *nix and Windows.
+ 4) Cerberus distributed via RubyGems, so it is very easy to install and very easy to update to the latest stable version
+ 5) Cerberus very easy to start using. Just type 'cerberus add PROJECT_URL|PROJECT_DIR'
+ 6) Cerberus is lightweight solution: most of the time ruby process even not runs - Rake runs only in case if changes in project sources are found.
 
  
 To use Cerberus it is very easy. First install it. Easiest way to do it through RubyGems package manager.
