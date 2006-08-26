@@ -49,11 +49,13 @@ class FunctionalTest < Test::Unit::TestCase
     build = Cerberus::BuildCommand.new('myapp')
     build.run
     assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
-    output = ActionMailer::Base.deliveries[0].body
+    mail = ActionMailer::Base.deliveries[0]
+    output = mail.body
 
     #Check outpus that run needed tasks
     assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
     assert output !~ /Task 'custom1' has been invoked/
+    assert_equal '[myapp] Cerberus set up for project (#2)', mail.subject
 
     status_file = HOME + '/work/myapp/status.log'
     assert File.exists?(status_file)
