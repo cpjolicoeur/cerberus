@@ -1,17 +1,21 @@
+require 'cerberus/utils'
+
 class Cerberus::SCM::SVN
+  include Cerberus::Utils
+
   def initialize(path, config = {})
     raise "Path can't be nil" unless path
 
     @path, @config = path.strip, config
     @encoded_path = (@path.include?(' ') ? "\"#{@path}\"" : @path)
-
-    if test(?d, @path + '/.svn') #check first that it was not locked 
-      execute("cleanup") if locked?
-      FileUtils.rm_rf @path if locked? #In case if we could not unlock from command line - remove this directory at all
-    end
   end
 
   def update!
+    if test(?d, @path + '/.svn') #check first that it was not locked 
+      execute("cleanup") if locked?
+      say "Could not unlock svn directory #{@encoded_path}. Please do it manually." if locked? #In case if we could not unlock from command line - ask user to do it
+    end
+
     if test(?d, @path + '/.svn')
       @status = execute("update")
     else
@@ -52,7 +56,13 @@ class Cerberus::SCM::SVN
   end
 
   def info
-    @info ||= YAML.load(execute("info"))
+    output = execute("info")
+    @info ||= YAML.load(output)
+
+    unless @info === Hash or @info['Repository Root'] #.size > 8
+      say "Could not parse svn output. Seems source directory #{@encoded_path} is corrupted.\n#{output}"
+    end
+    @info
   end
     
   def execute(command, parameters = nil, pre_parameters = nil)

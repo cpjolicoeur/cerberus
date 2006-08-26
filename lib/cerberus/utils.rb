@@ -2,8 +2,8 @@ require 'yaml'
 
 module Cerberus
   module Utils
-    def say(info)
-      puts info
+    def say(msg)
+      STDERR << msg
       exit 1
     end
 
