@@ -1,0 +1,44 @@
+---
+title: FAQ
+inMenu: true
+ordering: 2
+---
+h2. FAQ
+
+h3. How to change task for Rake
+
+__Q: In my project we need to run Rails migrations before tests. But by default Cerberus runs :default task.
+How could I run migations?__
+
+It is easy to do - just set Rake tasks option in config
+<pre>
+builder:
+  rake:
+    task: migrate test
+</pre>
+
+And it would run migrations and then tests. You could set __task__ option to any other task set.
+
+
+h3. How to schedule Cerberus build on nnCron
+
+"nnCron":http://www.nncron.ru/download/nncron191.exe is scheduling tool for Windows. It is a good replacement for Unix Cron
+on Windows platform. nnCron has simple user interface and it is easy to add new scheduled task.
+
+There is only issue - nnCron do not pass __HOME__ environment variable to process so you need to add it to nncron.tab file. 
+You could add __CERBERUS_HOME__ envronment variable or __HOME__ (in last case __CERBERUS_HOME__ would be calculated as 
+HOME/.cerberus)
+
+Mine nncron.tab file looks like below
+
+<pre>
+SET CERBERUS_HOME="C:\Documents and Settings\anatol\.cerberus"
+
+#( [cerberus]watsjit
+AsLoggedUser
+Time: */15 * * * * *
+Action:
+SWHide   NormalPriority
+START-APPW: c:\progra~1\ruby\bin\cerberus.CMD buildall
+)#
+</pre>

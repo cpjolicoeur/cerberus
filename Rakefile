@@ -100,10 +100,6 @@ end
 
 task :reinstall => [:uninstall, :install]
 
-task :site_webgen do
-  sh %{pushd doc/site; webgen; scp -r output/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/; popd }
-end
-
 begin
   require 'rcov/rcovtask'
   Rcov::RcovTask.new do |t|
@@ -148,4 +144,8 @@ task :publish_news do
     publisher.subject = "[ANN] Cerberus #{PKG_VERSION} Released"
     publisher.details = IO.read(File.dirname(__FILE__) + '/README')
   end
+end
+
+task :publish_site do
+  sh %{pushd doc/site; webgen; scp -r output/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/; popd }
 end

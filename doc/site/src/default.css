@@ -1,0 +1,155 @@
+a {
+  color: #369;
+}
+a:visited {
+  color: #69c;
+}
+a:hover, a:visited:hover {
+  color: #f93;
+  text-decoration: none;
+}
+body {
+  background-color: #ccc;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 80%;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+h1 {
+  font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+  font-size: 250%;
+  font-weight: normal;
+}
+h3 {
+  color: #999;
+  font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+  font-size: 180%;
+  font-weight: normal;
+  margin-top: 1.5em;
+  margin-bottom: .5em;
+}
+.hidden {
+  display: none;
+}
+.clear {
+  clear: both;
+}
+#page {
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  text-align: left;
+}
+#header {
+  background-color: #69c;
+  border-bottom: 4px solid #369;
+  color: white;
+  font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+  padding: 0;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+#site-title {
+  color: white;
+  font-size: 325%;
+}
+#site-title a, #site-title a:visited {
+  color: white;
+  text-decoration: none;
+}
+#site-title a:hover, #site-title a:hover {
+  color: white;
+  text-decoration: underline;
+}
+#site-subtitle {
+  font-style: italic;
+  letter-spacing: 2px;
+  /*text-transform: lowercase;*/
+}
+#main {
+  background-color: white;
+  border-bottom: 4px solid #9cf;
+  float: left;
+  width: 100%;
+}
+#content-wrapper {
+  float: left;
+  width: 575px;
+}
+#content {
+  padding: 25px;
+  border-right: 1px dotted #a3a39c;
+  text-align: justify;
+}
+#content h1 {
+  margin-top: 0;
+}
+#content h3 a {
+  border-bottom: 1px dotted #a3a39c;
+  display: block;
+  padding-bottom: 2px;
+  text-decoration: none;
+}
+#content p {
+  line-height: 160%;
+}
+#content .info {
+  color: #b0af99;
+  font-size: 80%;
+  margin-top: 1.5em;
+}
+#content .entry .info {
+  margin-top: 1em;
+}
+#content .first.entry {
+  background-color: #f0f0f0;
+  margin: -25px;
+  margin-bottom: 0;
+  padding: 25px;
+}
+#content .first.entry h3 {
+  margin-top: 0.25em;
+}
+#sidebar-wrapper {
+  float: right;
+  width: 225px;
+}
+#sidebar {
+  font-size: 90%;
+  padding: 15px;
+  padding-top: 0px;
+}
+#sidebar h3 {
+  font-size: 160%;
+}
+#sidebar p {
+  line-height: 140%;
+}
+#sidebar ul {
+  margin-left: 1.5em;
+  padding: 0;
+}
+#sidebar li {
+  margin-bottom: .25em;
+}
+#footer {
+  color: #999;
+  float: left;
+  font-size: 90%;
+  padding-top: 1px;
+  padding-bottom: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+pre {
+    background-color: #eee;
+    color: #333;
+    padding: 10px 10px 10px 10px;
+    border: 1px solid #ccc;
+    margin: 4px 0px;
+    font-size: 1.1em;
+    overflow: auto;
+}

@@ -1,0 +1,58 @@
+---
+title: Config Option Index
+inMenu: true
+ordering: 4
+---
+h2. Options
+
+h4. Options available from config files
+
+<pre>
+bin_path:
+publisher:
+  active:
+  mail:
+    delivery_method:
+    address:
+    port:
+    domain:                                     
+    user_name:
+    password:
+    authentication:
+    sender:
+    recipients:
+  jabber:
+    jid:                                        
+    port:                                       
+    password:                                   
+    digest:                                     
+    recipients:                                 
+  irc:
+    nick:                                       
+    server:                                     
+    port:                                       
+    channel:                                    
+  rss:
+    file:
+scm:
+  type:
+  url:
+builder:
+  type:
+  rake:                                         
+    task:
+  maven2:  
+    cmd:
+    task:
+</pre>
+
+
+h4. Option available from command line
+
+Following option available from command line during adding new application
+<pre>
+recipients
+application_name
+scm
+builder
+</pre>

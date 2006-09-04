@@ -1,0 +1,17 @@
+---
+title: Who uses
+inMenu: true
+ordering: 3
+---
+h2. Who uses
+
+h4. "Anatol Pomozov":http://blog.pomozov.info/tags/english/
+Creator of "Cerberus":http://cerberus.rubyforge.org
+
+When I start using "Ruby On Rails":http://rubyonrails.com framework I became test-infected developer. 
+Rails allows you to create tests for your application with so simplicity that it is not to be test-infected.
+
+But additionally to test you need tool that run tests after each commit to VCS repository to be sure that you tests
+work and never do not trap to "Broken Windows" situation.
+
+All tools that I tried do not
