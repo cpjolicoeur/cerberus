@@ -1,7 +1,7 @@
 ---
 title: Home
 inMenu: true
-ordering: 1
+orderInfo: 1
 ---
 h2. Cerberus
 

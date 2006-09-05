@@ -29,7 +29,7 @@ class Test::Unit::TestCase
 
   CERBERUS_PATH = File.expand_path(File.dirname(__FILE__) + '/../')
   def run_cerb(args)
-    `ruby -I"#{CERBERUS_PATH}/lib" "#{CERBERUS_PATH}/bin/cerberus" #{args}`
+    `ruby -I"#{CERBERUS_PATH}/lib" "#{CERBERUS_PATH}/bin/cerberus" #{args} 2>&1`
   end
 
   def add_test_case_to_project(project_name, content)
