@@ -5,13 +5,18 @@ orderInfo: 3
 ---
 h2. Who uses
 
-h4. "Anatol Pomozov":http://blog.pomozov.info/tags/english/
-Creator of "Cerberus":http://cerberus.rubyforge.org
+h4. "Anatol Pomozov":http://blog.pomozov.info/tags/english/ (Creator of "Cerberus":http://cerberus.rubyforge.org)
 
 When I start using "Ruby On Rails":http://rubyonrails.com framework I became test-infected developer. 
-Rails allows you to create tests for your application with so simplicity that it is not to be test-infected.
+Rails allows you to create tests for your application with exiting simplicity that it is hard not to be test-infected.
 
-But additionally to test you need tool that run tests after each commit to VCS repository to be sure that you tests
-work and never do not trap to "Broken Windows" situation.
+But additionally to test you I needed tool that run tests after each commit to VCS repository. It's needed to be sure that my tests
+are passed cause I don't want to trap to "Broken Windows" situation.
 
-All tools that I tried do not
+For my Java projects I have been using CruiseControl for a long time and I would like to have similar tool for my
+Rails projects. I did not find anything that match my needs and I decide to write such tool for Ruby by myself.
+
+First version of Cerberus was implemented during weekend. And in the next version were added a lot of features requested by other users.
+
+Now I am using Cerberus for my 8 Ruby projects and happy with it. I have schedule task 'cerberus buildall' to run each 15 minutes and if tests
+are broken Cerberus would notify me about that.
