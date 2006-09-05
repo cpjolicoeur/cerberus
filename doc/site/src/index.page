@@ -5,8 +5,6 @@ orderInfo: 1
 ---
 h2. Cerberus
 
-!images/cerberus.gif!
-
 Cerberus is a Continuous Builder software. Cerberus could be periodically run from scheduler and check if application tests are broken. If it happens then Cerberus will send notification to developers. Cerberus perfectly works both on Windows and *nix platforms.
 
 Cerberus requires: 
@@ -20,6 +18,7 @@ Quote from "Wikipedia":http://en.wikipedia.org/wiki/Cerberus
 bq. Cerberus or Kerberos (Kerberos, demon of the pit), was the hound of Hades-a monstrous three-headed dog with a snake for a tail and innumerable snake heads on his back.
 He guarded the gate to Hades (the Greek underworld) and ensured that the dead could not leave and the living could not enter. His brother was Orthrus. He is the offspring of Echidna and Typhon.
 
+!images/cerberus.gif!
 
 So Ruby Cerberus tool (like his ancestor) will guard your application tests and not allow your project to go to the world of dead projects.
 

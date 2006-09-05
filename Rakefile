@@ -3,7 +3,6 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/packagetask'
 require 'rake/gempackagetask'
-require 'rake/contrib/rubyforgepublisher'
 
 require "./lib/cerberus/version"
 
@@ -147,5 +146,6 @@ task :publish_news do
 end
 
 task :publish_site do
-  sh %{pushd doc/site; webgen; scp -r output/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/; popd }
+  system('cd doc/site && webgen')
+  sh %{scp -r -q doc/site/output/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/}
 end
