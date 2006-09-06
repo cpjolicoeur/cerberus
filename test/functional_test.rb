@@ -60,18 +60,19 @@ class FunctionalTest < Test::Unit::TestCase
     status_file = HOME + '/work/myapp/status.log'
     assert File.exists?(status_file)
     assert_equal 'succesful', IO.read(status_file)
+    assert 1, Dir[HOME + "/work/rake_cust/logs/*-succesful.log"].size
 
     FileUtils.rm status_file
     build = Cerberus::BuildCommand.new('myapp')
     build.run
     assert File.exists?(status_file)
-
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
+    assert 2, Dir[HOME + "/work/rake_cust/logs/*.log"].size
 
     build = Cerberus::BuildCommand.new('myapp')
     build.run
     assert_equal 2, ActionMailer::Base.deliveries.size #Number of mails not changed
-
+    assert 2, Dir[HOME + "/work/rake_cust/logs/*.log"].size #even if sources unchanged
 
     #remove status file to run project again
     FileUtils.rm status_file
@@ -156,5 +157,13 @@ class FunctionalTest < Test::Unit::TestCase
     output = ActionMailer::Base.deliveries[0].body
     assert_match /Task 'custom1' has been invoked/, output
     assert_match /Task 'custom2' has been invoked/, output
+  end
+
+  def test_logs_disabled
+    add_application('rake_cust', SVN_URL, 'log' => {'enable' => false})
+    build = Cerberus::BuildAllCommand.new
+    build.run
+
+    assert !File.exists?(HOME + "/work/rake_cust/logs")
   end
 end

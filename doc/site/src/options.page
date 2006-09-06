@@ -44,6 +44,8 @@ builder:
   maven2:  
     cmd:
     task:
+log:
+  enable:
 </pre>
 
 

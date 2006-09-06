@@ -75,6 +75,12 @@ module Cerberus
     include Cerberus::Utils
     attr_reader :builder, :success, :scm, :status
 
+    DEFAULT_CONFIG = {:scm => {:type => 'svn'}, 
+                      :builder => {:type => 'rake'}, 
+                      :publisher => {:active => 'mail'}, 
+                      :log => {:enable => true}
+                     }
+
     def initialize(application_name, cli_options = {})
       unless File.exists?("#{HOME}/config/#{application_name}.yml")
         say "Project #{application_name} does not present in Cerberus"
@@ -84,13 +90,14 @@ module Cerberus
       
       def_options = {:application_root => app_root + '/sources', :application_name => application_name} #pseudo options that stored in config. Could not be set in any config file not through CLI
       @config = Config.new(application_name, cli_options.merge(def_options))
+      @config.merge!(DEFAULT_CONFIG, false)
 
       @status = Status.new("#{app_root}/status.log")
 
-      scm_type = @config[:scm, :type] || 'svn'
+      scm_type = @config[:scm, :type]
       @scm = SCM_TYPES[scm_type.to_sym].new(@config[:application_root], @config)
 
-      builder_type = @config[:builder, :type] || 'rake'
+      builder_type = @config[:builder, :type]
       @builder = BUILDER_TYPES[builder_type.to_sym].new(@config)
     end
  
@@ -120,7 +127,7 @@ module Cerberus
         end
 
         if [:failure, :broken, :revival, :setup].include?(state)
-          active_publishers = @config[:publisher, :active] || 'mail'
+          active_publishers = @config[:publisher, :active]
           active_publishers.split(/\W+/).each do |pub|
             raise "Publisher have no configuration: #{pub}" unless @config[:publisher, pub]
             clazz = PUBLISHER_TYPES[pub.to_sym]
@@ -129,6 +136,17 @@ module Cerberus
               clazz.publish(state, self, @config)
             }
           end
+        end
+
+        #Save logs to directory
+        if @config[:log, :enable] and state != :unchanged
+          log_dir = "#{HOME}/work/#{@config[:application_name]}/logs/"
+          FileUtils.mkpath(log_dir)
+
+          time = Time.now.strftime("%Y%m%d%H%M%S")
+          file_name = "#{log_dir}/#{time}-#{state.to_s}.log"
+          body = [ scm.last_commit_message, builder.output ].join("\n\n")
+          IO.write(file_name, body)
         end
       rescue Exception => e
         if ENV['CERBERUS_ENV'] == 'TEST'

@@ -1,10 +1,9 @@
-+ Save logs of application to work/log directory
-+ Add file lock (extract from first revisions of Cerberus)
-+ Make possibility to run each test (not only latest for that moment)
-+ Add flag verbose (from command line)
-+ Save svn log not only for latest revision but from latest successfull. For that we need to store version of latest successful rev.
 + Add support of sending to GMail using gmailer.gem
-+ IRC: make message colorized. Make messages shorter to avoid irc flood (and ban to user)
 
-+ Use webgen for generating site
-+ Generate HTML file from Readme + FAQ and deploy to http://cerberus.rubyforge.org
++ Add file lock (extract from first revisions of Cerberus)
++ Add flag verbose (from command line)
++ Make possibility to run tests for all revisions (not only latest for that moment)
++ Send svn log not only for latest revision but from latest successfull. For that we need to store version of latest successful rev.
++ IRC: make message colorized. Make messages shorter to avoid irc flood (and ban to user)
++ Buildall run several threads, so if one of the projects frozen lets say on subversion lock - other will finish successfully
+     Limit thread execution time for 30 minutes

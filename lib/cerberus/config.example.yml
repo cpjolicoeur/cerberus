@@ -21,3 +21,6 @@ publisher:
     channel: cerberus
   rss:
     file: /usr/www/rss.xml
+builder:
+  rake:
+    task: migrate test

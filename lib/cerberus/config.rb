@@ -24,8 +24,14 @@ module Cerberus
       c
     end
 
-    def merge!(hash)          
-      @config.deep_merge!(hash)
+    def merge!(hash, overwrite = true)
+      if overwrite
+        @config.deep_merge!(hash)
+      else
+        d = HashWithIndifferentAccess.new(hash)
+        d.deep_merge!(@config)
+        @config = d
+      end
     end
 
     def inspect

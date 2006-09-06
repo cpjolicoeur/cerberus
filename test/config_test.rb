@@ -28,11 +28,19 @@ class ConfigTest < Test::Unit::TestCase
     cfg = Cerberus::Config.new
     cfg.merge!(:hello => {'msg' => {:a202 => 'bye'}})
     cfg.merge!(:hello => {:msg => {:a203 => 'hello'}})
-    cfg.merge!(:hello => {:msg => {:a204 => 'another'}})
+    cfg.merge!(:hello => {:msg => {:a203 => 'another'}})
     cfg.merge!(:hello => {:bread => {:a204 => 'bread'}})
 
     assert_equal 'bye', cfg[:hello, :msg, :a202]
-    assert_equal 'hello', cfg[:hello, :msg, :a203]
+    assert_equal 'another', cfg[:hello, :msg, :a203]
     assert_equal 'bread', cfg[:hello, :bread, :a204]
+  end
+
+  def test_deep_merge_not_overwrite
+    cfg = Cerberus::Config.new
+    cfg.merge!({:hello => {'msg' => {:a202 => 'bye'}}}, false)
+    cfg.merge!({:hello => {:msg => {:a202 => 'hello'}}}, false)
+
+    assert_equal 'bye', cfg[:hello, :msg, :a202]
   end
 end

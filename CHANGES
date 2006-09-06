@@ -1,5 +1,11 @@
 = Cerberus Changelog
 
+== Version 0.2.3
+Features release
+
+* Added site for Cerberus project. http://cerberus.rubyforge.org/
+* From now all builds logs their build data. It would be switched off by :log/:enable => false in configuration file
+
 == Version 0.2.2
 Minor fix release
 
