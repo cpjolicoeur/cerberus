@@ -1,21 +1,29 @@
-module Cerberus
-  module FSLatch
-    #Emulate File.flock
-    def self.lock(lock_file, wait_for_unlock=true)
-      counter = 0
-      while File.exists?(lock_file)
-        return unless wait_for_unlock #if file exists then return
+require 'fileutils'
 
-        sleep(10) #sleep for 10 seconds
-        counter += 1
-        raise "Could not wait anymore file unlocking '#{lock_file}'" if counter > 20 #if we are waiting more than 200 secs then raise exception
+module Cerberus
+  class Latch
+    #Emulate File.flock
+    def self.lock(lock_file, options = {})
+      if File.exists?(lock_file)
+        modif_time = File::Stat.new(lock_file).mtime
+        ttl = options[:lock_ttl]
+
+        if ttl 
+          if modif_time < ttl.ago
+            File.delete(lock_file)
+          else
+            yield
+            return
+          end
+        end
       end
 
       begin
-        File.new(lock_file, 'w')
+        FileUtils.mkpath(File.dirname(lock_file))
+        File.new(lock_file, 'w').close
         yield
       ensure
-        File.rm(lockfile)
+        File.delete(lock_file)
       end
     end
   end

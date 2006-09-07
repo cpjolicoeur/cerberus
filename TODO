@@ -1,4 +1,3 @@
-+ Add file lock (extract from first revisions of Cerberus)
 + Add flag verbose (from command line)
 + Make possibility to run tests for all revisions (not only latest for that moment)
 + Send svn log not only for latest revision but from latest successfull. For that we need to store version of latest successful rev.

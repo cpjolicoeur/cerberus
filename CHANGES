@@ -3,6 +3,7 @@
 == Version 0.2.3
 Features release
 
+* Added Lock files that prevent from mutiply build of the same project by several different processes
 * Added multythread build for 'buildall' command. Now if one of threads froses (for example because of SVN repo is broken) then other threads would continue execution.
 * Added possibility to send to gmail host using GMailer library
 * Added --force oprion that would be helpful if you want to rebuild project even if there are no changes in VSC.

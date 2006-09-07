@@ -4,6 +4,7 @@ require 'fileutils'
 require 'cerberus/utils'
 require 'cerberus/constants'
 require 'cerberus/config'
+require 'cerberus/latch'
 
 require 'cerberus/publisher/mail'
 require 'cerberus/publisher/jabber'
@@ -103,51 +104,51 @@ module Cerberus
  
     def run
       begin
-        previous_status = @status.recall
-        @scm.update!
+        Latch.lock("#{HOME}/work/#{@config[:application_name]}/.lock", :lock_ttl => 2 * LOCK_WAIT) do
+          previous_status = @status.recall
+          @scm.update!
 
-        state = 
-        if @scm.has_changes? or @config[:force] or not previous_status
-          if status = @builder.run
-            @status.keep(:succesful)
-            case previous_status
-            when :failed
-              :revival
-            when :succesful
-              :succesful
-            when false
-              :setup
+          state = 
+          if @scm.has_changes? or @config[:force] or not previous_status
+            if status = @builder.run
+              @status.keep(:succesful)
+              case previous_status
+              when :failed
+                :revival
+              when :succesful
+                :succesful
+              when false
+                :setup
+              end
+            else
+              @status.keep(:failed)
+              previous_status == :failed ? :broken : :failure
             end
           else
-            @status.keep(:failed)
-            previous_status == :failed ? :broken : :failure
+            :unchanged
           end
-        else
-          :unchanged
-        end
 
-        if [:failure, :broken, :revival, :setup].include?(state)
-          active_publishers = @config[:publisher, :active]
-          active_publishers.split(/\W+/).each do |pub|
-            raise "Publisher have no configuration: #{pub}" unless @config[:publisher, pub]
-            clazz = PUBLISHER_TYPES[pub.to_sym]
-            raise "There is no such publisher: #{pub}" unless clazz
-            silence_stream(STDOUT) { #some of publishers like IRC very noisy
+          if [:failure, :broken, :revival, :setup].include?(state)
+            active_publishers = @config[:publisher, :active]
+            active_publishers.split(/\W+/).each do |pub|
+              raise "Publisher have no configuration: #{pub}" unless @config[:publisher, pub]
+              clazz = PUBLISHER_TYPES[pub.to_sym]
+              raise "There is no such publisher: #{pub}" unless clazz
               clazz.publish(state, self, @config)
-            }
+            end
           end
-        end
 
-        #Save logs to directory
-        if @config[:log, :enable] and state != :unchanged
-          log_dir = "#{HOME}/work/#{@config[:application_name]}/logs/"
-          FileUtils.mkpath(log_dir)
+          #Save logs to directory
+          if @config[:log, :enable] and state != :unchanged
+            log_dir = "#{HOME}/work/#{@config[:application_name]}/logs/"
+            FileUtils.mkpath(log_dir)
 
-          time = Time.now.strftime("%Y%m%d%H%M%S")
-          file_name = "#{log_dir}/#{time}-#{state.to_s}.log"
-          body = [ scm.last_commit_message, builder.output ].join("\n\n")
-          IO.write(file_name, body)
-        end
+            time = Time.now.strftime("%Y%m%d%H%M%S")
+            file_name = "#{log_dir}/#{time}-#{state.to_s}.log"
+            body = [ scm.last_commit_message, builder.output ].join("\n\n")
+            IO.write(file_name, body)
+          end
+        end #lock
       rescue Exception => e
         if ENV['CERBERUS_ENV'] == 'TEST'
           raise e
@@ -180,7 +181,7 @@ module Cerberus
 
       @already_waited = false
       threads.each do |t| 
-        if @already_waited or not t.join(30.minutes)
+        if @already_waited or not t.join(LOCK_WAIT)
           t.kill
           @already_waited = true
         end
