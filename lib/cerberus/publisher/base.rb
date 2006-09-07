@@ -19,7 +19,7 @@ module Cerberus
         end
 
         subject = "[#{options[:application_name]}] #{subject}"
-        generated_by = "--\nCerberus #{Cerberus::VERSION::STRING}, http://rubyforge.org/projects/cerberus"
+        generated_by = "--\nCerberus #{Cerberus::VERSION::STRING}, http://cerberus.rubyforge.com/"
         body = [ manager.scm.last_commit_message, manager.builder.output, generated_by ].join("\n\n")
 
         return subject, body
