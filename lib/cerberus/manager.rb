@@ -107,7 +107,7 @@ module Cerberus
         @scm.update!
 
         state = 
-        if @scm.has_changes? or not previous_status
+        if @scm.has_changes? or @config[:force] or not previous_status
           if status = @builder.run
             @status.keep(:succesful)
             case previous_status

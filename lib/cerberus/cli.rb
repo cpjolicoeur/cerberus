@@ -39,8 +39,12 @@ module Cerberus
       result = {}
       args_copy = args.dup
       args_copy.each do |arg|
-        if arg =~ /^(\w+)=(.*)$/
+        case arg
+        when /^(\w+)=(.*)$/
           result[$1.downcase.to_sym] = $2
+          args.delete(arg)
+        when '--force'
+          result[:force] = true
           args.delete(arg)
         end
       end
