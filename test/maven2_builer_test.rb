@@ -15,12 +15,15 @@ class Maven2BuilderTest < Test::Unit::TestCase
     builder.output = MVN_OUTPUT
     assert !builder.successful?
 
-    surefire_file = "#{tmp}/target/surefire-reports/wicket.markup.html.form.persistence.CookieValuePersisterTest.txt"
-    FileUtils.mkpath File.dirname(surefire_file)
-    IO.write(surefire_file, SUREFIRE_CLASS_OUTPUT)
+    reports_dir = tmp + '/target/surefire-reports/'
+    FileUtils.mkpath reports_dir
+    IO.write(reports_dir + 'wicket.util.resource.ResourceTest.txt', SUREFIRE1_OUTPUT)
+    IO.write(reports_dir + 'wicket.markup.html.form.persistence.CookieValuePersisterTest.txt', SUREFIRE2_OUTPUT)
 
     output = builder.add_error_information(MVN_OUTPUT)
     assert output.include?('at wicket.markup.html.basic.SimplePageTest.testRenderHomePage_3(SimplePageTest.java:285)')
+    puts output
+    assert output.include?('This is for wicket.util.resource.ResourceTest :=')
   end
 end
 
@@ -29,6 +32,8 @@ MVN_OUTPUT =<<-END
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
+Running wicket.util.resource.ResourceTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.047 sec <<< FAILURE!
 Running wicket.markup.html.list.PagedTableNavigatorWithMarginTest
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.313 sec
 Running wicket.markup.html.list.IncrementalTableNavigationTest
@@ -52,17 +57,27 @@ Tests run: 449, Failures: 4, Errors: 9, Skipped: 0
 [INFO] There are test failures.
     END
 
-SUREFIRE_CLASS_OUTPUT =<<-END
+SUREFIRE1_OUTPUT =<<-END
+-------------------------------------------------------------------------------
+Test set: wicket.markup.html.basic.SimplePageTest
+-------------------------------------------------------------------------------
+Tests run: 13, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.521 sec <<< FAILURE!
+testRenderHomePage_3(wicket.markup.html.basic.SimplePageTest)  Time elapsed: 0.06 sec  <<< FAILURE!
+This is for wicket.util.resource.ResourceTest :=
+
+END
+
+SUREFIRE2_OUTPUT =<<-END
 -------------------------------------------------------------------------------
 Test set: wicket.markup.html.basic.SimplePageTest
 -------------------------------------------------------------------------------
 Tests run: 13, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.521 sec <<< FAILURE!
 testRenderHomePage_3(wicket.markup.html.basic.SimplePageTest)  Time elapsed: 0.06 sec  <<< FAILURE!
 junit.framework.AssertionFailedError
-	at junit.framework.Assert.fail(Assert.java:47)
-	at junit.framework.Assert.assertTrue(Assert.java:20)
-	at junit.framework.Assert.assertTrue(Assert.java:27)
-	at wicket.WicketTestCase.executeTest(WicketTestCase.java:78)
-	at wicket.markup.html.basic.SimplePageTest.testRenderHomePage_3(SimplePageTest.java:285)
+    at junit.framework.Assert.fail(Assert.java:47)
+    at junit.framework.Assert.assertTrue(Assert.java:20)
+    at junit.framework.Assert.assertTrue(Assert.java:27)
+    at wicket.WicketTestCase.executeTest(WicketTestCase.java:78)
+    at wicket.markup.html.basic.SimplePageTest.testRenderHomePage_3(SimplePageTest.java:285)
 
 END

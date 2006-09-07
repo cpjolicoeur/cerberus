@@ -20,11 +20,14 @@ class Cerberus::Builder::Maven2
 
   def add_error_information(str)
     output = ''
-    while str =~ /^(.|\n)*Running (.*)\n(.|\n)* <<< FAILURE!$/
+    while str =~ / <<< FAILURE!$/
+      s = $'
+
+      $` =~ /^(.|\n)*Running (.*)$/
       failed_class = $2
-      output << $` << $&
-      output << "\n" << IO.readlines("#{@config[:application_root]}/target/surefire-reports/#{failed_class}.txt")[4..-1].join   
-      str = $'
+      output << $` << $& << ' <<< FAILURE!'
+      output << "\n" << IO.readlines("#{@config[:application_root]}/target/surefire-reports/#{failed_class}.txt")[4..-1].map{|str| '  ' + str}.join.strip   #.gsub('  <<< FAILURE!','')
+      str = s
     end
     output << str
   end
