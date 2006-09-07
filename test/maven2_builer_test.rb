@@ -20,10 +20,10 @@ class Maven2BuilderTest < Test::Unit::TestCase
     IO.write(reports_dir + 'wicket.util.resource.ResourceTest.txt', SUREFIRE1_OUTPUT)
     IO.write(reports_dir + 'wicket.markup.html.form.persistence.CookieValuePersisterTest.txt', SUREFIRE2_OUTPUT)
 
-    output = builder.add_error_information(MVN_OUTPUT)
-    assert output.include?('at wicket.markup.html.basic.SimplePageTest.testRenderHomePage_3(SimplePageTest.java:285)')
-    puts output
-    assert output.include?('This is for wicket.util.resource.ResourceTest :=')
+    builder.output = MVN_OUTPUT
+    builder.add_error_information
+    assert builder.output.include?('at wicket.markup.html.basic.SimplePageTest.testRenderHomePage_3(SimplePageTest.java:285)')
+    assert builder.output.include?('This is for wicket.util.resource.ResourceTest :=')
   end
 end
 

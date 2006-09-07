@@ -3,6 +3,10 @@
 == Version 0.2.3
 Features release
 
+* Added multythread build for 'buildall' command. Now if one of threads froses (for example because of SVN repo is broken) then other threads would continue execution.
+* Added possibility to send to gmail host using GMailer library
+* Added --force oprion that would be helpful if you want to rebuild project even if there are no changes in VSC.
+  Use 'cerberus build --force my_project'
 * Added site for Cerberus project. http://cerberus.rubyforge.org/
 * From now all builds logs their build data. It would be switched off by :log/:enable => false in configuration file
 

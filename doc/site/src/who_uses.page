@@ -20,3 +20,17 @@ First version of Cerberus was implemented during weekend. And in the next versio
 
 Now I am using Cerberus for my 8 Ruby projects and happy with it. I have schedule task 'cerberus buildall' to run each 15 minutes and if tests
 are broken Cerberus would notify me about that.
+
+
+h4. "Abonja":http://www.abonja.nl
+
+At Abonja we have been using unit-tests and continuous builds for our C++
+projects. Next to our C++ work we are now using Ruby on Rails for the
+website. We are very happy with the fact that we can work  the same way with
+Ruby on Rails as Cerberus takes care of the continuous testing.
+
+We have Cerberus running on a separate so-called build-box. It gets the
+latest commit from SVN, migrates the database and runs all the tests. All
+this in just a matter of minutes. If by any chance a test fails you get a
+friendly mail from Cerberus telling you who broke the build, and better yet,
+when the next run is successful, it tells you who fixed it!

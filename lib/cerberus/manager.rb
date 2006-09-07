@@ -169,12 +169,21 @@ module Cerberus
     end
 
     def run
+      threads = []
       Dir["#{HOME}/config/*.yml"].each do |fn|
         fn =~ %r{#{HOME}/config/(.*).yml}
         application_name = $1
 
         command = Cerberus::BuildCommand.new(application_name, @cli_options)
-        command.run
+        threads << Thread.new { command.run }
+      end
+
+      @already_waited = false
+      threads.each do |t| 
+        if @already_waited or not t.join(30.minutes)
+          t.kill
+          @already_waited = true
+        end
       end
     end
   end

@@ -1,13 +1,25 @@
 require 'action_mailer'
 require 'cerberus/publisher/base'
+require 'gmailer'
 
 class Cerberus::Publisher::Mail < Cerberus::Publisher::Base
   def self.publish(state, manager, options)
     mail_opts = options[:publisher, :mail].dup
     raise "There is no recipients provided for mail publisher" unless mail_opts[:recipients]
 
-    configure(mail_opts)
-    ActionMailerPublisher.deliver_message(state, manager, options)
+    if mail_opts[:address] =~ /\bgmail\.com$/
+      subject, body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
+      GMailer.connect(mail_opts[:user_name], mail_opts[:password]) do |g|
+         g.send(
+           :from => mail_opts[:sender],
+           :to => mail_opts[:recipients],
+           :subject => subject,
+           :body => body)
+      end
+    else
+      configure(mail_opts)
+      ActionMailerPublisher.deliver_message(state, manager, options)
+    end
   end
 
   private
