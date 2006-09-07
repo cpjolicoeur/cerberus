@@ -54,7 +54,7 @@ module Cerberus
   end
 
   HELP = %{
-    Cerberus is a Continuous Integration tool that could be run from commad line.
+    Cerberus is a simple Continuous Integration tool for Ruby projects that run from command-line interface.
 
     Usage:
       cerberus add <URL>      --- add project from svn repository to list watched of applications

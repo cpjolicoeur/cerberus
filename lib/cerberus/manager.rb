@@ -128,16 +128,6 @@ module Cerberus
             :unchanged
           end
 
-          if [:failure, :broken, :revival, :setup].include?(state)
-            active_publishers = @config[:publisher, :active]
-            active_publishers.split(/\W+/).each do |pub|
-              raise "Publisher have no configuration: #{pub}" unless @config[:publisher, pub]
-              clazz = PUBLISHER_TYPES[pub.to_sym]
-              raise "There is no such publisher: #{pub}" unless clazz
-              clazz.publish(state, self, @config)
-            end
-          end
-
           #Save logs to directory
           if @config[:log, :enable] and state != :unchanged
             log_dir = "#{HOME}/work/#{@config[:application_name]}/logs/"
@@ -147,6 +137,17 @@ module Cerberus
             file_name = "#{log_dir}/#{time}-#{state.to_s}.log"
             body = [ scm.last_commit_message, builder.output ].join("\n\n")
             IO.write(file_name, body)
+          end
+
+          #send notifications
+          if [:failure, :broken, :revival, :setup].include?(state)
+            active_publishers = @config[:publisher, :active]
+            active_publishers.split(/\W+/).each do |pub|
+              raise "Publisher have no configuration: #{pub}" unless @config[:publisher, pub]
+              clazz = PUBLISHER_TYPES[pub.to_sym]
+              raise "There is no such publisher: #{pub}" unless clazz
+              clazz.publish(state, self, @config)
+            end
           end
         end #lock
       rescue Exception => e
