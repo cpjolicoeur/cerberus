@@ -5,21 +5,25 @@ orderInfo: 3
 ---
 h2. Who uses
 
-h4. "Anatol Pomozov":http://blog.pomozov.info/tags/english/ (Creator of "Cerberus":http://cerberus.rubyforge.org)
+h4. "Anatol Pomozov":http://blog.pomozov.info/tags/english/
 
-When I start using "Ruby On Rails":http://rubyonrails.com framework I became test-infected developer. 
-Rails allows you to create tests for your application with exiting simplicity that it is hard not to be test-infected.
+After using "Ruby On Rails":http://rubyonrails.com framework for a while in my day-job I became test-infected developer. 
+RoR allows you to create tests for your application with exciting simplicity so it is hard not to be test-infected.
 
-But additionally to test you I needed tool that run tests after each commit to VCS repository. It's needed to be sure that my tests
-are passed cause I don't want to trap to "Broken Windows" situation.
+"I am working":http://pomozov.info as RubyOnRails freelance developer and consultant and for me very important to keep 
+high quality of my projects.
+That is why I needed a tool that run tests after each commit to VCS repository. I always must be sure that tests
+are 100% passed cause I don't want to trap to "Broken Windows":http://en.wikipedia.org/wiki/Fixing_Broken_Windows situation.
 
-For my Java projects I have been using CruiseControl for a long time and I would like to have similar tool for my
-Rails projects. I did not find anything that match my needs and I decide to write such tool for Ruby by myself.
+For my Java projects I have been using "CruiseControl":http://cruisecontrol.sourceforge.net/ for a 
+years and I would like to have similar tool for my
+Rails projects. I did not find anything that matches my needs and I decide to write such tool for Ruby by myself.
 
-First version of Cerberus was implemented during weekend. And in the next version were added a lot of features requested by other users.
+First version of Cerberus was implemented during weekend. And following releases were made great steps forward
+by adding new features and stability.
 
-Now I am using Cerberus for my 8 Ruby projects and happy with it. I have schedule task 'cerberus buildall' to run each 15 minutes and if tests
-are broken Cerberus would notify me about that.
+Now I am using Cerberus for my 8 Ruby projects and happy with it. I have scheduled task 'cerberus buildall' to 
+run each 15 minutes and if tests for any of my project are broken Cerberus would notify me about that.
 
 
 h4. "Abonja":http://www.abonja.nl

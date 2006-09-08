@@ -34,7 +34,7 @@ Mine nncron.tab file looks like below
 <pre>
 SET CERBERUS_HOME="C:\Documents and Settings\anatol\.cerberus"
 
-#( [cerberus]watsjit
+#( cerberus
 AsLoggedUser
 LoadProfile
 Time: */15 * * * * *
