@@ -10,7 +10,7 @@ Net::SMTP.class_eval do
     sock = timeout(@open_timeout) { TCPSocket.open(@address, @port) }
     @socket = Net::InternetMessageIO.new(sock)
     @socket.read_timeout = 60 #@read_timeout
-    @socket.debug_output = STDERR #@debug_output
+#    @socket.debug_output = STDERR #@debug_output
 
     check_response(critical { recv_response() })
     do_helo(helodomain)
@@ -22,7 +22,7 @@ Net::SMTP.class_eval do
     ssl.connect
     @socket = Net::InternetMessageIO.new(ssl)
     @socket.read_timeout = 60 #@read_timeout
-    @socket.debug_output = STDERR #@debug_output
+#    @socket.debug_output = STDERR #@debug_output
     do_helo(helodomain)
 
     authenticate user, secret, authtype if user
@@ -30,7 +30,7 @@ Net::SMTP.class_eval do
   ensure
     unless @started
       # authentication failed, cancel connection.
-        @socket.close if not @started and @socket and not @socket.closed?
+      @socket.close if not @started and @socket and not @socket.closed?
       @socket = nil
     end
   end

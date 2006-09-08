@@ -1,6 +1,6 @@
 require 'action_mailer'
 require 'cerberus/publisher/base'
-require 'netsmtp_tls_fix'
+require 'cerberus/publisher/netsmtp_tls_fix'
 
 class Cerberus::Publisher::Mail < Cerberus::Publisher::Base
   def self.publish(state, manager, options)
