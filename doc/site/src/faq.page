@@ -36,6 +36,7 @@ SET CERBERUS_HOME="C:\Documents and Settings\anatol\.cerberus"
 
 #( [cerberus]watsjit
 AsLoggedUser
+LoadProfile
 Time: */15 * * * * *
 Action:
 SWHide   NormalPriority
