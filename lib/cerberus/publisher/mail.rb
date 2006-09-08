@@ -1,25 +1,14 @@
 require 'action_mailer'
 require 'cerberus/publisher/base'
-require 'gmailer'
+require 'netsmtp_tls_fix'
 
 class Cerberus::Publisher::Mail < Cerberus::Publisher::Base
   def self.publish(state, manager, options)
     mail_opts = options[:publisher, :mail].dup
     raise "There is no recipients provided for mail publisher" unless mail_opts[:recipients]
 
-    if mail_opts[:address] =~ /\bgmail\.com$/
-      subject, body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
-      GMailer.connect(mail_opts[:user_name], mail_opts[:password]) do |g|
-         g.send(
-           :from => mail_opts[:sender],
-           :to => mail_opts[:recipients],
-           :subject => subject,
-           :body => body)
-      end
-    else
-      configure(mail_opts)
-      ActionMailerPublisher.deliver_message(state, manager, options)
-    end
+    configure(mail_opts)
+    ActionMailerPublisher.deliver_message(state, manager, options)
   end
 
   private
@@ -37,7 +26,7 @@ class Cerberus::Publisher::Mail < Cerberus::Publisher::Base
       @subject, @body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
       @recipients, @sent_on = options[:publisher, :mail, :recipients], Time.now
       @from = options[:publisher, :mail, :sender] || "'Cerberus' <cerberus@example.com>"
-#      raise "Please specify recipient addresses for application '#{options[:application_name]}'" unless options[:recipients]
+      raise "Please specify recipient addresses for application '#{options[:application_name]}'" unless @recipients
     end
   end
 end
