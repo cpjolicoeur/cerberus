@@ -52,11 +52,12 @@ Here is an example of configuration file
 <pre>
 publisher:
   mail:
-    address: mail.somesever.com
-    user_name: anatol
-    password: anatol
-    domain: somesever.com
-    authentication: login
+    address: smtp.gmail.com
+    port: 587
+    domain: gmail.com
+    authentication: plain
+    user_name: someuser
+    password: somemail
 </pre>
 
 Also check ~/.cerberus/config/<APPLICATION_NAME>.yml and make sure that you have right options.
