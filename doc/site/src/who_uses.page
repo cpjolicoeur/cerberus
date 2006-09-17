@@ -19,7 +19,7 @@ For my Java projects I have been using "CruiseControl":http://cruisecontrol.sour
 years and I would like to have similar tool for my
 Rails projects. I did not find anything that matches my needs and I decide to write such tool for Ruby by myself.
 
-First version of Cerberus was implemented during weekend. And following releases were made great steps forward
+First version of Cerberus was implemented during weekend. And subsequent releases were made great steps forward
 by adding new features and stability.
 
 Now I am using Cerberus for my 8 Ruby projects and happy with it. I have scheduled task 'cerberus buildall' to 

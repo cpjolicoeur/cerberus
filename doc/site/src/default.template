@@ -4,7 +4,7 @@
   <head>
     <title>Cerberus: {title: }</title>
     <link rel="stylesheet" type="text/css" href="{relocatable: default.css}"/>
-    <meta content="Cerberus OpenSource Countinuous Integration tool builder Ruby RubyOnRails test infected rake maven subversion Anatol Pomozov">
+    <meta content="Cerberus OpenSource Countinuous Integration CI tool builder Ruby RubyOnRails test infected rake maven subversion Anatol Pomozov">
   </head>
   <body>
     <div id="page">

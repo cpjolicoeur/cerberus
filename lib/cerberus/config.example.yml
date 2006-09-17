@@ -2,14 +2,12 @@
 publisher:
   active: mail jabber rss
   mail:
-    delivery_method: smtp
-    address: smtp.mymail.com
-    port: 2525
-    domain: mymail.com
-    user_name: cerberus
-    password: somepass
+    address: smtp.gmail.com
+    port: 587
+    domain: gmail.com
     authentication: plain
-    sender: "'Cerberus Builder' <cerberus@mymail.com>"
+    user_name: someuser
+    password: somemail
   jabber:
     jid: cerberus@gtalk.google.com
     port: 5222
