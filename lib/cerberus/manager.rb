@@ -26,7 +26,8 @@ module Cerberus
 
   BUILDER_TYPES = {
     :maven2 => Cerberus::Builder::Maven2,
-    :rake => Cerberus::Builder::Rake
+    :rake => Cerberus::Builder::Rake,
+    :rant => Cerberus::Builder::Rant
   }
 
   class AddCommand
@@ -77,8 +78,6 @@ module Cerberus
     attr_reader :builder, :success, :scm, :status
 
     DEFAULT_CONFIG = {:scm => {:type => 'svn'}, 
-                      :builder => {:type => 'rake'}, 
-                      :publisher => {:active => 'mail'}, 
                       :log => {:enable => true}
                      }
 
@@ -98,7 +97,7 @@ module Cerberus
       scm_type = @config[:scm, :type]
       @scm = SCM_TYPES[scm_type.to_sym].new(@config[:application_root], @config)
 
-      builder_type = @config[:builder, :type]
+      builder_type = get_configuration_option(@config[:builder], :type, :rake)
       @builder = BUILDER_TYPES[builder_type.to_sym].new(@config)
     end
  
@@ -141,7 +140,7 @@ module Cerberus
 
           #send notifications
           if [:failure, :broken, :revival, :setup].include?(state)
-            active_publishers = @config[:publisher, :active]
+            active_publishers = get_configuration_option(@config[:publisher], :active, 'mail')
             active_publishers.split(/\W+/).each do |pub|
               raise "Publisher have no configuration: #{pub}" unless @config[:publisher, pub]
               clazz = PUBLISHER_TYPES[pub.to_sym]
@@ -162,6 +161,15 @@ module Cerberus
           end
         end
       end
+    end
+
+  private
+    def get_configuration_option(hash, defining_key = nil, default_option = nil)
+      if hash
+        return hash[defining_key] if hash[defining_key]
+        return hash.keys[0] if hash.size == 1
+      end
+      return default_option
     end
   end
 

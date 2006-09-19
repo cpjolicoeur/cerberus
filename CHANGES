@@ -1,5 +1,13 @@
 = Cerberus Changelog
 
+== Version 0.2.4
+Features release
+
+* Fix problem with TLS hack. Now possible to send to SSL and vanilla mailservers without modifying code.
+* Added rant support (http://make.rubyforge.org) [Xavier Shay]
+* Fixed escaping of code in RSS publisher [Xavier Shay]
+* If we have only builder or publisher in configuration then use it. Param :type made mandatory.
+
 == Version 0.2.3
 Features release
 
