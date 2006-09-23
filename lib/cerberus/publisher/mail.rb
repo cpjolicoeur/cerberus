@@ -1,6 +1,10 @@
 require 'action_mailer'
 require 'cerberus/publisher/base'
-require 'cerberus/publisher/netsmtp_tls_fix'
+
+if RUBY_VERSION > '1.8.2'
+  #This hack works only on 1.8.4
+  require 'cerberus/publisher/netsmtp_tls_fix'
+end
 
 class Cerberus::Publisher::Mail < Cerberus::Publisher::Base
   def self.publish(state, manager, options)
