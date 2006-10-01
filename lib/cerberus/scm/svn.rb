@@ -66,6 +66,14 @@ class Cerberus::SCM::SVN
   end
     
   def execute(command, parameters = nil, pre_parameters = nil)
-    `#{@config[:bin_path]}svn #{command} #{pre_parameters} #{@encoded_path} #{parameters}`
+    `#{@config[:bin_path]}svn #{command} #{auth_options()} #{pre_parameters} #{@encoded_path} #{parameters}`
+  end
+
+  def auth_options
+    auth = []
+    auth << "--username #{@config[:scm, :username]}" if @config[:scm, :username]
+    auth << "--password #{@config[:scm, :password]}" if @config[:scm, :password]
+
+    auth.join(' ')
   end
 end

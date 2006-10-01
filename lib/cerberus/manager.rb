@@ -41,7 +41,7 @@ module Cerberus
     def run
       scm_type = @cli_options[:scm] || 'svn'
       say "SCM #{scm_type} not supported" unless SCM_TYPES[scm_type.to_sym]
-      scm = SCM_TYPES[scm_type.to_sym].new(@path, @cli_options)
+      scm = SCM_TYPES[scm_type.to_sym].new(@path, Config.new(nil, @cli_options))
       say "Can't find any #{scm_type} application under #{@path}" unless scm.url
 
       application_name = @cli_options[:application_name] || extract_project_name(@path)

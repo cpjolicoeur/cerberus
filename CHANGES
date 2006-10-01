@@ -1,5 +1,10 @@
 = Cerberus Changelog
 
+== Version 0.2.5
+Fix release
+
+* Added possibility to specify username and password for Subversion commands
+
 == Version 0.2.4
 Features release
 

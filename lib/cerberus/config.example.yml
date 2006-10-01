@@ -7,7 +7,7 @@ publisher:
     domain: gmail.com
     authentication: plain
     user_name: someuser
-    password: somemail
+    password: somepassword
   jabber:
     jid: cerberus@gtalk.google.com
     port: 5222
