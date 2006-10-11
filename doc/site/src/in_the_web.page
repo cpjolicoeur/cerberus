@@ -9,7 +9,7 @@ There you could find list of interesting articles that have relation to Cerberus
 
 * Legendary "article about Continuous Integration":http://www.martinfowler.com/articles/continuousIntegration.html from Martin Fowler
 * "Theory of Broken Windows":http://en.wikipedia.org/wiki/Fixing_Broken_Windows explanation. This theory says that big problems starts from small one. 
-And if you able quick and effectively fix small problems (broken windows) you would avoid most of the big ones (crime).
+And if you able quick and effectively fix small problems (like broken windows) you would avoid most of the big problems (like crime).
 
 * Very good "Cerberus tutorial":http://www.degrunt.net/articles/2006/08/27/cerberus-continious-integration-for-rails/#extended  from Tom de Grunt
 * "Josh's article":http://www.cuberick.com/?p=43

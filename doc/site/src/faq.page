@@ -43,3 +43,18 @@ SWHide   NormalPriority
 START-APPW: c:\progra~1\ruby\bin\cerberus.CMD buildall
 )#
 </pre>
+
+h3. Run Cerberus from Subversion __post-commit__ hook
+
+Subversion and like some other SCM allow to "hook action on commit":http://svnbook.red-bean.com/en/1.1/ch05s02.html#svn-ch-5-sect-2.1.
+And if you install Cerberus on the same box where you keep your Subversion repository you could add custom hook
+to run CI tool right after user commit and do not use Cron scheduler at all.
+
+To make it add /hooks/post-commit file with following content
+
+<pre>
+#!/bin/sh
+/usr/local/bin/cerberus build YOUR_APPLICATION_NAME
+</pre>
+
+And do not forget to add execution permission to this file.

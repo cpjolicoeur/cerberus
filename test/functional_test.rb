@@ -166,4 +166,24 @@ class FunctionalTest < Test::Unit::TestCase
 
     assert !File.exists?(HOME + "/work/rake_cust/logs")
   end
+
+  def test_darcs
+    add_application('darcsapp', DARCS_URL, :scm => {:type => 'darcs'})
+
+    build = Cerberus::BuildCommand.new('darcsapp')
+    build.run
+    assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
+    mail = ActionMailer::Base.deliveries[0]
+    output = mail.body
+
+    #Check outpus that run needed tasks
+    assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
+    assert output !~ /Task 'custom1' has been invoked/
+    assert_equal '[darcsapp] Cerberus set up for project (#20061010090920)', mail.subject
+
+    status_file = HOME + '/work/darcsapp/status.log'
+    assert File.exists?(status_file)
+    assert_equal 'succesful', IO.read(status_file)
+    assert 1, Dir[HOME + "/work/darcsapp/logs/*-setup.log"].size
+  end
 end

@@ -31,6 +31,7 @@ class IntegrationTest < Test::Unit::TestCase
     assert File.exists?(HOME + '/config/hello_world.yml')
     cfg = load_yml(HOME + '/config/hello_world.yml')
 
+    assert_equal 'svn', cfg['scm']['type']
     assert_equal SVN_URL, cfg['scm']['url']
     assert_equal 'aa@gmail.com', cfg['publisher']['mail']['recipients']
     assert_equal 'maven2', cfg['builder']['type']
@@ -42,6 +43,17 @@ class IntegrationTest < Test::Unit::TestCase
     run_cerb("build svn_repo")
     assert File.exists?(HOME + '/work/svn_repo/status.log')
     assert_equal 'succesful', IO.read(HOME + '/work/svn_repo/status.log')
+  end
+
+  def test_add_darcs_scm
+    output = run_cerb("  add   #{DARCS_URL}  SCM=darcs")
+    assert_match /was successfully added/, output
+
+    assert File.exists?(HOME + '/config/darcs_repo.yml')
+    cfg = load_yml(HOME + '/config/darcs_repo.yml')
+
+    assert_equal 'darcs', cfg['scm']['type']
+    assert_equal DARCS_URL, cfg['scm']['url']
   end
 
   def test_run_unexist_project

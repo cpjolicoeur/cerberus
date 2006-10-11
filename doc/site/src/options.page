@@ -37,6 +37,8 @@ publisher:
 scm:
   type:
   url:
+  user_name:
+  password:
 builder:
   type:
   rake:                                         

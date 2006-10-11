@@ -14,7 +14,8 @@ require 'cerberus/scm/svn'
 
 module Cerberus
   SCM_TYPES = {
-    :svn => Cerberus::SCM::SVN
+    :svn => Cerberus::SCM::SVN,
+    :darcs => Cerberus::SCM::Darcs
   }
 
   PUBLISHER_TYPES = {

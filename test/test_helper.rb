@@ -14,18 +14,24 @@ class Test::Unit::TestCase
   SVN_REPO = TEMP_DIR + '/svn_repo'
   SVN_URL = 'file:///' + SVN_REPO.gsub(/\\/,'/').gsub(/^\//,'').gsub(' ', '%20')
 
+  DARCS_REPO = TEMP_DIR + '/darcs_repo'
+  DARCS_URL = 'file:///' + DARCS_REPO.gsub(/\\/,'/').gsub(/^\//,'').gsub(' ', '%20')
+
   HOME = TEMP_DIR + '/home'
   ENV['CERBERUS_HOME'] = HOME
   ENV['CERBERUS_ENV'] = 'TEST'
 
-  def self.refresh_subversion
-    FileUtils.rm_rf TEMP_DIR
+  def self.refresh_repos
     FileUtils.mkpath SVN_REPO
     `svnadmin create "#{SVN_REPO}"`
-    `svnadmin load "#{SVN_REPO}" < "#{File.dirname(__FILE__)}/data/application.dump"`
+    `svnadmin load "#{SVN_REPO}" < "#{File.dirname(__FILE__)}/data/subversion.dump"`
+
+    FileUtils.mkpath DARCS_REPO
+    #Unpack darcs repo to DARCS_REPO
+    `unzip "#{File.dirname(__FILE__)}/data/darcs.zip" -d #{DARCS_REPO}`
   end
 
-  refresh_subversion
+  refresh_repos
 
   CERBERUS_PATH = File.expand_path(File.dirname(__FILE__) + '/../')
   def run_cerb(args)

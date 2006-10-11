@@ -3,7 +3,8 @@
 == Version 0.2.5
 Fix release
 
-* Added possibility to specify username and password for Subversion commands
+* Added possibility to specify user_name and password for Subversion commands
+* Added support of Darcs VCS
 
 == Version 0.2.4
 Features release

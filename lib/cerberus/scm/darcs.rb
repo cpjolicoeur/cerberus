@@ -8,41 +8,49 @@ class Cerberus::SCM::Darcs
 
   def update!
     if test(?d, @path + '/_darcs')
-      @status = execute("pull")
+      @status = execute('pull', '-v -a')
     else
-      FileUtils.mkpath(@path) unless test(?d,@path)
-      @status = execute("get", nil, @config[:scm, :url])
+      FileUtils.rm_rf(@path) if test(?d,@path)
+      FileUtils.mkpath(File.basename(@path)) unless test(?d,File.basename(@path))
+      @status = execute("get", @config[:scm, :url])
     end
+
+    extract_last_commit_info
   end
 
   def has_changes?
-    @status =~ /[A-Z]\s+[\w\/]+/
+    @status !~ /^No remote changes to pull in!$/
   end
 
   def current_revision
-    info['Revision'].to_i
+    @date
   end
 
   def url
-    info['URL']
+    @path
   end
 
   def last_commit_message
-    message = execute("log", "--limit 1 -v")
-    #strip first line that contains command line itself (svn log --limit ...)
-    if ((idx = message.index('-'*72)) != 0 )
-      message[idx..-1]
-    else
-      message
-    end
+    @message
   end
 
   def last_author
-    info['Last Changed Author']
+    @author
   end
 
   private
-  def execute(command, parameters = nil, pre_parameters = nil)
-    `#{@config[:bin_path]}darcs #{command} #{pre_parameters} #{@encoded_path} #{parameters}`
+  def execute(command, parameters = nil, with_path = true)
+    cmd = "#{@config[:bin_path]}darcs #{command} #{parameters}"
+    cmd << " #{@encoded_path}" if with_path
+    `#{cmd}`
+  end
+
+  def extract_last_commit_info
+    xml_message = execute('changes', "--last 1 --xml-output --repodir=#{@encoded_path}", false)
+    require 'rexml/document'
+    xml = REXML::Document.new(xml_message)
+    @author = xml.elements["changelog/patch/@author"].value
+    @date = xml.elements["changelog/patch/@date"].value
+    @message = xml.elements["changelog/patch/name"].get_text.value
   end
 end

@@ -56,11 +56,13 @@ class Cerberus::SCM::SVN
   end
 
   def info
-    output = execute("info")
-    @info ||= YAML.load(output)
+    unless @info
+      output = execute("info")
+      @info = YAML.load(output)
 
-    unless @info === Hash or @info['Repository Root'] #.size > 8
-      say "Could not parse svn output. Seems source directory #{@encoded_path} is corrupted.\n#{output}"
+      unless @info === Hash or @info['Repository Root'] #.size > 8
+        say "Could not parse svn output. Seems source directory #{@encoded_path} is corrupted.\n#{output}"
+      end
     end
     @info
   end
@@ -71,7 +73,7 @@ class Cerberus::SCM::SVN
 
   def auth_options
     auth = []
-    auth << "--username #{@config[:scm, :username]}" if @config[:scm, :username]
+    auth << "--username #{@config[:scm, :user_name]}" if @config[:scm, :user_name]
     auth << "--password #{@config[:scm, :password]}" if @config[:scm, :password]
 
     auth.join(' ')
