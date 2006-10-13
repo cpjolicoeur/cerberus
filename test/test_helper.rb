@@ -14,7 +14,7 @@ class Test::Unit::TestCase
   SVN_REPO = TEMP_DIR + '/svn_repo'
   SVN_URL = 'file:///' + SVN_REPO.gsub(/\\/,'/').gsub(/^\//,'').gsub(' ', '%20')
 
-  DARCS_REPO = "#{File.expand_path(File.dirname(__FILE__))}/data/darcs"
+  DARCS_REPO = TEMP_DIR + '/darcs_repo'
   DARCS_URL = 'file:///' + DARCS_REPO.gsub(/\\/,'/').gsub(/^\//,'').gsub(' ', '%20')
 
   HOME = TEMP_DIR + '/home'
@@ -26,6 +26,16 @@ class Test::Unit::TestCase
     FileUtils.mkpath SVN_REPO
     `svnadmin create "#{SVN_REPO}"`
     `svnadmin load "#{SVN_REPO}" < "#{File.dirname(__FILE__)}/data/subversion.dump"`
+
+    require 'zip/zip'
+    FileUtils.mkpath DARCS_REPO
+    Zip::ZipFile::open("#{File.dirname(__FILE__)}/data/darcs.zip") {|zf|
+      zf.each { |e|
+        fpath = File.join(DARCS_REPO, e.name)
+        FileUtils.mkdir_p(File.dirname(fpath))
+        zf.extract(e, fpath)
+      }
+    }
   end
 
   refresh_repos
