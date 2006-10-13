@@ -55,9 +55,9 @@ module Cerberus
       app_config = { 'scm' => {
           'url' => scm.url,
           'type' =>  scm_type },
-          'publisher' => {'mail' => {'recipients' => @cli_options[:recipients]}},
-          'builder' => {'type' => @cli_options[:builder]}
+          'publisher' => {'mail' => {'recipients' => @cli_options[:recipients]}}
       }
+      app_config['builder'] = {'type' => @cli_options[:builder]} if @cli_options[:builder]
       dump_yml(config_name, app_config)
       puts "Application '#{application_name}' was successfully added to Cerberus" unless @cli_options[:quiet]
     end
