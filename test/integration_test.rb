@@ -49,8 +49,8 @@ class IntegrationTest < Test::Unit::TestCase
     output = run_cerb("  add   #{DARCS_URL}  SCM=darcs")
     assert_match /was successfully added/, output
 
-    assert File.exists?(HOME + '/config/darcs_repo.yml')
-    cfg = load_yml(HOME + '/config/darcs_repo.yml')
+    assert File.exists?(HOME + '/config/darcs.yml')
+    cfg = load_yml(HOME + '/config/darcs.yml')
 
     assert_equal 'darcs', cfg['scm']['type']
     assert_equal DARCS_URL, cfg['scm']['url']
