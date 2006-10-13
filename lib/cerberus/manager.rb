@@ -59,7 +59,7 @@ module Cerberus
       }
       app_config['builder'] = {'type' => @cli_options[:builder]} if @cli_options[:builder]
       dump_yml(config_name, app_config)
-      puts "Application '#{application_name}' was successfully added to Cerberus" unless @cli_options[:quiet]
+      puts "Application '#{application_name}' has been added to Cerberus successfully" unless @cli_options[:quiet]
     end
 
     private

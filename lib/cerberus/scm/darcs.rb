@@ -12,7 +12,9 @@ class Cerberus::SCM::Darcs
     else
       FileUtils.rm_rf(@path) if test(?d,@path)
       FileUtils.mkpath(File.basename(@path)) unless test(?d,File.basename(@path))
-      @status = execute("get", @config[:scm, :url])
+
+      encoded_url = (@config[:scm, :url].include?(' ') ? "\"#{@config[:scm, :url]}\"" : @config[:scm, :url])
+      @status = execute("get", encoded_url)
     end
 
     extract_last_commit_info
@@ -40,13 +42,12 @@ class Cerberus::SCM::Darcs
 
   private
   def execute(command, parameters = nil, with_path = true)
-    cmd = "#{@config[:bin_path]}darcs #{command} #{parameters}"
-    cmd << " #{@encoded_path}" if with_path
+    cmd = "#{@config[:bin_path]}darcs #{command} #{parameters} --repodir=#{@encoded_path}"
     `#{cmd}`
   end
 
   def extract_last_commit_info
-    xml_message = execute('changes', "--last 1 --xml-output --repodir=#{@encoded_path}", false)
+    xml_message = execute('changes', "--last 1 --xml-output")
     require 'rexml/document'
     xml = REXML::Document.new(xml_message)
     @author = xml.elements["changelog/patch/@author"].value
