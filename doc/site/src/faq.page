@@ -58,3 +58,13 @@ To make it add /hooks/post-commit file with following content
 </pre>
 
 And do not forget to add execution permission to this file.
+
+
+h3. I would like to disable (but not to remove) project in Cerberus
+
+Sometime we need temporary disble built application that  __cerberus buildall__ command does not run it each time.
+
+To achieve it just rename configuration file for YOUR_APPLICATION from
+__config/YOUR_APPLICATION.yml__ to __config/YOUR_APPLICATION.yml.disabled__
+
+Cerberus picks up only configurations that end with .yml
