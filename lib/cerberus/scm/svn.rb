@@ -25,7 +25,7 @@ class Cerberus::SCM::SVN
   end
 
   def has_changes?
-    @status =~ /[A-Z]\s+[\w\/]+/
+    @status =~ /[A-Z]\s+[\w\/]+/ ? true : false
   end
 
   def current_revision

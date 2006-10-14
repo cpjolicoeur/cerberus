@@ -172,6 +172,7 @@ class FunctionalTest < Test::Unit::TestCase
 
     build = Cerberus::BuildCommand.new('darcsapp')
     build.run
+    assert build.scm.has_changes?
     assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
     mail = ActionMailer::Base.deliveries[0]
     output = mail.body
@@ -184,6 +185,48 @@ class FunctionalTest < Test::Unit::TestCase
     status_file = HOME + '/work/darcsapp/status.log'
     assert File.exists?(status_file)
     assert_equal 'succesful', IO.read(status_file)
-    assert 1, Dir[HOME + "/work/darcsapp/logs/*-setup.log"].size
+    assert 1, Dir[HOME + "/work/darcsapp/logs/*.log"].size
+
+    #There were no changes - no reaction should be
+    build = Cerberus::BuildCommand.new('darcsapp')
+    build.run
+    assert_equal false, build.scm.has_changes?
+    assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
+    assert 1, Dir[HOME + "/work/darcsapp/logs/*.log"].size
+
+    #now we add new broken test
+    test_case_name = "test/#{rand(10000)}_test.rb"
+    File.open(DARCS_REPO + '/' + test_case_name, 'w') { |f|
+      f << "require 'test/unit'
+        class A#{rand(10000)}Test < Test::Unit::TestCase
+          def test_ok
+            assert false
+          end
+        end"
+    }
+
+    curr_dir = Dir.pwd
+    Dir.chdir DARCS_REPO
+    `darcs add #{test_case_name}`
+    `darcs record -a -A test@gmail.com -m somepatch`
+    Dir.chdir curr_dir
+
+    build = Cerberus::BuildCommand.new('darcsapp')
+    build.run
+    assert build.scm.has_changes?
+    assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
+    assert 2, Dir[HOME + "/work/darcsapp/logs/*.log"].size
+
+    build = Cerberus::BuildCommand.new('darcsapp')
+    build.run
+    assert_equal false, build.scm.has_changes?
+    assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
+    assert 2, Dir[HOME + "/work/darcsapp/logs/*.log"].size
+
+    #Now we broke remote repository (imiitate that network unaccessage)
+    FileUtils.rm_rf DARCS_REPO
+    build = Cerberus::BuildCommand.new('darcsapp')
+    build.run
+    assert_equal false, build.scm.has_changes?
   end
 end

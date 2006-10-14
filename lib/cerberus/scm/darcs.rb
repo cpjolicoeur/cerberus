@@ -14,14 +14,17 @@ class Cerberus::SCM::Darcs
       FileUtils.mkpath(File.basename(@path)) unless test(?d,File.basename(@path))
 
       encoded_url = (@config[:scm, :url].include?(' ') ? "\"#{@config[:scm, :url]}\"" : @config[:scm, :url])
-      @status = execute("get", encoded_url)
+      @status = execute("get", "--partial #{encoded_url}")
     end
 
     extract_last_commit_info
   end
 
   def has_changes?
-    @status !~ /^No remote changes to pull in!$/
+    return false if @status =~ /No remote changes to pull in!/
+    return true if @status =~ /We have the following new \(to them\) patches:/
+    return true if @status =~ /Copying patch \d+ of \d+\.\.\. done!/
+    return false
   end
 
   def current_revision
@@ -40,6 +43,9 @@ class Cerberus::SCM::Darcs
     @author
   end
 
+  def output
+    @status
+  end
   private
   def execute(command, parameters = nil, with_path = true)
     cmd = "#{@config[:bin_path]}darcs #{command} #{parameters} --repodir=#{@encoded_path}"

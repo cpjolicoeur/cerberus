@@ -13,7 +13,7 @@ class IntegrationTest < Test::Unit::TestCase
 
   def test_add_project_as_url
     output = run_cerb("  add   #{SVN_URL}  ")
-    assert_match /was successfully added/, output
+    assert_match /has been added to Cerberus successfully/, output
     assert File.exists?(HOME + '/config/svn_repo.yml')
     assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['scm']['url']
 
@@ -26,7 +26,7 @@ class IntegrationTest < Test::Unit::TestCase
 
   def test_add_project_with_parameters
     output = run_cerb("  add   #{SVN_URL}  APPLICATION_NAME=hello_world  RECIPIENTS=aa@gmail.com   BUILDER=maven2")
-    assert_match /was successfully added/, output
+    assert_match /has been added to Cerberus successfully/, output
 
     assert File.exists?(HOME + '/config/hello_world.yml')
     cfg = load_yml(HOME + '/config/hello_world.yml')
@@ -47,7 +47,7 @@ class IntegrationTest < Test::Unit::TestCase
 
   def test_add_darcs_scm
     output = run_cerb("  add   #{DARCS_URL}  SCM=darcs")
-    assert_match /was successfully added/, output
+    assert_match /has been added to Cerberus successfully/, output
 
     assert File.exists?(HOME + '/config/darcs_repo.yml')
     cfg = load_yml(HOME + '/config/darcs_repo.yml')
