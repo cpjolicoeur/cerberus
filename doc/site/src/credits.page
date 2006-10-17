@@ -1,0 +1,12 @@
+---
+title: Credits
+inMenu: true
+orderInfo: 6
+---
+h2. Credits
+
+There is you could find names of the people who made Cerberus tool available.
+
+* "Anatol Pomozov":http://pomozov.info - original creator of Cerberus tool
+* Xavier Shay - several patches related RSS publisher
+* Mark Noworolski - patches related to Subversion SCM
