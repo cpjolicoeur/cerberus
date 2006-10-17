@@ -39,7 +39,7 @@ class Cerberus::SCM::SVN
   def last_commit_message
     message = execute("log", "--limit 1 -v")
     #strip first line that contains command line itself (svn log --limit ...)
-    if ((idx = message.index('-'*72)) != 0 )
+    if (idx = message.index('-'*72))
       message[idx..-1]
     else
       message
@@ -60,7 +60,7 @@ class Cerberus::SCM::SVN
       output = execute("info")
       @info = YAML.load(output)
 
-      unless @info === Hash or @info['Repository Root'] #.size > 8
+      unless @info.is_a?(Hash) or @info['Repository Root'] #.size > 8
         say "Could not parse svn output. Seems source directory #{@encoded_path} is corrupted.\n#{output}"
       end
     end
