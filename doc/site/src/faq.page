@@ -62,7 +62,7 @@ And do not forget to add execution permission to this file.
 
 h3. I would like to disable (but not to remove) project in Cerberus
 
-Sometime we need temporary disble built application that  __cerberus buildall__ command does not run it each time.
+Sometime we need to disable temporary application and do not allow __cerberus buildall__ command run it.
 
 To achieve it just rename configuration file for YOUR_APPLICATION from
 __config/YOUR_APPLICATION.yml__ to __config/YOUR_APPLICATION.yml.disabled__

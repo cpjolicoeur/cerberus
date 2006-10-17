@@ -9,7 +9,7 @@ a:hover, a:visited:hover {
   text-decoration: none;
 }
 body {
-  background-color: #ccc;
+  background-color: #3F3F3F;
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 80%;
   padding: 0;
@@ -42,8 +42,8 @@ h3 {
   text-align: left;
 }
 #header {
-  background-color: #69c;
-  border-bottom: 4px solid #369;
+  background-color: #205591;
+  border-bottom: 3px solid #0F3968;
   color: white;
   font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
   padding: 0;
@@ -64,19 +64,18 @@ h3 {
   text-decoration: underline;
 }
 #site-subtitle {
-  font-style: italic;
   letter-spacing: 2px;
   /*text-transform: lowercase;*/
 }
 #main {
   background-color: white;
-  border-bottom: 4px solid #9cf;
+  border-bottom: 3px solid #0F3968;
   float: left;
   width: 100%;
 }
 #content-wrapper {
   float: left;
-  width: 575px;
+  width: 600px;
 }
 #content {
   padding: 25px;
@@ -114,7 +113,7 @@ h3 {
 }
 #sidebar-wrapper {
   float: right;
-  width: 225px;
+  width: 200px;
 }
 #sidebar {
   font-size: 90%;
@@ -152,4 +151,11 @@ pre {
     margin: 4px 0px;
     font-size: 1.1em;
     overflow: auto;
+}
+blockquote {
+    font-size: 85%;
+    line-height: 1.5em;
+    color: #6A6A6A;
+    padding-left: 5px;
+    border-right: 3px solid #FFFCD7;
 }
