@@ -63,3 +63,13 @@ cerberus buildall     #Run all available projects
 It will check out latest sources and run tests for your application. If tests are broken - recipients will receive notifications.
 
 But of course better run Cerberus automatically from Cron. Run Cerberus for project each 10 minutes would be ok.
+
+== License
+
+This plugin is licensed under the MIT license. Complete license text
+is included in the LICENSE file.
+
+== Author
+
+This software was created by Anatol Pomozov <anatol.pomozov@gmail.com> and is
+located at http://cerberus.rubyforge.org.
