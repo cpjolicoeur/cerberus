@@ -20,9 +20,13 @@ module Cerberus
 
         subject = "[#{options[:application_name]}] #{subject}"
         generated_by = "--\nCerberus #{Cerberus::VERSION::STRING}, http://cerberus.rubyforge.org/"
-        body = [ manager.scm.last_commit_message, manager.builder.output, generated_by ].join("\n\n")
+        body = [ manager.scm.last_commit_message ]
+        if options[:changeset_url]
+          body << options[:changeset_url] + manager.scm.current_revision.to_s + "\n"
+        end
+        body += [ manager.builder.output, generated_by ]
 
-        return subject, body
+        return subject, body.join("\n")
       end
     end
   end

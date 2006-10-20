@@ -1,6 +1,6 @@
 #Copy this file to config.yml and configure notification services
 publisher:
-  active: mail jabber rss
+  active: mail jabber rss campfire
   mail:
     address: smtp.gmail.com
     port: 587
@@ -17,8 +17,11 @@ publisher:
     nick: cerb
     server: irc.freenode.net
     channel: cerberus
+  campfire:
+    
   rss:
     file: /usr/www/rss.xml
 builder:
   rake:
     task: migrate test
+#changeset_url: POINT_TO_YOUR_TRAC/changeset/

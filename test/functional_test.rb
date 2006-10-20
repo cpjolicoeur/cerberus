@@ -46,7 +46,7 @@ class FunctionalTest < Test::Unit::TestCase
   def test_build
     add_application('myapp', SVN_URL)
 
-    build = Cerberus::BuildCommand.new('myapp')
+    build = Cerberus::BuildCommand.new('myapp', :changeset_url => 'http://someurl.changeset.com/')
     build.run
     assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
     mail = ActionMailer::Base.deliveries[0]
@@ -56,6 +56,7 @@ class FunctionalTest < Test::Unit::TestCase
     assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
     assert output !~ /Task 'custom1' has been invoked/
     assert_equal '[myapp] Cerberus set up for project (#2)', mail.subject
+    assert output =~ %r{http://someurl.changeset.com/2}
 
     status_file = HOME + '/work/myapp/status.log'
     assert File.exists?(status_file)

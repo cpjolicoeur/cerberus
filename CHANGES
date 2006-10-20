@@ -3,6 +3,7 @@
 == Version 0.2.5
 Fix release
 
+* Added changeset_url option that adds quick link to browsable chanelist view
 * Added possibility to specify user_name and password for Subversion commands
 * Added support of Darcs VCS
 
