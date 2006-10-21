@@ -26,6 +26,15 @@ module Cerberus
     def load_yml(file_name, default = {})
       File.exists?(file_name) ? YAML::load(IO.read(file_name)) : default
     end
+
+    def silence_stream(stream)
+      old_stream = stream.dup
+      stream.reopen(RUBY_PLATFORM =~ /mswin/ ? 'NUL:' : '/dev/null')
+      stream.sync = true
+      yield
+    ensure
+      stream.reopen(old_stream)
+    end
   end
 end
 

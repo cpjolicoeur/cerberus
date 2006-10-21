@@ -17,10 +17,10 @@ publisher:
     nick: cerb
     server: irc.freenode.net
     channel: cerberus
-  campfire:
-    
-  rss:
-    file: /usr/www/rss.xml
+#  campfire:
+#    url: http://someemail:password@cerberustool.campfirenow.com/room/51660
+#  rss:
+#    file: /usr/www/rss.xml
 builder:
   rake:
     task: migrate test

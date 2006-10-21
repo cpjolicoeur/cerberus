@@ -230,4 +230,14 @@ class FunctionalTest < Test::Unit::TestCase
     build.run
     assert_equal false, build.scm.has_changes?
   end
+
+  def test_campfire_publisher
+    #there were no any messages cause login/password is incorrect. We just check that there was no any exceptions
+    add_application('campapp', SVN_URL, 'publisher' => {'active' => 'campfire', 'campfire' => 
+      {'url' => 'http://mail@gmail.com:somepwd@cerberustool.campfirenow.com/room/5166022'}
+    })
+
+    build = Cerberus::BuildCommand.new('campapp')
+    build.run
+  end
 end

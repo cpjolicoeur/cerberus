@@ -4,11 +4,11 @@ require 'rake/testtask'
 require 'rake/packagetask'
 require 'rake/gempackagetask'
 
-require "./lib/cerberus/version"
+require "./lib/cerberus/constants"
 
 PKG_BUILD     = ENV['PKG_BUILD'] ? '.' + ENV['PKG_BUILD'] : ''
 PKG_NAME      = 'cerberus'
-PKG_VERSION   = Cerberus::VERSION::STRING + PKG_BUILD
+PKG_VERSION   = Cerberus::VERSION + PKG_BUILD
 PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 
 RELEASE_NAME  = "REL #{PKG_VERSION}"

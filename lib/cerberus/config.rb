@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'active_support'
 
 require 'cerberus/constants'
 require 'cerberus/utils'

@@ -1,4 +1,4 @@
-require 'cerberus/version'
+require 'cerberus/constants'
 
 module Cerberus
   module Publisher
@@ -19,7 +19,7 @@ module Cerberus
         end
 
         subject = "[#{options[:application_name]}] #{subject}"
-        generated_by = "--\nCerberus #{Cerberus::VERSION::STRING}, http://cerberus.rubyforge.org/"
+        generated_by = "--\nCerberus #{Cerberus::VERSION}, http://cerberus.rubyforge.org/"
         body = [ manager.scm.last_commit_message ]
         if options[:changeset_url]
           body << options[:changeset_url] + manager.scm.current_revision.to_s + "\n"

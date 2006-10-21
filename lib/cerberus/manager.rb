@@ -10,7 +10,10 @@ require 'cerberus/publisher/mail'
 require 'cerberus/publisher/jabber'
 require 'cerberus/publisher/irc'
 require 'cerberus/publisher/rss'
+require 'cerberus/publisher/campfire'
+
 require 'cerberus/scm/svn'
+require 'cerberus/scm/darcs'
 
 module Cerberus
   SCM_TYPES = {
@@ -22,7 +25,8 @@ module Cerberus
     :mail => Cerberus::Publisher::Mail,
     :jabber => Cerberus::Publisher::Jabber,
     :irc => Cerberus::Publisher::IRC,
-    :rss => Cerberus::Publisher::RSS
+    :rss => Cerberus::Publisher::RSS,
+    :campfire => Cerberus::Publisher::Campfire
   }
 
   BUILDER_TYPES = {
@@ -154,8 +158,8 @@ module Cerberus
         if ENV['CERBERUS_ENV'] == 'TEST'
           raise e
         else
-          File.open("#{HOME}/work/#{@config[:application_name]}/error.log", File::WRONLY|File::APPEND|File::CREAT) do |f| 
-            f.puts Time.now.strftime("%a, %d %b %Y %H:%M:%S  --  #{e.class}")
+          File.open("#{HOME}/error.log", File::WRONLY|File::APPEND|File::CREAT) do |f| 
+            f.puts Time.now.strftime("%a, %d %b %Y %H:%M:%S [#{@config[:application_name]}] --  #{e.class}")
             f.puts e.message unless e.message.blank?
             f.puts e.backtrace.collect{|line| ' '*5 + line}
             f.puts "\n"

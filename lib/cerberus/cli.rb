@@ -1,6 +1,5 @@
 require 'cerberus/manager'
 require 'cerberus/utils'
-require 'cerberus/version'
 require 'cerberus/constants'
 
 module Cerberus
@@ -62,6 +61,6 @@ module Cerberus
       cerberus build <APPLICATION_NAME>  --- build watched application
       cerberus buildall       --- build all watched applications
 
-    Version #{Cerberus::VERSION::STRING}
+    Version #{Cerberus::VERSION}
   }.gsub("\n    ","\n")
 end
