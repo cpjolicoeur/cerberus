@@ -4,5 +4,4 @@
 + Add heartbit message
 + Add configuration migrations, for easier migration process
 + Add text 'getting better/worse' to messages
-+ Add Campfire support like in continuous builder plugin
-+ Add changeset url
+

@@ -28,7 +28,7 @@ class Cerberus::Builder::RubyBase
     silence_stream(STDERR) {
       ext.each do |e|
         begin
-          out = `#{@config[:bin_path]}#{@cmd}#{e} --version`
+          out = `#{@config[:bin_path]}#{@cmd}#{e} --version 2>&1`
           return "#{@cmd}#{e}" if out =~ /#{@cmd}/
         rescue
         end
