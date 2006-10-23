@@ -58,7 +58,7 @@ class Marshmallow
     connect(to) { |bot| bot.paste(what) }
   end
   
-  # https://david:stuff@37s.campfirenow.com/rooms/11234
+  # https://david:stuff@37s.campfirenow.com/room/11234
   def self.connect(to)
     if to =~ %r{(http|https)://([^:]+):(.+)@([^.]+).campfirenow.com/room/(\d+)}
       protocol, username, password, domain, room = $1, $2, $3, $4, $5

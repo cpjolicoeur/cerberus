@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 require 'cerberus/cli'
+require 'mock/marshmallow'
 
 class FunctionalTest < Test::Unit::TestCase
   def setup
@@ -239,5 +240,7 @@ class FunctionalTest < Test::Unit::TestCase
 
     build = Cerberus::BuildCommand.new('campapp')
     build.run
+
+    assert_equal 2, Marshmallow.counter
   end
 end

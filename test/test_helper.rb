@@ -76,6 +76,18 @@ end"
   def add_config(options)
     dump_yml(HOME + "/config.yml", options)
   end
+
+  # Overrides the method +method_name+ in +obj+ with the passed block
+  def override_method(obj, method_name, &block)
+    # Get the singleton class/eigenclass for 'obj'
+    klass = class <<obj; self; end 
+
+    # Undefine the old method (using 'send' since 'undef_method' is protected)
+    klass.send(:undef_method, method_name)
+
+    # Create the new method
+    klass.send(:define_method, method_name, block)
+  end
 end
 
 require 'cerberus/config'
