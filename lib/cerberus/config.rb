@@ -1,5 +1,3 @@
-require 'rubygems'
-
 require 'cerberus/constants'
 require 'cerberus/utils'
 

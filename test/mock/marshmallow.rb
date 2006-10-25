@@ -1,3 +1,5 @@
+require 'cerberus/publisher/campfire'
+
 class Marshmallow
   @@counter = 0
 

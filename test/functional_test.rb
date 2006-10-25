@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
-
-require 'cerberus/cli'
 require 'mock/marshmallow'
+require 'cerberus/cli'
 
 class FunctionalTest < Test::Unit::TestCase
   def setup

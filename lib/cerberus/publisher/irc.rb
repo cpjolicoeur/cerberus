@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'IRC'
 require 'cerberus/publisher/base'
 

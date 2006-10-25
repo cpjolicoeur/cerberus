@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'fileutils'
 
 require 'cerberus/utils'
@@ -6,35 +5,7 @@ require 'cerberus/constants'
 require 'cerberus/config'
 require 'cerberus/latch'
 
-require 'cerberus/publisher/mail'
-require 'cerberus/publisher/jabber'
-require 'cerberus/publisher/irc'
-require 'cerberus/publisher/rss'
-require 'cerberus/publisher/campfire'
-
-require 'cerberus/scm/svn'
-require 'cerberus/scm/darcs'
-
 module Cerberus
-  SCM_TYPES = {
-    :svn => Cerberus::SCM::SVN,
-    :darcs => Cerberus::SCM::Darcs
-  }
-
-  PUBLISHER_TYPES = {
-    :mail => Cerberus::Publisher::Mail,
-    :jabber => Cerberus::Publisher::Jabber,
-    :irc => Cerberus::Publisher::IRC,
-    :rss => Cerberus::Publisher::RSS,
-    :campfire => Cerberus::Publisher::Campfire
-  }
-
-  BUILDER_TYPES = {
-    :maven2 => Cerberus::Builder::Maven2,
-    :rake => Cerberus::Builder::Rake,
-    :rant => Cerberus::Builder::Rant
-  }
-
   class AddCommand
     EXAMPLE_CONFIG = File.expand_path(File.dirname(__FILE__) + '/config.example.yml')
     include Cerberus::Utils
@@ -45,8 +16,7 @@ module Cerberus
 
     def run
       scm_type = @cli_options[:scm] || 'svn'
-      say "SCM #{scm_type} not supported" unless SCM_TYPES[scm_type.to_sym]
-      scm = SCM_TYPES[scm_type.to_sym].new(@path, Config.new(nil, @cli_options))
+      scm = Cerberus::SCM.get(scm_type).new(@path, Config.new(nil, @cli_options))
       say "Can't find any #{scm_type} application under #{@path}" unless scm.url
 
       application_name = @cli_options[:application_name] || extract_project_name(@path)
@@ -100,10 +70,10 @@ module Cerberus
       @status = Status.new("#{app_root}/status.log")
 
       scm_type = @config[:scm, :type]
-      @scm = SCM_TYPES[scm_type.to_sym].new(@config[:application_root], @config)
+      @scm = SCM.get(scm_type).new(@config[:application_root], @config)
 
       builder_type = get_configuration_option(@config[:builder], :type, :rake)
-      @builder = BUILDER_TYPES[builder_type.to_sym].new(@config)
+      @builder = Builder.get(builder_type).new(@config)
     end
  
     def run
@@ -148,9 +118,7 @@ module Cerberus
             active_publishers = get_configuration_option(@config[:publisher], :active, 'mail')
             active_publishers.split(/\W+/).each do |pub|
               raise "Publisher have no configuration: #{pub}" unless @config[:publisher, pub]
-              clazz = PUBLISHER_TYPES[pub.to_sym]
-              raise "There is no such publisher: #{pub}" unless clazz
-              clazz.publish(state, self, @config)
+              Publisher.get(pub).publish(state, self, @config)
             end
           end
         end #lock
@@ -213,8 +181,57 @@ module Cerberus
     end
     
     def recall
-      value = File.exists?(@path) ? File.read(@path) : false
-      value.blank? ? false : value.to_sym
+      return false unless File.exists?(@path)
+      value = File.read(@path)
+      value.empty? ? false : value.to_sym
+    end
+  end
+end
+
+module Cerberus
+  module SCM
+    TYPES = {
+      :svn => 'SVN', #Cerberus::SCM
+      :darcs => 'Darcs'
+    }
+
+    def self.get(type)
+       class_name = TYPES[type.to_sym]
+       say "SCM #{type} not supported" unless class_name
+       require "cerberus/scm/#{type}"
+       const_get(class_name)
+    end
+  end
+
+  module Publisher
+    TYPES = {
+      :mail => 'Mail', #Cerberus::Publisher
+      :jabber => 'Jabber',
+      :irc => 'IRC',
+      :rss => 'RSS',
+      :campfire => 'Campfire'
+    }
+
+    def self.get(type)
+       class_name = TYPES[type.to_sym]
+       say "Publisher #{type} not supported" unless class_name
+       require "cerberus/publisher/#{type}"
+       const_get(class_name)
+    end
+  end
+
+  module Builder
+    TYPES = {
+      :maven2 => 'Maven2', #Cerberus::Builder
+      :rake => 'Rake',
+      :rant => 'Rant'
+    }
+
+    def self.get(type)
+       class_name = TYPES[type.to_sym]
+       say "Builder #{type} not supported" unless class_name
+       require "cerberus/builder/#{type}"
+       const_get(class_name)
     end
   end
 end

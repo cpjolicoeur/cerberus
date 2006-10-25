@@ -1,6 +1,5 @@
 $:.unshift File.dirname(__FILE__) + '/../lib'
 
-require 'rubygems'
 require 'test/unit'
 require 'fileutils'
 
@@ -27,6 +26,7 @@ class Test::Unit::TestCase
     `svnadmin create "#{SVN_REPO}"`
     `svnadmin load "#{SVN_REPO}" < "#{File.dirname(__FILE__)}/data/subversion.dump"`
 
+    require 'rubygems'
     require 'zip/zip'
     FileUtils.mkpath DARCS_REPO
     Zip::ZipFile::open("#{File.dirname(__FILE__)}/data/darcs.zip") {|zf|

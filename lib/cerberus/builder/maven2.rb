@@ -1,3 +1,5 @@
+require 'cerberus/builder/ruby_base'
+
 class Cerberus::Builder::Maven2
   attr_reader :output
 

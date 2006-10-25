@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'jabber4r/jabber4r'
 require 'cerberus/publisher/base'
 
