@@ -2,6 +2,8 @@ require File.dirname(__FILE__) + '/test_helper'
 require 'mock/marshmallow'
 require 'cerberus/cli'
 
+require 'action_mailer'
+
 class FunctionalTest < Test::Unit::TestCase
   def setup
     FileUtils.rm_rf HOME

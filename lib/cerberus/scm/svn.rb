@@ -60,7 +60,7 @@ class Cerberus::SCM::SVN
       output = execute("info")
       @info = YAML.load(output)
 
-      unless @info.is_a?(Hash) or @info['Repository Root'] #.size > 8
+      if not @info.is_a?(Hash) or @info['Repository Root'].nil? #.size > 8
         say "Could not parse svn output. Seems source directory #{@encoded_path} is corrupted.\n#{output}"
       end
     end
