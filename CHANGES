@@ -3,6 +3,7 @@
 == SVN
 
 * Use lazy loading of cerberus components (publishers, vcs, builder)
+* Show Cerberus home in Help
 
 == Version 0.3.0
 Fix release

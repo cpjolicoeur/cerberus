@@ -61,6 +61,7 @@ module Cerberus
       cerberus build <APPLICATION_NAME>  --- build watched application
       cerberus buildall       --- build all watched applications
 
-    Version #{Cerberus::VERSION}
+    Version: #{Cerberus::VERSION}
+    Cerberus Home Path: "#{Cerberus::HOME}"
   }.gsub("\n    ","\n")
 end
