@@ -58,7 +58,7 @@ module Cerberus
 
     def initialize(application_name, cli_options = {})
       unless File.exists?("#{HOME}/config/#{application_name}.yml")
-        say "Project #{application_name} does not present in Cerberus"
+        say "Project '#{application_name}' does not present in Cerberus. Type 'cerberus list' to see the list of all active projects."
       end
 
       app_root = "#{HOME}/work/#{application_name}"
@@ -167,6 +167,28 @@ module Cerberus
           t.kill
           @already_waited = true
         end
+      end
+    end
+  end
+
+  class ListCommand
+    def initialize(cli_options = {})
+    end
+
+    def run
+      projects = Dir["#{HOME}/config/*.yml"]
+      if projects.empty?
+        puts "There are no any active projects" 
+      else
+        puts "List of active applications:"
+
+        projects.each do |fn|
+          fn =~ %r{#{HOME}/config/(.*).yml}
+
+          puts "  * #{$1}"
+        end
+
+        puts "\nType 'cerberus build PROJECT_NAME' to build any of these projects"
       end
     end
   end

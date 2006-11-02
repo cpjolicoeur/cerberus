@@ -10,7 +10,7 @@ module Cerberus
       say HELP if args.empty?
 
       command = args.shift
-      say HELP unless %w(add build buildall).include?(command)
+      say HELP unless %w(add build buildall list).include?(command)
 
       cli_options = extract_options(args)
 
@@ -29,6 +29,9 @@ module Cerberus
         command.run
       when 'buildall'
         command = Cerberus::BuildAllCommand.new(cli_options)
+        command.run
+      when 'list'
+        command = Cerberus::ListCommand.new(cli_options)
         command.run
       end
     end
@@ -56,12 +59,14 @@ module Cerberus
     Cerberus is a simple Continuous Integration tool for Ruby projects that run from command-line interface.
 
     Usage:
-      cerberus add <URL>      --- add project from svn repository to list watched of applications
-      cerberus add <PATH>     --- add project from local path to list of watched applications
-      cerberus build <APPLICATION_NAME>  --- build watched application
-      cerberus buildall       --- build all watched applications
+      cerberus add <URL>     --- add project from svn repository to list watched of applications
+      cerberus add <PATH>    --- add project from local path to list of watched applications
+      cerberus build <NAME>  --- build watched application
+      cerberus buildall      --- build all watched applications
+      cerberus list          --- see the list of all watched applications
 
     Version: #{Cerberus::VERSION}
-    Cerberus Home Path: "#{Cerberus::HOME}"
+    Cerberus Path: "#{Cerberus::HOME}"
+    Cerberus Homepage: http://cerberus.rubyforge.org
   }.gsub("\n    ","\n")
 end

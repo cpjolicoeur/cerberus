@@ -24,6 +24,12 @@ class IntegrationTest < Test::Unit::TestCase
     assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['scm']['url']
   end
 
+  def test_list_command
+    run_cerb("  add   #{SVN_URL}  APPLICATION_NAME=mamba ")
+    output = run_cerb('list')
+    assert_match /mamba/, output
+  end
+
   def test_add_project_with_parameters
     output = run_cerb("  add   #{SVN_URL}  APPLICATION_NAME=hello_world  RECIPIENTS=aa@gmail.com   BUILDER=maven2")
     assert_match /has been added to Cerberus successfully/, output
