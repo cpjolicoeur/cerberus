@@ -68,3 +68,16 @@ To achieve it just rename configuration file for YOUR_APPLICATION from
 __config/YOUR_APPLICATION.yml__ to __config/YOUR_APPLICATION.yml.disabled__
 
 Cerberus picks up only configurations that end with .yml
+
+h3. Cerberus hangs on updating password-protected repository
+
+When subversion tries to update password-protected repository it prompts user to enter user credentials. Cerberus could not interact with subversion client in interactive way. So subversion would wait password from Cerberus for infinity.
+
+To solve it you need to specify username and password pair like in example below.
+<pre>
+scm:
+  type: svn
+  url: svn+ssh://rubyforge.org/var/svn/cerberus
+  user_name: someuser
+  password: somepassword
+</pre>
