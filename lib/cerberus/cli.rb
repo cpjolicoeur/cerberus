@@ -68,5 +68,5 @@ module Cerberus
     Version: #{Cerberus::VERSION}
     Cerberus Path: "#{Cerberus::HOME}"
     Cerberus Homepage: http://cerberus.rubyforge.org
-  }.gsub("\n    ","\n")
+    }.gsub("\n    ","\n")
 end
