@@ -48,6 +48,10 @@ builder:
   maven2:  
     cmd:
     task:
+  bjam:
+    build_dir:
+    cmd:
+    target:
 log:
   enable:
 changeset_url: 

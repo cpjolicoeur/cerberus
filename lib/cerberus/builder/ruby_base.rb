@@ -1,3 +1,5 @@
+require 'cerberus/builder/base'
+
 class Cerberus::Builder::RubyBase
   include Cerberus::Utils
   attr_reader :output

@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 require 'cerberus/builder/maven2'
-require 'mock/manager'
 require 'tmpdir'
 
 class Cerberus::Builder::Maven2

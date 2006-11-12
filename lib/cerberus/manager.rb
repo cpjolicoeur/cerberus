@@ -246,7 +246,8 @@ module Cerberus
     TYPES = {
       :maven2 => 'Maven2', #Cerberus::Builder
       :rake => 'Rake',
-      :rant => 'Rant'
+      :rant => 'Rant',
+      :bjam => 'Bjam'
     }
 
     def self.get(type)

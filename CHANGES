@@ -5,6 +5,7 @@
 * Use lazy loading of cerberus components (publishers, vcs, builder)
 * Show Cerberus home in Help
 * Added 'list' command that shows names of all *active* projects
+* Added BJam building tool http://www.boost.org/tools/build/v2/index.html
 
 == Version 0.3.0
 Fix release
