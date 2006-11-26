@@ -5,3 +5,9 @@
 + Add configuration migrations, for easier migration process
 + Add text 'getting better/worse' to messages
 
+
+Add support of X10 devices
+   http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/124460
+
+
+Add support of RSCM project
