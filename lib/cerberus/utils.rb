@@ -35,6 +35,15 @@ module Cerberus
     ensure
       stream.reopen(old_stream)
     end
+
+    def exec_successful?(cmd)
+      begin
+        `#{cmd}`
+        return true
+      rescue
+        return false
+      end
+    end
   end
 end
 

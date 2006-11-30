@@ -10,6 +10,10 @@ class Cerberus::SCM::SVN
     @encoded_path = (@path.include?(' ') ? "\"#{@path}\"" : @path)
   end
 
+  def installed?
+    exec_successful? "#{@config[:bin_path]}svn --version"
+  end
+
   def update!
     if test(?d, @path + '/.svn') #check first that it was not locked 
       execute("cleanup") if locked?

@@ -71,6 +71,7 @@ module Cerberus
 
       scm_type = @config[:scm, :type]
       @scm = SCM.get(scm_type).new(@config[:application_root], @config)
+      say "Client for SCM '#{scm_type}' does not installed" unless @scm.installed?
 
       builder_type = get_configuration_option(@config[:builder], :type, :rake)
       @builder = Builder.get(builder_type).new(@config)
@@ -180,7 +181,7 @@ module Cerberus
       if projects.empty?
         puts "There are no any active projects" 
       else
-        puts "List of active applications:"
+        puts "List of active projects:"
 
         projects.each do |fn|
           fn =~ %r{#{HOME}/config/(.*).yml}
@@ -214,7 +215,8 @@ module Cerberus
   module SCM
     TYPES = {
       :svn => 'SVN', #Cerberus::SCM
-      :darcs => 'Darcs'
+      :darcs => 'Darcs',
+      :perforce => 'Perforce'
     }
 
     def self.get(type)

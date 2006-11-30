@@ -1,9 +1,17 @@
+require 'cerberus/utils'
+
 class Cerberus::SCM::Darcs
+  include Cerberus::Utils
+  
   def initialize(path, config = {})
     raise "Path can't be nil" unless path
 
     @path, @config = path.strip, config
     @encoded_path = (@path.include?(' ') ? "\"#{@path}\"" : @path)
+  end
+
+  def installed?
+    exec_successful? "#{@config[:bin_path]}darcs --version"
   end
 
   def update!
@@ -46,6 +54,7 @@ class Cerberus::SCM::Darcs
   def output
     @status
   end
+
   private
   def execute(command, parameters = nil, with_path = true)
     cmd = "#{@config[:bin_path]}darcs #{command} #{parameters} --repodir=#{@encoded_path}"

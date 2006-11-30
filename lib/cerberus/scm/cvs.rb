@@ -1,9 +1,17 @@
+require 'cerberus/utils'
+
 class Cerberus::SCM::CVS
+  include Cerberus::Utils
+  
   def initialize(path, config = {})
     raise "Path can't be nil" unless path
 
     @path, @config = path.strip, config
     @encoded_path = (@path.include?(' ') ? "\"#{@path}\"" : @path)
+  end
+
+  def installed?
+    exec_successful? "#{@config[:bin_path]}cvs --version"
   end
 
   def update!
@@ -16,29 +24,23 @@ class Cerberus::SCM::CVS
   end
 
   def has_changes?
-    @status =~ /[A-Z]\s+[\w\/]+/
+    @status =~ /^[U|P|C] (.*)/
   end
 
   def current_revision
-    info['Revision'].to_i
+    raise NotImplementedError
   end
 
   def url
-    info['URL']
+    raise NotImplementedError
   end
 
   def last_commit_message
-    message = execute("log", "--limit 1 -v")
-    #strip first line that contains command line itself (svn log --limit ...)
-    if ((idx = message.index('-'*72)) != 0 )
-      message[idx..-1]
-    else
-      message
-    end
+    raise NotImplementedError
   end
 
   def last_author
-    info['Last Changed Author']
+    raise NotImplementedError
   end
 
   private

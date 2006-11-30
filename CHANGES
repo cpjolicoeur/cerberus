@@ -1,6 +1,12 @@
 = Cerberus Changelog
 
-== SVN
+== Version 0,3,2
+Added Perforce SCM support
+
+* Added support of Perforce
+
+== Version 0.3.1
+Added BJam builder support
 
 * Use lazy loading of cerberus components (publishers, vcs, builder)
 * Show Cerberus home in Help

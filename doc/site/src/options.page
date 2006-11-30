@@ -41,6 +41,7 @@ scm:
   url:
   user_name:
   password:
+  view: #for perforce only
 builder:
   type:
   rake:                                         
