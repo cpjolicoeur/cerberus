@@ -65,9 +65,7 @@ GEM_SPEC = Gem::Specification.new do |s|
 
   s.require_path = 'lib'
 
-  s.has_rdoc = true
-  s.extra_rdoc_files = [ "README" ]
-  s.rdoc_options = [ "--main", "README" ]
+  s.has_rdoc = false
 
   s.test_suite_file = "test/integration_test.rb"
 
