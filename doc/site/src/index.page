@@ -13,6 +13,7 @@ Cerberus requires:
 * "subversion":http://subversion.tigris.org/ client - 1.2 or higher (optional)
 * "darcs":http://darcs.net/ client - 1.0.7 or higher (optional)
 * "bjam":http://www.boost.org/tools/build/v2/index.html (optional)
+* "perforce":http://www.perforce.com/ (optional)
 
 h4. What 'Cerberus' name means?
 
