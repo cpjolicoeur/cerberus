@@ -1,6 +1,10 @@
 = Cerberus Changelog
 
-== Version 0,3,2
+== SVN
+
+* Fix Const load problem with Rails 1.2RC1
+
+== Version 0.3.2
 Added Perforce SCM support
 
 * Added support of Perforce
