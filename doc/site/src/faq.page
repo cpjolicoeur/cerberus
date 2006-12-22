@@ -81,3 +81,20 @@ scm:
   user_name: someuser
   password: somepassword
 </pre>
+
+h3. I have added Cerberus job to Cron but it does not work for me. It is even do not start building.
+
+Seems that you configured Cron incorrectly.
+
+Lets imagine that you trying to run Cerberus each 10 minutes. You need to start editing your crontab file.
+Type <pre>crontab -e</pre>
+And then add your job here <pre>*/10 * * * * cerberus buildall</pre>
+This task would start checking all projects each 10 minutes. Take into account that tests would be run only if source changes were detected.
+
+
+You also need to say cron where to find executables like 'cerberus', 'svn', 'darcs', 'rake' and others. For it you need to add PATH environment variable on the top of crontab file.
+<pre>PATH=/opt/local/bin/</pre> Of course path depends on your system.
+
+It works for me. But if you have some strange errors following trick could help you. Add <pre>MAILTO=your.mail.go@s.here</pre> on the top of crontab file and all Cron output would be directed to your mailbox.
+
+For more info please read Cron mainual <pre>man crontab</pre>
