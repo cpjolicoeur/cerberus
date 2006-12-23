@@ -15,7 +15,7 @@ Cerberus requires:
 * "bjam":http://www.boost.org/tools/build/v2/index.html (optional)
 * "perforce":http://www.perforce.com/ (optional)
 
-h4. What 'Cerberus' name means?
+h4. What does 'Cerberus' name mean?
 
 Quote from "Wikipedia":http://en.wikipedia.org/wiki/Cerberus
 bq. Cerberus or Kerberos (Kerberos, demon of the pit), was the hound of Hades-a monstrous three-headed dog with a snake for a tail and innumerable snake heads on his back.
@@ -23,9 +23,9 @@ He guarded the gate to Hades (the Greek underworld) and ensured that the dead co
 
 !images/cerberus.gif!
 
-So Ruby Cerberus tool (like his ancestor) will guard your application tests and not allow your project to go to the world of dead projects.
+So Ruby Cerberus tool (like his ancestor) will guard your application tests and not let your project go to the world of dead projects.
 
-h4. There is several solutions already present, why do you need to use Cerberus?
+h4. There are several solutions already present, why do you need to use Cerberus?
 
 Main advantages of Cerberus over other solutions:
 * Cerberus could be installed on any machine not only where SVN repository located.
@@ -75,4 +75,4 @@ or run __all__ registered projects
 
 It will check out latest sources and run tests for your application. If tests are broken - recipients will receive notifications.
 
-But of course better run Cerberus automatically from Cron. Run Cerberus for project each 10 minutes would be ok.
+But of course better to run Cerberus automatically i.e. from Cron. Run Cerberus for project each 10 minutes would be ok.

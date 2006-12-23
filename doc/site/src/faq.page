@@ -5,6 +5,11 @@ orderInfo: 2
 ---
 h2. FAQ
 
+h3. Why Cerberus uses external scheduler and not internal like CruiseControl do.
+
+Cerberus was developed as __stateless__ continuous building tool. It means 
+
+
 h3. How to change task for Rake
 
 __Q: In my project we need to run Rails migrations before tests. But by default Cerberus runs :default task.

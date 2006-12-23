@@ -3,6 +3,7 @@
 == SVN
 
 * Fix Const load problem with Rails 1.2RC1
+* Correctly implement Jabber publisher using XMPP4R library
 
 == Version 0.3.2
 Added Perforce SCM support
