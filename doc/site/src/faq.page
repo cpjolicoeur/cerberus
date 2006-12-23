@@ -7,8 +7,18 @@ h2. FAQ
 
 h3. Why Cerberus uses external scheduler and not internal like CruiseControl do.
 
-Cerberus was developed as __stateless__ continuous building tool. It means 
+Cerberus was developed as __stateless__ continuous building tool.
 
+Stateless in this sentence means that application does not sit in the RAM all the time.
+For example CruiseControl requires 120 Megabites of RAM even if it anything does not do.
+If you have dedicated server just for running Continuous Integration tool then probably you would not care about it. 
+But if you like to use your development computer for building projects then probably you would like to avoid wasting of RAM and CPU cycles of your computer.
+
+In this situation stateless  nature of Cerberus would help you.
+Contrary to CruiseControl Cerberus process would not be run most of the time. Time to time Cerberus would be activated by external scheduler (or subversion hook or anything else) 
+to check if sources in repository are changed. Time of checking usually small so Cerberus process would not take memory too long.
+
+It is really smart and thrifty technique.
 
 h3. How to change task for Rake
 

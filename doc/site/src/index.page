@@ -5,7 +5,13 @@ orderInfo: 1
 ---
 h2. Cerberus
 
-Cerberus is Continuous Builder software. It could be periodically run from scheduler and check if application tests are broken. If it happens then Cerberus will send notification to developers. Cerberus perfectly works both on Windows and *nix platforms.
+Cerberus is lightweight and easy-in-use Continuous Builder software for Ruby. 
+It could be periodically run from scheduler and check if application tests are broken. 
+If it happens Cerberus would send notification to developers.
+
+Cerberus perfectly works both on Windows and *nix platforms and supports popular version control systems like
+Subversion, Darcs and Perforce and many ways to publish build results such as mail, jabber, "Campfire":http://www.campfirenow.com/, 
+IRC, RSS files.
 
 Cerberus requires: 
 * "ruby":http://ruby-lang.org/en/ - 1.8.2 or higher

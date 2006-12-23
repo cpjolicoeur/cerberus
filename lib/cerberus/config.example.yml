@@ -8,10 +8,8 @@ publisher:
     user_name: someuser
     password: somepassword
 #  jabber:
-#    jid: cerberus@gtalk.google.com
-#    port: 5222
-#    password: mypass
-#    digest: false
+#    jid: somemailbox@gmail.com/cerberus
+#    password: somepassword
 #  irc:
 #    nick: cerb
 #    server: irc.freenode.net
