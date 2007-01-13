@@ -17,7 +17,7 @@
         <div id="sidebar-wrapper">
           <div id="sidebar">
             <h3>Menu</h3>
-            {menu: }
+            {menu: {menuStyle: vertical}}
             <dl>
               <dt><a href="http://rubyforge.org/frs/?group_id=1794">Downloads</a><br /></dt>
               <dt><a href="http://rubyforge.org/tracker/?group_id=1794">Issue Tracker</a><br /></dt>
@@ -26,7 +26,7 @@
           </div>
         </div>
         <div id="content-wrapper">
-          <div id="content">{content: }</div>
+          <div id="content">{block: content}</div>
         </div>
       </div>
       <hr class="hidden" />

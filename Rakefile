@@ -53,7 +53,7 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.add_dependency 'actionmailer', '>= 1.2.5'
   s.add_dependency 'rake', '>= 0.7.1'
   s.add_dependency 'xmpp4r', '>= 0.3'
-  s.add_dependency 'Ruby-IRC', '>= 1.0.3'
+  s.add_dependency 'Ruby-IRC', '>= 1.0.7'
 
   s.files = Dir.glob("{bin,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
   s.files += %w(LICENSE README CHANGES Rakefile)
@@ -143,7 +143,12 @@ task :publish_news do
   end
 end
 
-task :publish_site do
-  system('cd doc/site && webgen')
+require 'webgen/rake/webgentask'
+
+Webgen::Rake::WebgenTask.new do |t|
+  t.directory = File.join(Dir.pwd, "doc/site")
+end
+
+task :publish_site => :webgen do
   sh %{scp -r -q doc/site/output/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/}
 end

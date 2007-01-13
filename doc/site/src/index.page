@@ -44,7 +44,7 @@ Main advantages of Cerberus over other solutions:
  
 To use Cerberus it is very easy. First install it. RubyGems package manager is an easiest way to do it.
 
-@gem install cerberus@
+@gem install --include-dependencies cerberus@
 
 or get Cerberus distribution package right from "download page":http://rubyforge.org/frs/?group_id=1794&release_id=6442
 
@@ -82,3 +82,7 @@ or run __all__ registered projects
 It will check out latest sources and run tests for your application. If tests are broken - recipients will receive notifications.
 
 But of course better to run Cerberus automatically i.e. from Cron. Run Cerberus for project each 10 minutes would be ok.
+
+Also if you have possibility to install own software where your Subversion server located then better to run cerberus from Subversion hook. In this case Cerberus would run right after checkout withot any delays!
+
+Now you see that Cerberus setup is very easy thing - no need long manuals and payable training, no any consultants and weeks of setup process. Cerberus - just use it! (c)
