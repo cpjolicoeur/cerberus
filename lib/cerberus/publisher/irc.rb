@@ -3,6 +3,8 @@ require 'IRC'
 require 'cerberus/publisher/base'
 
 class Cerberus::Publisher::IRC < Cerberus::Publisher::Base
+  class << self; include Cerberus::Utils end
+
   def self.publish(state, manager, options)
     irc_options = options[:publisher, :irc]
     raise "There is no channel provided for IRC publisher" unless irc_options[:channel]
@@ -21,11 +23,7 @@ class Cerberus::Publisher::IRC < Cerberus::Publisher::Base
         }
         bot.send_quit
       }
-      begin
-        bot.connect #Why it always fails?
-      rescue Exception => e
-        puts e.message
-      end
+      bot.connect
     }
   end
 end

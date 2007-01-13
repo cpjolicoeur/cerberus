@@ -1,7 +1,7 @@
 require 'cerberus/builder/base'
 
 class Cerberus::Builder::Maven2
-  attr_reader :output
+  attr_reader :output, :brokeness
 
   def initialize(config)
     @config = config
@@ -23,7 +23,9 @@ class Cerberus::Builder::Maven2
   def add_error_information
     str = @output
     @output = ''
+    @brokeness = 0
     while str =~ / <<< FAILURE!$/
+      @brokeness += 1
       s = $'
 
       $` =~ /^(.|\n)*Running (.*)$/

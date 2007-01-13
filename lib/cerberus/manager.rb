@@ -16,7 +16,7 @@ module Cerberus
     end
 
     def run
-      scm_type = @cli_options[:scm] || 'svn'
+      scm_type = @cli_options[:scm] || Cerberus::SCM.guess_type(@path) || 'svn'
       scm = Cerberus::SCM.get(scm_type).new(@path, Config.new(nil, @cli_options))
       say "Can't find any #{scm_type} application under #{@path}" unless scm.url
 
@@ -68,7 +68,7 @@ module Cerberus
       @config = Config.new(application_name, cli_options.merge(def_options))
       @config.merge!(DEFAULT_CONFIG, false)
 
-      @status = Status.new("#{app_root}/status.log")
+      @status = Status.read("#{app_root}/status.log")
 
       scm_type = @config[:scm, :type]
       @scm = SCM.get(scm_type).new(@config[:application_root], @config)
@@ -81,48 +81,33 @@ module Cerberus
     def run
       begin
         Latch.lock("#{HOME}/work/#{@config[:application_name]}/.lock", :lock_ttl => 2 * LOCK_WAIT) do
-          previous_status = @status.recall
           @scm.update!
 
-          state = 
-          if @scm.has_changes? or @config[:force] or not previous_status
-            if status = @builder.run
-              @status.keep(:succesful)
-              case previous_status
-              when :failed
-                :revival
-              when :succesful
-                :succesful
-              when false
-                :setup
+          if @scm.has_changes? or @config[:force] or @status.previous_state.nil?
+            build_successful = @builder.run
+            @status.keep(build_successful, @scm.current_revision, @builder.brokeness)
+
+            #Save logs to directory
+            if @config[:log, :enable]
+              log_dir = "#{HOME}/work/#{@config[:application_name]}/logs/"
+              FileUtils.mkpath(log_dir)
+
+              time = Time.now.strftime("%Y%m%d%H%M%S")
+              file_name = "#{log_dir}/#{time}-#{@status.current_state.to_s}.log"
+              body = [ scm.last_commit_message, builder.output ].join("\n\n")
+              IO.write(file_name, body)
+            end
+
+            #send notifications
+            unless @status.current_state == :successful
+              active_publishers = get_configuration_option(@config[:publisher], :active, 'mail')
+              active_publishers.split(/\W+/).each do |pub|
+                raise "Publisher have no configuration: #{pub}" unless @config[:publisher, pub]
+                Publisher.get(pub).publish(@status, self, @config)
               end
-            else
-              @status.keep(:failed)
-              previous_status == :failed ? :broken : :failure
-            end
-          else
-            :unchanged
-          end
-
-          #Save logs to directory
-          if @config[:log, :enable] and state != :unchanged
-            log_dir = "#{HOME}/work/#{@config[:application_name]}/logs/"
-            FileUtils.mkpath(log_dir)
-
-            time = Time.now.strftime("%Y%m%d%H%M%S")
-            file_name = "#{log_dir}/#{time}-#{state.to_s}.log"
-            body = [ scm.last_commit_message, builder.output ].join("\n\n")
-            IO.write(file_name, body)
-          end
-
-          #send notifications
-          if [:failure, :broken, :revival, :setup].include?(state)
-            active_publishers = get_configuration_option(@config[:publisher], :active, 'mail')
-            active_publishers.split(/\W+/).each do |pub|
-              raise "Publisher have no configuration: #{pub}" unless @config[:publisher, pub]
-              Publisher.get(pub).publish(state, self, @config)
             end
           end
+
         end #lock
       rescue Exception => e
         if ENV['CERBERUS_ENV'] == 'TEST'
@@ -174,7 +159,7 @@ module Cerberus
   end
 
   class ListCommand
-    def initialize(cli_options = {})
+    def initialize(cli_options = {})                                                                             
     end
 
     def run
@@ -195,19 +180,74 @@ module Cerberus
     end
   end
 
+  #Fields that are contained in status file
+  # build_status
+  # build_time
+  # build_revision
+  # successful_time
+  # successful_revision
+  # brokeness
   class Status
-    def initialize(path)
-      @path = path
+    attr_reader :previous_state, :previous_brokeness, :current_state, :current_brokeness
+
+    def initialize(param)
+      if param.is_a? Hash
+        @hash = param
+        @current_state = @hash['build_status'].to_sym
+      else
+        @path = param
+        value = File.exists?(@path) ? YAML.load(IO.read(@path)) : nil
+
+        @hash =
+        case value
+          when String
+            value = 'successful' if value == 'succesful' #fix typo in config values
+            {'build_status' => value}
+          when nil
+            {}
+          else
+            value
+        end
+      end
+
+      @previous_state = @hash['build_status'].to_sym unless @hash['build_status'].nil?
+      @previous_brokeness = @hash['brokeness']
+
+      @already_kept = false
     end
-    
-    def keep(status)
-      File.open(@path, "w+", 0777) { |file| file.write(status.to_s) }
+
+    def self.read(file_name)
+      Status.new(file_name)
     end
-    
-    def recall
-      return false unless File.exists?(@path)
-      value = File.read(@path)
-      value.empty? ? false : value.to_sym
+
+    def keep(build_successful, revision, brokeness)
+      raise 'Status could be kept only once. Please try to reread status file.' if @already_kept
+
+      @current_brokeness = @hash['brokeness']
+      @current_state =
+        if build_successful
+          case @previous_state
+          when :failed, :broken
+            :revival
+          when :successful, :setup
+            :successful
+          when false, nil
+            :setup
+          end                            
+        else
+          @previous_state == :failed ? :broken : :failed
+        end
+
+
+      @hash.merge!('build_status' => @current_state.to_s, 'build_time' => Time.now, 'build_revision' => revision, 'brokeness' => brokeness)
+      if build_successful
+        @hash['successful_time'] = Time.now
+        @hash['successful_revision'] = revision
+      end
+
+      File.open(@path, "w+", 0777) { |file| file.write(YAML.dump(@hash)) }
+
+      @already_kept = true
     end
   end
 end

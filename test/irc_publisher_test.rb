@@ -10,8 +10,9 @@ class IRCPublisherTest < Test::Unit::TestCase
     options = Cerberus::Config.new(nil, :publisher => {:irc => {:channel => 'hello'}}, :application_name => 'IrcApp')
     build = DummyManager.new('last message', 'this is output', 1232, 'anatol')
 
-    Cerberus::Publisher::IRC.publish(:setup, build, options)
+    Cerberus::Publisher::IRC.publish(build_status(:setup), build, options)
 
     assert IRCConnection.connected
+#    assert_equal 1, IRCConnection.messages.size
   end
 end

@@ -14,7 +14,7 @@ class IRCConnection
     @@messages << msg
   end
 
-  def self.handle_connection(server, port)
+  def self.handle_connection(server, port, nick, realname)
     @@connected = true
   end
 end

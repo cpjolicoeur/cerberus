@@ -10,7 +10,7 @@ class RSSPublisherTest < Test::Unit::TestCase
     options = Cerberus::Config.new(nil, :publisher => {:rss => {:file => rss_file.path}}, :application_name => 'RSS<App')
     build = DummyManager.new('last message', 'this is output', 1235, 'anatol')
 
-    Cerberus::Publisher::RSS.publish(:setup, build, options)
+    Cerberus::Publisher::RSS.publish(build_status(:setup), build, options)
 
     xml = REXML::Document.new(IO.read(rss_file.path))
 

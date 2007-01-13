@@ -12,6 +12,20 @@ module Cerberus
        require "cerberus/scm/#{type}"
        const_get(class_name)
     end
+
+
+    def self.guess_type(path)
+      return nil unless test(?d, path)
+
+      case
+      when test(?d, path+'/.svn')
+        'svn'
+      when test(?d, path+'/_darcs')
+        'darcs'
+      when test(?d, path+'/.cvs')
+        'cvs'
+      end
+    end
   end
 
   module Publisher

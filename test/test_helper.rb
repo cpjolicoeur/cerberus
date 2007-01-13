@@ -1,4 +1,5 @@
 $:.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
+$:.unshift File.expand_path(File.dirname(__FILE__))
 
 require 'test/unit'
 require 'fileutils'
@@ -71,6 +72,8 @@ end"
     opt.deep_merge!(options)
 
     dump_yml(HOME + "/config/#{app_name}.yml", opt)
+
+    FileUtils.rm_rf HOME + "/work/#{app_name}"
   end
 
   def add_config(options)
@@ -87,6 +90,16 @@ end"
 
     # Create the new method
     klass.send(:define_method, method_name, block)
+  end
+
+  def status_from_file(file_name)
+    data = YAML.load(IO.read(file_name))
+    assert_kind_of Hash, data
+    data['build_status']
+  end
+
+  def build_status(state)
+    Cerberus::Status.new('build_status' => state.to_sym)
   end
 end
 

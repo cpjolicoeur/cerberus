@@ -6,6 +6,8 @@
 + Add text 'getting better/worse' to messages
 + Create Screencast for Cerberus
 + Improve Configuration Index (docs)
++ Add on_success on_failure and on_finish opions to builders
++ Add ability 
 
 
 - Use RSCM project for dealing with SCM

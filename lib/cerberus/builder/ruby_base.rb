@@ -19,6 +19,14 @@ class Cerberus::Builder::RubyBase
     $?.exitstatus == 0 and not @output.include?("#{@cmd} aborted!")
   end
 
+  def brokeness
+    if @output =~ /\d+ tests, \d+ assertions, (\d+) failures, (\d+) errors/
+      $1.to_i + $2.to_i
+    else
+      0
+    end
+  end
+
   private
   def choose_exec
     ext = ['']

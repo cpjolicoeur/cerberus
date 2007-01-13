@@ -62,13 +62,14 @@ class FunctionalTest < Test::Unit::TestCase
 
     status_file = HOME + '/work/myapp/status.log'
     assert File.exists?(status_file)
-    assert_equal 'succesful', IO.read(status_file)
-    assert 1, Dir[HOME + "/work/rake_cust/logs/*-succesful.log"].size
+    assert_equal 'setup', status_from_file(status_file)
+    assert 1, Dir[HOME + "/work/rake_cust/logs/*-setup.log"].size
 
     FileUtils.rm status_file
     build = Cerberus::BuildCommand.new('myapp')
     build.run
     assert File.exists?(status_file)
+    assert_equal 'setup', status_from_file(status_file)
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
     assert 2, Dir[HOME + "/work/rake_cust/logs/*.log"].size
 
@@ -83,7 +84,7 @@ class FunctionalTest < Test::Unit::TestCase
       build = Cerberus::BuildCommand.new('myapp')
       build.run
 
-      assert_equal 'failed', IO.read(status_file)
+      assert_equal 'failed', status_from_file(status_file)
     }
     assert_equal 3, ActionMailer::Base.deliveries.size #We should receive mail if project fails
 
@@ -94,7 +95,7 @@ class FunctionalTest < Test::Unit::TestCase
       build = Cerberus::BuildCommand.new('myapp')
       build.run
 
-      assert_equal 'failed', IO.read(status_file)
+      assert_equal 'failed', status_from_file(status_file)
     }
   end
 
@@ -148,7 +149,7 @@ class FunctionalTest < Test::Unit::TestCase
     for i in 1..4 do
       status_file = HOME + "/work/myapp#{i}/status.log"
       assert File.exists?(status_file)
-      assert_equal 'succesful', IO.read(status_file)
+      assert_equal 'setup', status_from_file(status_file)
     end
   end
 
@@ -187,7 +188,7 @@ class FunctionalTest < Test::Unit::TestCase
 
     status_file = HOME + '/work/darcsapp/status.log'
     assert File.exists?(status_file)
-    assert_equal 'succesful', IO.read(status_file)
+    assert_equal 'setup', status_from_file(status_file)
     assert 1, Dir[HOME + "/work/darcsapp/logs/*.log"].size
 
     #There were no changes - no reaction should be
@@ -243,5 +244,18 @@ class FunctionalTest < Test::Unit::TestCase
     build.run
 
     assert_equal 2, Marshmallow.counter
+  end
+
+  def test_correct_migration_from_previous_status
+    status_fn = TEMP_DIR + '/test_status_file.log'
+
+    status = Cerberus::Status.new(status_fn)
+    assert_equal nil, status.current_state
+    assert_equal nil, status.previous_state
+    
+    IO.write(status_fn, 'failed')
+    status = Cerberus::Status.new(status_fn)
+    assert_equal nil, status.current_state
+    assert_equal :failed, status.previous_state
   end
 end

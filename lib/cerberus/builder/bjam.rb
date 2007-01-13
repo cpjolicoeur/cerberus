@@ -25,4 +25,8 @@ class Cerberus::Builder::Bjam
    $?.exitstatus == 0 and not @output =~ /failed|error:|skipped/ 
      #/\*\*\* \d+ failure(s)? detected in test suite/ and not @output.include?("syntax error")
  end
+
+ def brokeness
+   return nil
+ end
 end
