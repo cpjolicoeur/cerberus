@@ -95,11 +95,11 @@ end"
   def status_from_file(file_name)
     data = YAML.load(IO.read(file_name))
     assert_kind_of Hash, data
-    data['build_status']
+    data['state']
   end
 
   def build_status(state)
-    Cerberus::Status.new('build_status' => state.to_sym)
+    Cerberus::Status.new('state' => state.to_sym)
   end
 end
 

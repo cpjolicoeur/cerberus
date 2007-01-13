@@ -181,19 +181,19 @@ module Cerberus
   end
 
   #Fields that are contained in status file
-  # build_status
-  # build_time
-  # build_revision
-  # successful_time
-  # successful_revision
+  # state
+  # timestamp
+  # revision
   # brokeness
+  # successful_build_timestamp
+  # successful_build_revision
   class Status
     attr_reader :previous_state, :previous_brokeness, :current_state, :current_brokeness
 
     def initialize(param)
       if param.is_a? Hash
         @hash = param
-        @current_state = @hash['build_status'].to_sym
+        @current_state = @hash['state'].to_sym
       else
         @path = param
         value = File.exists?(@path) ? YAML.load(IO.read(@path)) : nil
@@ -202,7 +202,7 @@ module Cerberus
         case value
           when String
             value = 'successful' if value == 'succesful' #fix typo in config values
-            {'build_status' => value}
+            {'state' => value}
           when nil
             {}
           else
@@ -210,7 +210,7 @@ module Cerberus
         end
       end
 
-      @previous_state = @hash['build_status'].to_sym unless @hash['build_status'].nil?
+      @previous_state = @hash['state'].to_sym unless @hash['state'].nil?
       @previous_brokeness = @hash['brokeness']
 
       @already_kept = false
@@ -239,13 +239,16 @@ module Cerberus
         end
 
 
-      @hash.merge!('build_status' => @current_state.to_s, 'build_time' => Time.now, 'build_revision' => revision, 'brokeness' => brokeness)
+      hash = {'state' => @current_state.to_s, 'timestamp' => Time.now, 'revision' => revision, 'brokeness' => brokeness}
       if build_successful
-        @hash['successful_time'] = Time.now
-        @hash['successful_revision'] = revision
+        hash['successful_build_timestamp'] = Time.now
+        hash['successful_build_revision'] = revision
+      else
+        hash['successful_build_timestamp'] = @hash['successful_build_timestamp']
+        hash['successful_build_revision'] = @hash['successful_build_revision']
       end
 
-      File.open(@path, "w+", 0777) { |file| file.write(YAML.dump(@hash)) }
+      File.open(@path, "w+", 0777) { |file| file.write(YAML.dump(hash)) }
 
       @already_kept = true
     end
