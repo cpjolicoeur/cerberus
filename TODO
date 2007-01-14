@@ -3,11 +3,10 @@
 + IRC: make message colorized. Make messages shorter to avoid irc flood (and ban to user)
 + Add heartbit message
 + Add configuration migrations, for easier migration process
-+ Add text 'getting better/worse' to messages
 + Create Screencast for Cerberus
 + Improve Configuration Index (docs)
 + Add on_success on_failure and on_finish opions to builders
-+ Add ability 
++ Add ability to configure what events to send messages (all, none, or "failed, revival")
 
 
 - Use RSCM project for dealing with SCM

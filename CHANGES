@@ -5,6 +5,7 @@
 * Fix Const load problem with Rails 1.2RC1
 * Correctly implement Jabber publisher using XMPP4R library
 * Upgrade to Webgen 0.4.1
+* Added 'getting better/worse' to build messages' subject
 
 == Version 0.3.2
 Added Perforce SCM support

@@ -58,9 +58,10 @@ class A#{rand(10000)}Test < Test::Unit::TestCase
 end"
     }
 
-    yield
-
-    FileUtils.rm test_case_name
+    if block_given?
+      yield
+      FileUtils.rm test_case_name
+    end
   end
 
   def add_application(app_name, url, options = {})

@@ -223,7 +223,7 @@ module Cerberus
     def keep(build_successful, revision, brokeness)
       raise 'Status could be kept only once. Please try to reread status file.' if @already_kept
 
-      @current_brokeness = @hash['brokeness']
+      @current_brokeness = brokeness
       @current_state =
         if build_successful
           case @previous_state

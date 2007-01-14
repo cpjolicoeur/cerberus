@@ -80,23 +80,28 @@ class FunctionalTest < Test::Unit::TestCase
 
     #remove status file to run project again
     FileUtils.rm status_file
-    add_test_case_to_project('myapp', 'assert false') { #if assertion failed
-      build = Cerberus::BuildCommand.new('myapp')
-      build.run
+    add_test_case_to_project('myapp', 'assert false') #if assertion failed
+    build = Cerberus::BuildCommand.new('myapp')
+    build.run
 
-      assert_equal 'failed', status_from_file(status_file)
-    }
+    assert_equal 'failed', status_from_file(status_file)
     assert_equal 3, ActionMailer::Base.deliveries.size #We should receive mail if project fails
 
 
+    add_test_case_to_project('myapp', 'raise "Some exception here"') #if we have exception
+    build = Cerberus::BuildCommand.new('myapp', :force => true)
+    build.run
+
+    assert_equal 'broken', status_from_file(status_file)
+  
+    subject = ActionMailer::Base.deliveries.last.subject
+    assert_match /and getting worse/, subject
+
     #remove status file to run project again
     FileUtils.rm status_file
-    add_test_case_to_project('myapp', 'raise "Some exception here"') { #if we have exception
-      build = Cerberus::BuildCommand.new('myapp')
-      build.run
-
-      assert_equal 'failed', status_from_file(status_file)
-    }
+    build = Cerberus::BuildCommand.new('myapp')
+    build.run
+    assert_equal 'failed', status_from_file(status_file)
   end
 
   def test_have_no_awkward_header

@@ -15,7 +15,7 @@ module Cerberus
             case
               when state.previous_brokeness > state.current_brokeness
                 ' but getting better'
-              when state.previous_brokeness > state.current_brokeness
+              when state.previous_brokeness < state.current_brokeness
                 ' and getting worse'
             end
           end
