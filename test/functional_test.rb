@@ -62,19 +62,21 @@ class FunctionalTest < Test::Unit::TestCase
 
     status_file = HOME + '/work/myapp/status.log'
     assert File.exists?(status_file)
-    assert_equal 'setup', status_from_file(status_file)
+    assert build_successful?(status_file)
     assert 1, Dir[HOME + "/work/rake_cust/logs/*-setup.log"].size
 
     FileUtils.rm status_file
     build = Cerberus::BuildCommand.new('myapp')
     build.run
     assert File.exists?(status_file)
-    assert_equal 'setup', status_from_file(status_file)
+    assert build_successful?(status_file)
+    assert_equal :setup, build.status.current_state
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
     assert 2, Dir[HOME + "/work/rake_cust/logs/*.log"].size
 
-    build = Cerberus::BuildCommand.new('myapp')
+    build = Cerberus::BuildCommand.new('myapp', :force => true)
     build.run
+    assert_equal :successful, build.status.current_state
     assert_equal 2, ActionMailer::Base.deliveries.size #Number of mails not changed
     assert 2, Dir[HOME + "/work/rake_cust/logs/*.log"].size #even if sources unchanged
 
@@ -83,16 +85,16 @@ class FunctionalTest < Test::Unit::TestCase
     add_test_case_to_project('myapp', 'assert false') #if assertion failed
     build = Cerberus::BuildCommand.new('myapp')
     build.run
-
-    assert_equal 'failed', status_from_file(status_file)
+    assert !build_successful?(status_file)
+    assert_equal :broken, build.status.current_state
     assert_equal 3, ActionMailer::Base.deliveries.size #We should receive mail if project fails
 
 
     add_test_case_to_project('myapp', 'raise "Some exception here"') #if we have exception
     build = Cerberus::BuildCommand.new('myapp', :force => true)
     build.run
-
-    assert_equal 'broken', status_from_file(status_file)
+    assert !build_successful?(status_file)
+    assert_equal :broken, build.status.current_state
   
     subject = ActionMailer::Base.deliveries.last.subject
     assert_match /and getting worse/, subject
@@ -101,7 +103,8 @@ class FunctionalTest < Test::Unit::TestCase
     FileUtils.rm status_file
     build = Cerberus::BuildCommand.new('myapp')
     build.run
-    assert_equal 'failed', status_from_file(status_file)
+    assert !build_successful?(status_file)
+    assert_equal :broken, build.status.current_state
   end
 
   def test_have_no_awkward_header
@@ -154,7 +157,7 @@ class FunctionalTest < Test::Unit::TestCase
     for i in 1..4 do
       status_file = HOME + "/work/myapp#{i}/status.log"
       assert File.exists?(status_file)
-      assert_equal 'setup', status_from_file(status_file)
+      assert build_successful?(status_file)
     end
   end
 
@@ -193,7 +196,7 @@ class FunctionalTest < Test::Unit::TestCase
 
     status_file = HOME + '/work/darcsapp/status.log'
     assert File.exists?(status_file)
-    assert_equal 'setup', status_from_file(status_file)
+    assert build_successful?(status_file)
     assert 1, Dir[HOME + "/work/darcsapp/logs/*.log"].size
 
     #There were no changes - no reaction should be
@@ -255,12 +258,17 @@ class FunctionalTest < Test::Unit::TestCase
     status_fn = TEMP_DIR + '/test_status_file.log'
 
     status = Cerberus::Status.new(status_fn)
-    assert_equal nil, status.current_state
-    assert_equal nil, status.previous_state
+    assert_equal nil, status.previous_build_successful
+    assert_equal nil, status.current_build_successful
     
     IO.write(status_fn, 'failed')
     status = Cerberus::Status.new(status_fn)
-    assert_equal nil, status.current_state
-    assert_equal :failed, status.previous_state
+    assert_equal nil, status.current_build_successful
+    assert_equal false, status.previous_build_successful
+
+    status.keep(true, 1232, 0)
+    assert_equal true, status.current_build_successful
+    assert_equal false, status.previous_build_successful
+    assert_equal :revival, status.current_state
   end
 end

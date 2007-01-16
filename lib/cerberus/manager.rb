@@ -83,7 +83,7 @@ module Cerberus
         Latch.lock("#{HOME}/work/#{@config[:application_name]}/.lock", :lock_ttl => 2 * LOCK_WAIT) do
           @scm.update!
 
-          if @scm.has_changes? or @config[:force] or @status.previous_state.nil?
+          if @scm.has_changes? or @config[:force] or @status.previous_build_successful.nil?
             build_successful = @builder.run
             @status.keep(build_successful, @scm.current_revision, @builder.brokeness)
 
@@ -181,19 +181,20 @@ module Cerberus
   end
 
   #Fields that are contained in status file
-  # state
+  # successful (true mean previous build was successful, otherwise - false)
   # timestamp
   # revision
   # brokeness
   # successful_build_timestamp
   # successful_build_revision
   class Status
-    attr_reader :previous_state, :previous_brokeness, :current_state, :current_brokeness
+    attr_reader :previous_build_successful, :previous_brokeness, :current_build_successful, :current_brokeness
 
     def initialize(param)
       if param.is_a? Hash
         @hash = param
-        @current_state = @hash['state'].to_sym
+        @current_build_successful = @hash['state']
+        @already_kept = true
       else
         @path = param
         value = File.exists?(@path) ? YAML.load(IO.read(@path)) : nil
@@ -201,19 +202,24 @@ module Cerberus
         @hash =
         case value
           when String
-            value = 'successful' if value == 'succesful' #fix typo in config values
-            {'state' => value}
+            value = %w(succesful successful setup).include?(value) #fix typo in status values
+            {'successful' => value}
           when nil
             {}
           else
+            #TODO remove it before 0.3.3 release
+            if state = value['state']
+              value['successful'] = %w(succesful successful setup).include?(state)
+            end
+
             value
         end
+
+        @already_kept = false
       end
 
-      @previous_state = @hash['state'].to_sym unless @hash['state'].nil?
+      @previous_build_successful = @hash['successful']
       @previous_brokeness = @hash['brokeness']
-
-      @already_kept = false
     end
 
     def self.read(file_name)
@@ -224,22 +230,9 @@ module Cerberus
       raise 'Status could be kept only once. Please try to reread status file.' if @already_kept
 
       @current_brokeness = brokeness
-      @current_state =
-        if build_successful
-          case @previous_state
-          when :failed, :broken
-            :revival
-          when :successful, :setup
-            :successful
-          when false, nil
-            :setup
-          end                            
-        else
-          @previous_state == :failed ? :broken : :failed
-        end
+      @current_build_successful = build_successful
 
-
-      hash = {'state' => @current_state.to_s, 'timestamp' => Time.now, 'revision' => revision, 'brokeness' => brokeness}
+      hash = {'successful' => @current_build_successful, 'timestamp' => Time.now, 'revision' => revision, 'brokeness' => brokeness}
       if build_successful
         hash['successful_build_timestamp'] = Time.now
         hash['successful_build_revision'] = revision
@@ -251,6 +244,20 @@ module Cerberus
       File.open(@path, "w+", 0777) { |file| file.write(YAML.dump(hash)) }
 
       @already_kept = true
+    end
+
+    def current_state
+      raise "Invalid project state. Before calculating status please do keeping of it." unless @already_kept
+
+      if @current_build_successful
+        if @previous_build_successful.nil?
+          :setup
+        else
+          @previous_build_successful ? :successful : :revival
+        end
+      else
+        @previous_build_successful ? :failed : :broken
+      end
     end
   end
 end

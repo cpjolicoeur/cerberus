@@ -93,14 +93,14 @@ end"
     klass.send(:define_method, method_name, block)
   end
 
-  def status_from_file(file_name)
+  def build_successful?(file_name)
     data = YAML.load(IO.read(file_name))
     assert_kind_of Hash, data
-    data['state']
+    data['successful']
   end
 
-  def build_status(state)
-    Cerberus::Status.new('state' => state.to_sym)
+  def build_status(successful)
+    Cerberus::Status.new('state' => successful)
   end
 end
 

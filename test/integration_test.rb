@@ -48,7 +48,7 @@ class IntegrationTest < Test::Unit::TestCase
 
     run_cerb("build svn_repo")
     assert File.exists?(HOME + '/work/svn_repo/status.log')
-    assert_equal 'setup', status_from_file(HOME + '/work/svn_repo/status.log')
+    assert build_successful?(HOME + '/work/svn_repo/status.log')
   end
 
   def test_add_darcs_scm

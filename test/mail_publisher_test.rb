@@ -14,7 +14,7 @@ class MailPublisherTest < Test::Unit::TestCase
        :application_name => 'MyApp')
     build = DummyManager.new('last message', 'this is output', 1232, 'anatol')
 
-    Cerberus::Publisher::Mail.publish(build_status(:setup), build, options)
+    Cerberus::Publisher::Mail.publish(build_status(true), build, options)
 
     mails = ActionMailer::Base.deliveries
     assert_equal 1, mails.size

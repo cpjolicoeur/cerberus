@@ -10,11 +10,11 @@ class RSSPublisherTest < Test::Unit::TestCase
     options = Cerberus::Config.new(nil, :publisher => {:rss => {:file => rss_file.path}}, :application_name => 'RSS<App')
     build = DummyManager.new('last message', 'this is output', 1235, 'anatol')
 
-    Cerberus::Publisher::RSS.publish(build_status(:setup), build, options)
+    Cerberus::Publisher::RSS.publish(build_status(false), build, options)
 
     xml = REXML::Document.new(IO.read(rss_file.path))
 
-    assert_equal '[RSS<App] Cerberus set up for project (#1235)', xml.elements["rss/channel/item/title/"].get_text.value
+    assert_equal '[RSS<App] Build still broken (#1235)', xml.elements["rss/channel/item/title/"].get_text.value
     assert_match %r{<pre>last message\nthis is output\n--\nCerberus 0.\d.\d, http://cerberus.rubyforge.org/</pre>}, 
                      xml.elements["rss/channel/item/description/"].get_text.value
   end

@@ -2,15 +2,14 @@
 + Send svn log not only for latest revision but from latest successfull. For that we need to store version of latest successful rev.
 + IRC: make message colorized. Make messages shorter to avoid irc flood (and ban to user)
 + Add heartbit message
-+ Add configuration migrations, for easier migration process
 + Create Screencast for Cerberus
 + Improve Configuration Index (docs)
 + Add on_success on_failure and on_finish opions to builders
 + Add ability to configure what events to send messages (all, none, or "failed, revival")
++ Refactor logger. Use logger also in mail publisher.
 
 
-- Use RSCM project for dealing with SCM
-
+- Add configuration migrations, for easier migration process
 
 Add support of X10 devices
    http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/124460
