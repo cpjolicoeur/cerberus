@@ -8,7 +8,7 @@ module Cerberus
         modif_time = File::Stat.new(lock_file).mtime
         ttl = options[:lock_ttl]
 
-        if ttl and modif_time < ttl.ago
+        if ttl and modif_time + ttl < Time.now
           File.delete(lock_file)
         else
           return
