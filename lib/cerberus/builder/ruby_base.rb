@@ -22,8 +22,6 @@ class Cerberus::Builder::RubyBase
   def brokeness
     if @output =~ /\d+ tests, \d+ assertions, (\d+) failures, (\d+) errors/
       $1.to_i + $2.to_i
-    else
-      0
     end
   end
 
