@@ -113,9 +113,9 @@ module Cerberus
               when 'none'
                 []
               when 'default'
-                [:setup, :revival, :broken, :failed] #the same as all except successful
+                [:setup, :revival, :broken, :failed] #the same as 'all' except successful
               else
-                on_event.split.map{|s| s.to_sym}
+                on_event.scan(/\w+/).map{|s| s.to_sym}
               end
 
               Publisher.get(pub).publish(@status, self, @config) if events.include?(@status.current_state)
