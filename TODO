@@ -5,7 +5,6 @@
 + Create Screencast for Cerberus
 + Improve Configuration Index (docs)
 + Add on_success on_failure and on_finish opions to builders
-+ Add ability to configure what events to send messages (all, none, or "failed, revival")
 + Refactor logger. Use logger also in mail publisher.
 
 

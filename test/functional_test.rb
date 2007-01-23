@@ -117,6 +117,19 @@ class FunctionalTest < Test::Unit::TestCase
     assert_equal 0, build.scm.last_commit_message.index('-' * 72)
   end
 
+  def test_send_on_different_events
+    add_application('myapp', SVN_URL, 'publisher' => {'mail' => {'on_event' => 'none'}, 'on_event' => 'all'})
+    build = Cerberus::BuildCommand.new('myapp')
+    build.run
+    assert_equal 0, ActionMailer::Base.deliveries.size
+
+
+    add_application('myapp', SVN_URL, 'publisher' => {'mail' => {'on_event' => 'all'}, 'on_event' => 'none'})
+    build = Cerberus::BuildCommand.new('myapp')
+    build.run
+    assert_equal 1, ActionMailer::Base.deliveries.size
+  end
+
   def test_multiply_publishers_without_configuration
     add_application('myapp', SVN_URL, 'publisher' => {'active' => 'mail ,  jabber , irc,    dddd'})
 

@@ -11,6 +11,7 @@ h4. Options available from config files
 bin_path:
 publisher:
   active:
+  on_event:
   mail:
     delivery_method:
     address:
@@ -21,21 +22,26 @@ publisher:
     authentication:
     sender:
     recipients:
+    on_event:
   jabber:
     jid:                                        
     port:                                       
     password:                                   
     digest:                                     
     recipients:                                 
+    on_event:
   irc:
     nick:                                       
     server:                                     
     port:                                       
     channel:                                    
+    on_event:
   rss:
     file:
+    on_event:
   campfire:
     url:
+    on_event:
 scm:
   type:
   url:

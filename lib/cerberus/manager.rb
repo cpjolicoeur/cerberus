@@ -99,12 +99,26 @@ module Cerberus
             end
 
             #send notifications
-            unless @status.current_state == :successful
-              active_publishers = get_configuration_option(@config[:publisher], :active, 'mail')
-              active_publishers.split(/\W+/).each do |pub|
-                raise "Publisher have no configuration: #{pub}" unless @config[:publisher, pub]
-                Publisher.get(pub).publish(@status, self, @config)
+            active_publishers = get_configuration_option(@config[:publisher], :active, 'mail')
+            active_publishers.split(/\W+/).each do |pub|
+
+              publisher_config = @config[:publisher, pub]
+              raise "Publisher have no configuration: #{pub}" unless publisher_config
+
+              on_event = publisher_config[:on_event] || @config[:publisher, :on_event] || 'default'
+              events = 
+              case on_event
+              when 'all', 'any'
+                [:setup, :successful, :revival, :broken, :failed]
+              when 'none'
+                []
+              when 'default'
+                [:setup, :revival, :broken, :failed] #the same as all except successful
+              else
+                on_event.split.map{|s| s.to_sym}
               end
+
+              Publisher.get(pub).publish(@status, self, @config) if events.include?(@status.current_state)
             end
           end
 
