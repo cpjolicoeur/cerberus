@@ -108,7 +108,7 @@ module Cerberus
               on_event = publisher_config[:on_event] || @config[:publisher, :on_event] || 'default'
               events = 
               case on_event
-              when 'all', 'any'
+              when 'all'
                 [:setup, :successful, :revival, :broken, :failed]
               when 'none'
                 []

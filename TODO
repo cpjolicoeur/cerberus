@@ -4,8 +4,11 @@
 + Add heartbit message
 + Create Screencast for Cerberus
 + Improve Configuration Index (docs)
-+ Add on_success on_failure and on_finish opions to builders
 + Refactor logger. Use logger also in mail publisher.
++ Add smart algorithm for calculating of person's name who broke release
+
+Before release!
+! Add on_success on_failure and on_finish opions to builders
 
 
 - Add configuration migrations, for easier migration process

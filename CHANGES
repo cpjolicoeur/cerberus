@@ -1,15 +1,16 @@
 = Cerberus Changelog
 
-== SVN
+== Version 0.3.3
+Major changes
 
 * Fix Const load problem with Rails 1.2RC1
 * Correctly implement Jabber publisher using XMPP4R library
-* Upgrade to Webgen 0.4.1
+* Upgrade Webgen to 0.4.1
 * Added 'getting better/worse' to build messages' subject
 * Added possibility to configure events on what you would like to receive messages. 
   By default used 'default' events. It means all except 'successful' state.
   You could set to this options list of any valid states such as [broken, failed, revival, successful, setup] or predefined sets as
-  [all, any, default, none].
+  [all, default, none].
 
   You could configure by setting :on_event option to :publisher options branch, or to concrete publisher configuration.
   In case if this option added both to :publisher and :publisher,<PUBLISHER> then concrete configurations wins.
