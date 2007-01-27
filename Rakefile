@@ -146,7 +146,8 @@ end
 require 'webgen/rake/webgentask'
 
 Webgen::Rake::WebgenTask.new do |t|
-  t.directory = File.join(Dir.pwd, "doc/site")
+  t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
+  t.clobber_outdir = true
 end
 
 task :publish_site => :webgen do
