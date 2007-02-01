@@ -39,7 +39,7 @@ cerberus add (DIR|SVN_URL) APPLICATION_NAME=some_app RECIPIENTS=dev1@project.com
 
 as second parameter you could pass URL to subversion repository or directory with working SVN folder.
 
-Go to ~./cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here like email server, password, user_name and other options. See ActiveMailer description - Cerberus uses it as notification layer. My config file looks like this
+Go to ~/.cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here like email server, password, user_name and other options. See ActiveMailer description - Cerberus uses it as notification layer. My config file looks like this
 
 publisher:
   mail:

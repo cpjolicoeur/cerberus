@@ -54,7 +54,7 @@ Then you need to add project that will be watched by Cerberus. Do it by
 
 as second parameter you could pass URL to subversion repository or directory with working SVN folder.
 
-Go to ~./cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here like email server, password, user_name and other options. See "ActiveMailer":http://api.rubyonrails.com/classes/ActionMailer/Base.html description - Cerberus uses it as default notification layer. 
+Go to ~/.cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here like email server, password, user_name and other options. See "ActiveMailer":http://api.rubyonrails.com/classes/ActionMailer/Base.html description - Cerberus uses it as default notification layer. 
 
 Here is an example of configuration file
 

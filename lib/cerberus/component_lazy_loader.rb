@@ -15,15 +15,21 @@ module Cerberus
 
 
     def self.guess_type(path)
-      return nil unless test(?d, path)
-
-      case
-      when test(?d, path+'/.svn')
-        'svn'
-      when test(?d, path+'/_darcs')
-        'darcs'
-      when test(?d, path+'/.cvs')
-        'cvs'
+      if test(?d, path)
+        case
+        when test(?d, path+'/.svn')
+          'svn'
+        when test(?d, path+'/_darcs')
+          'darcs'
+        when test(?d, path+'/.cvs')
+          'cvs'
+        end
+      else
+        #guess SCM type by its url
+        case path
+        when /^:(pserver|ext|local):/
+          'cvs'
+        end
       end
     end
   end
