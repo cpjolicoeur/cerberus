@@ -7,8 +7,6 @@ require 'fileutils'
 require 'cerberus/utils'
 
 class Test::Unit::TestCase
-  include Cerberus::Utils
-
   TEMP_DIR = File.expand_path(File.dirname(__FILE__)) + '/__workdir'
 
   SVN_REPO = TEMP_DIR + '/svn_repo'

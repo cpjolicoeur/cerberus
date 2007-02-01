@@ -3,8 +3,6 @@ require 'IRC'
 require 'cerberus/publisher/base'
 
 class Cerberus::Publisher::IRC < Cerberus::Publisher::Base
-  class << self; include Cerberus::Utils end
-
   def self.publish(state, manager, options)
     irc_options = options[:publisher, :irc]
     raise "There is no channel provided for IRC publisher" unless irc_options[:channel]

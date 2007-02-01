@@ -9,7 +9,6 @@ require 'cerberus/component_lazy_loader'
 module Cerberus
   class AddCommand
     EXAMPLE_CONFIG = File.expand_path(File.dirname(__FILE__) + '/config.example.yml')
-    include Cerberus::Utils
 
     def initialize(path, cli_options = {})
       @path, @cli_options = path, HashWithIndifferentAccess.new(cli_options)
@@ -50,7 +49,6 @@ module Cerberus
   end
 
   class BuildCommand
-    include Cerberus::Utils
     attr_reader :builder, :success, :scm, :status
 
     DEFAULT_CONFIG = {:scm => {:type => 'svn'}, 
@@ -221,11 +219,6 @@ module Cerberus
           when nil
             {}
           else
-            #TODO remove it before 0.3.3 release
-            if state = value['state']
-              value['successful'] = %w(succesful successful setup).include?(state)
-            end
-
             value
         end
 

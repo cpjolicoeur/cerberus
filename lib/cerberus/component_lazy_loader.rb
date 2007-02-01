@@ -3,7 +3,8 @@ module Cerberus
     TYPES = {
       :svn => 'SVN', #Cerberus::SCM
       :darcs => 'Darcs',
-      :perforce => 'Perforce'
+      :perforce => 'Perforce',
+      :cvs => 'CVS'
     }
 
     def self.get(type)

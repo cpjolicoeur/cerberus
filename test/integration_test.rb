@@ -67,4 +67,22 @@ class IntegrationTest < Test::Unit::TestCase
     assert_match /Project 'some_project' does not present in Cerberus/, output
     assert !test(?d, HOME + '/work/some_project')
   end
+
+  def test_add_cvs_explicit_scm
+    output = run_cerb('add :pserver:webdev1:/home/cvs SCM=cvs APPLICATION_NAME=myapp RECIPIENTS=my.email@xxx.xx')
+    assert_match /NotImplementedError/, output
+#    assert_match /has been added to Cerberus successfully/, output
+    
+#    cfg = load_yml(HOME + '/config/darcs_repo.yml')
+#    assert_equal 'cvs', cfg['scm']['type']
+  end
+
+  def test_add_cvs_implicit_scm
+    output = run_cerb('add :pserver:webdev1:/home/cvs APPLICATION_NAME=myapp RECIPIENTS=my.email@xxx.xx')
+    assert_match /NotImplementedError/, output
+#    assert_match /has been added to Cerberus successfully/, output
+    
+#    cfg = load_yml(HOME + '/config/darcs_repo.yml')
+#    assert_equal 'cvs', cfg['scm']['type']
+  end
 end

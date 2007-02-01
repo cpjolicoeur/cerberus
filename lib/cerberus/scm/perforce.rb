@@ -1,7 +1,6 @@
 require 'cerberus/utils'
 
 class Cerberus::SCM::Perforce
-  include Cerberus::Utils
   CHANGES_LOG_REGEXP = /^Change (\d+) on (.*) by (.*)\n\n(.*)/m
 
   def initialize(path, config = {})

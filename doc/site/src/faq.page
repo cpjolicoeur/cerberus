@@ -113,3 +113,10 @@ You also need to say cron where to find executables like 'cerberus', 'svn', 'dar
 It works for me. But if you have some strange errors following trick could help you. Add <pre>MAILTO=your.mail.go@s.here</pre> on the top of crontab file and all Cron output would be directed to your mailbox.
 
 For more info please read Cron mainual <pre>man crontab</pre>
+
+h3. How to add darcs project to Cerberus
+
+If you want to add darcs (or other custom SCM) project to cerberus you should explicitly say it to cerberus.
+<pre>cerberus add PROJECT_DIR SCM=darcs</pre>
+
+Currently supported scm are: svn, darcs, perforce

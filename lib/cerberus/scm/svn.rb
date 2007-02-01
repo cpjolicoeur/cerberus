@@ -1,8 +1,6 @@
 require 'cerberus/utils'
 
 class Cerberus::SCM::SVN
-  include Cerberus::Utils
-
   def initialize(path, config = {})
     raise "Path can't be nil" unless path
 

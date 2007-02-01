@@ -4,8 +4,6 @@ require 'cerberus/constants'
 
 module Cerberus
   class CLI     
-    include Cerberus::Utils
-
     def initialize(*args)
       say HELP if args.empty?
 

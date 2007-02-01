@@ -47,6 +47,8 @@ module Cerberus
   end
 end
 
+include Cerberus::Utils
+
 alias __exec `
 def `(cmd)
   begin

@@ -1,5 +1,10 @@
 = Cerberus Changelog
 
+== Version 0.3.4
+Major changes
+
+Fixed bug with Cerberus::Util spotted by Mohamemd Alvi
+
 == Version 0.3.3
 Major changes
 
