@@ -61,18 +61,38 @@ START-APPW: c:\progra~1\ruby\bin\cerberus.CMD buildall
 
 h3. Run Cerberus from Subversion __post-commit__ hook
 
-Subversion and like some other SCM allow to "hook action on commit":http://svnbook.red-bean.com/en/1.1/ch05s02.html#svn-ch-5-sect-2.1.
+Subversion as well as others SCM allow you to "hook action on commit":http://svnbook.red-bean.com/en/1.1/ch05s02.html#svn-ch-5-sect-2.1.
 And if you install Cerberus on the same box where you keep your Subversion repository you could add custom hook
-to run CI tool right after user commit and do not use Cron scheduler at all.
+that would run CI tool right after user commit. In this case you no need to use Cron.
 
-To make it add /hooks/post-commit file with following content
+Here you find a short guide how to make it. It is very simple in fact.
+
+First you need to copy SUBVERSION_REPO/hooks/post-commit.tmpl to SUBVERSION_REPO/hooks/post-commit and make it executable
+for *user that would manage this repository*. For example on Ubuntu Linux and subversion repository that served by Apache (through mod_svn)
+hooks are run with user __www-data__ so change ownership of post-commit to www-data
+
+<pre>
+sudo chown www-data:www-data SUBVERSION_REPO/hooks/post-commit
+</pre>
+
+Remember that cerberus would be run *under this user*. So be careful with permissions of CERBERUS_HOME folder.
+
+Then add following content to SUBVERSION_REPO/hooks/post-commit file
 
 <pre>
 #!/bin/sh
-/usr/local/bin/cerberus build YOUR_APPLICATION_NAME
+/usr/bin/env cerberus build YOUR_APPLICATION_NAME &
 </pre>
 
-And do not forget to add execution permission to this file.
+To test correctness of hook please run
+
+<pre>
+sudo -u YOUR_USER post-commit
+</pre>
+
+If you have any problems with permissions (for example CERBERUS_HOME not writable for user) command above would say it to you.
+
+If this command finished successfully you should have file in CERBERUS_HOME/work/YOUR_APPLICATION_NAME/logs
 
 
 h3. I would like to disable (but not to remove) project in Cerberus
@@ -114,9 +134,18 @@ It works for me. But if you have some strange errors following trick could help 
 
 For more info please read Cron mainual <pre>man crontab</pre>
 
+h3. How to change location of Cerberus directory
+
+By default cerberus creates its own files in user's home directoy. But you could change it by setting environment variable 
+__CERBERUS_HOME__
+
+<pre>
+export CERBERUS_HOME=/var/cerberus
+</pre>
+
 h3. How to add darcs project to Cerberus
 
 If you want to add darcs (or other custom SCM) project to cerberus you should explicitly say it to cerberus.
 <pre>cerberus add PROJECT_DIR SCM=darcs</pre>
 
-Currently supported scm are: svn, darcs, perforce
+Currently supported scm are: svn, darcs, perforce.
