@@ -85,4 +85,21 @@ class IntegrationTest < Test::Unit::TestCase
 #    cfg = load_yml(HOME + '/config/darcs_repo.yml')
 #    assert_equal 'cvs', cfg['scm']['type']
   end
+
+  def test_hook
+    some_number = rand(100000)
+    tmp_file = File.join(TEMP_DIR, 'some_number')
+    config_file = HOME + '/config/hooks.yml'
+
+    add_application('hooks', SVN_URL, 'quiet' => true)
+    cfg = load_yml(config_file)
+
+    cfg['hook'] = {'echo' => {'action' => "echo #{some_number} > #{tmp_file}"}}
+    dump_yml(config_file, cfg)
+
+    File.rm_f tmp_file
+    run_cerb("build hooks")
+    assert_equal some_number.to_s, IO.read(tmp_file).strip
+    File.rm_f tmp_file
+  end
 end

@@ -7,6 +7,7 @@ publisher:
     authentication: plain
     user_name: someuser
     password: somepassword
+#    on_event: all
 #  jabber:
 #    jid: somemailbox@gmail.com/cerberus
 #    password: somepassword
@@ -22,3 +23,7 @@ publisher:
 #  rake:
 #    task: migrate test
 #changeset_url: POINT_TO_YOUR_TRAC/changeset/
+#hook:
+#  rcov:
+#    on_event: successful, setup #by default - run hook for any state
+#    action: 'export CERBERUS_HOME=/home/anatol && sudo chown www-data -R /home/anatol/cerberus && rcov' #Add here any hook you want

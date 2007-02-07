@@ -4,6 +4,12 @@
 Major changes
 
 Fixed bug with Cerberus::Util spotted by Mohamemd Alvi
+Added possibility to add hooks on Cerberus executions. Configuration file format for it is
+
+hook:
+  HOOK_NAME:
+    on_event: successful, setup #by default - run hook for any state
+    action: 'export CERBERUS_HOME=/home/anatol && sudo chown www-data -R /home/anatol/cerberus && rcov' #Add here any hook you want
 
 == Version 0.3.3
 Major changes

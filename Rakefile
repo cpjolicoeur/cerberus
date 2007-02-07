@@ -143,11 +143,13 @@ task :publish_news do
   end
 end
 
-require 'webgen/rake/webgentask'
+if require 'webgen/rake/webgentask'
 
-Webgen::Rake::WebgenTask.new do |t|
-  t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
-  t.clobber_outdir = true
+  Webgen::Rake::WebgenTask.new do |t|
+    t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
+    t.clobber_outdir = true
+  end
+
 end
 
 task :publish_site => :webgen do

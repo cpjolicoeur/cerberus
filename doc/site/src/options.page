@@ -62,7 +62,10 @@ builder:
 log:
   enable:
 changeset_url: 
-</pre>
+hook:
+  HOOK_NAME:
+    on_event: 
+    action: 
 
 
 h4. Option available from command line

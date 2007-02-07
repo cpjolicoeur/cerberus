@@ -103,21 +103,19 @@ module Cerberus
               publisher_config = @config[:publisher, pub]
               raise "Publisher have no configuration: #{pub}" unless publisher_config
 
-              on_event = publisher_config[:on_event] || @config[:publisher, :on_event] || 'default'
-              events = 
-              case on_event
-              when 'all'
-                [:setup, :successful, :revival, :broken, :failed]
-              when 'none'
-                []
-              when 'default'
-                [:setup, :revival, :broken, :failed] #the same as 'all' except successful
-              else
-                on_event.scan(/\w+/).map{|s| s.to_sym}
-              end
-
+              events = interpret_state(publisher_config[:on_event] || @config[:publisher, :on_event] || 'default')
               Publisher.get(pub).publish(@status, self, @config) if events.include?(@status.current_state)
             end
+
+
+            #Process hooks
+            hooks = @config[:hook]
+            hooks.each_pair{|name, hook|
+              events = interpret_state(hook[:on_event] || 'all', false)
+              if events.include?(@status.current_state)
+                `#{hook[:action]}`
+              end
+            } if hooks
           end
 
         end #lock

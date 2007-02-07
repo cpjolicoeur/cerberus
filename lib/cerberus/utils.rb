@@ -44,6 +44,19 @@ module Cerberus
         return false
       end
     end
+
+    def interpret_state(state, with_default = true)
+       case 
+       when state == 'all'
+         [:setup, :successful, :revival, :broken, :failed]
+       when state == 'none'
+         []
+       when state == 'default' && with_default
+         [:setup, :revival, :broken, :failed] #the same as 'all' except successful
+       else
+         state.scan(/\w+/).map{|s| s.to_sym}
+       end
+    end
   end
 end
 
