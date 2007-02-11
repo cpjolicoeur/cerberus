@@ -1,10 +1,16 @@
 = Cerberus Changelog
 
 == Version 0.3.4
-Major changes
+Minor release
 
-Fixed bug with Cerberus::Util spotted by Mohamemd Alvi
-Added possibility to add hooks on Cerberus executions. Configuration file format for it is
+* Use smpt_settings config option instead of server_settings for ActionMailer
+
+== Version 0.3.4
+Added Cerberus hooks that allow running custom tasks on build finish
+
+* Fixed bug with Cerberus::Util spotted by Mohamemd Alvi
+
+* Added possibility to add hooks on Cerberus executions. Configuration file format for it is
 
 hook:
   HOOK_NAME:

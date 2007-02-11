@@ -23,7 +23,7 @@ class Cerberus::Publisher::Mail < Cerberus::Publisher::Base
     end
 
     ActionMailer::Base.delivery_method = config[:delivery_method] if config[:delivery_method]
-    ActionMailer::Base.server_settings = config
+    ActionMailer::Base.smtp_settings = config
   end
 
   class ActionMailerPublisher < ActionMailer::Base

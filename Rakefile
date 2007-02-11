@@ -50,7 +50,7 @@ GEM_SPEC = Gem::Specification.new do |s|
     Cerberus could be easily invoked from Cron (for Unix) or nnCron (for Windows) utilities.
   DESC
 
-  s.add_dependency 'actionmailer', '>= 1.2.5'
+  s.add_dependency 'actionmailer', '>= 1.3.2'
   s.add_dependency 'rake', '>= 0.7.1'
   s.add_dependency 'xmpp4r', '>= 0.3'
   s.add_dependency 'Ruby-IRC', '>= 1.0.7'

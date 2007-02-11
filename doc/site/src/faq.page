@@ -84,7 +84,7 @@ Then add following content to SUBVERSION_REPO/hooks/post-commit file
 /usr/bin/env cerberus build YOUR_APPLICATION_NAME &
 </pre>
 
-To test correctness of hook please run
+To test correctness of the hook please run
 
 <pre>
 sudo -u YOUR_USER post-commit
