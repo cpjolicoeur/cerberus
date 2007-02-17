@@ -1,9 +1,10 @@
 = Cerberus Changelog
 
-== Version 0.3.4
-Minor release
+== Version 0.3.5
+Bug fixing
 
 * Use smpt_settings config option instead of server_settings for ActionMailer
+* Fixed problem with incorrect state for output messages [cerberus bug #8682]
 
 == Version 0.3.4
 Added Cerberus hooks that allow running custom tasks on build finish
