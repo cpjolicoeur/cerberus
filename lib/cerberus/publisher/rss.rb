@@ -1,5 +1,4 @@
 require 'cerberus/publisher/base'
-require 'cerberus/helper/xchar.rb'
 
 class Cerberus::Publisher::RSS < Cerberus::Publisher::Base
   def self.publish(state, manager, options)
