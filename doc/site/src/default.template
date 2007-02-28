@@ -10,7 +10,7 @@
   <body>
     <div id="page">
       <div id="header">
-       <div id="site-title"><a href="http://cerberus.rubyforge.org/">Cerberus</a></div>
+       <div id="site-title"><a href="http://cerberus.rubyforge.org/">Ce<font color="red">rb</font>erus</a></div>
        <div id="site-subtitle">Continuous Integration tool for Ruby.<br><small>Would you like to install it? Just type 'gem install cerberus'.</small></div>
       </div>
       <hr class="hidden"/>
