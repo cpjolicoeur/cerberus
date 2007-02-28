@@ -5,13 +5,9 @@ orderInfo: 1
 ---
 h2. Cerberus
 
-Cerberus is lightweight and easy-in-use Continuous Builder software for Ruby. 
-It could be periodically run from scheduler and check if application tests are broken. 
-If it happens Cerberus would send notification to developers.
+Cerberus is a lightweight and easy-to-use Continuous Builder software for Ruby. It could be run periodically from a scheduler and check if application tests are broken. In case of failed tests Cerberus sends notification to developers.
 
-Cerberus perfectly works both on Windows and *nix platforms and supports popular version control systems like
-Subversion, Darcs and Perforce and many ways to publish build results such as mail, jabber, "Campfire":http://www.campfirenow.com/, 
-IRC, RSS files.
+Cerberus works perfectly both on Windows and *nix platforms and supports popular version control systems like Subversion, Darcs and Perforce. It also has many ways in publishing build results such as e-mail, jabber, "Campfire":http://www.campfirenow.com, IRC and RSS files.
 
 Cerberus requires: 
 * "ruby":http://ruby-lang.org/en/ - 1.8.2 or higher
@@ -29,32 +25,32 @@ He guarded the gate to Hades (the Greek underworld) and ensured that the dead co
 
 !images/cerberus.gif!
 
-So Ruby Cerberus tool (like his ancestor) will guard your application tests and not let your project go to the world of dead projects.
+So Ruby Cerberus tool (like his ancestor) will guard your application tests and won't let your project go to the world of dead projects.
 
 h4. There are several solutions already present, why do you need to use Cerberus?
 
 Main advantages of Cerberus over other solutions:
-* Cerberus could be installed on any machine not only where SVN repository located.
-* Cerberus works not only for Rails projects, but for any other Ruby projects (or better to say for projects that use Rake).
-* Cerberus multiplatform solution: it runs excellent both on *nix and Windows.
-* Cerberus distributed via RubyGems, so it is very easy to install and very easy to update to the latest available version.
-* Cerberus very easy start to use. Just type @cerberus add PROJECT_URL|PROJECT_DIR@.
-* Cerberus is lightweight solution: mots of the time ruby process even not run. Cerberus runs @rake@ only in case if changes in project found.
+* Cerberus could be installed on any machine, not only where SVN repository is located.
+* Cerberus works not only for Rails projects, but also for any other Ruby projects (more precisely, for all projects using Rake).
+* Cerberus is multiplatform solution: it runs great on *nix and Windows.
+* Cerberus is distributed via RubyGems, so it is very easy to install and update to the latest available version.
+* Cerberus is very easy to start using. Just type @cerberus add PROJECT_URL|PROJECT_DIR@.
+* Cerberus is a lightweight solution: most of the time Ruby process will not even run. Cerberus runs @rake@ only in case of changes are found in the project.
 
  
-To use Cerberus it is very easy. First install it. RubyGems package manager is an easiest way to do it.
+It is very easy to use Cerberus. First install it. Using RubyGems package manager is the easiest way to do it.
 
-@gem install --include-dependencies cerberus@
+@gem install cerberus --include-dependencies@
 
-or get Cerberus distribution package right from "download page":http://rubyforge.org/frs/?group_id=1794&release_id=6442
+or just get Cerberus distribution package right from "the download page":http://rubyforge.org/frs/?group_id=1794&release_id=6442
 
-Then you need to add project that will be watched by Cerberus. Do it by
+Then you need to add project which will be watched by Cerberus. Do it by
 
 @cerberus add (DIR|SVN_URL) APPLICATION_NAME=some_app RECIPIENTS=dev1@project.com@
 
-as second parameter you could pass URL to subversion repository or directory with working SVN folder.
+as a second parameter you could pass URL to subversion repository or directory with working SVN folder.
 
-Go to ~/.cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here like email server, password, user_name and other options. See "ActiveMailer":http://api.rubyonrails.com/classes/ActionMailer/Base.html description - Cerberus uses it as default notification layer. 
+Go to ~/.cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here like email server, password, user_name and other options. See "ActiveMailer":http://api.rubyonrails.com/classes/ActionMailer/Base.html description for more -  Cerberus uses it as default notification layer.
 
 Here is an example of configuration file
 
@@ -69,20 +65,20 @@ publisher:
     password: somemail
 </pre>
 
-Also check ~/.cerberus/config/<APPLICATION_NAME>.yml and make sure that you have right options.
+Also check ~/.cerberus/config/&lt;APPLICATION_NAME&gt;.yml and make sure your options are correct.
 
-And then run Cerberus project
+Then run Cerberus for the project:
 
 @cerberus build APPLICATION_NAME@
 
-or run __all__ registered projects
+or build __all__ registered projects:
 
 @cerberus buildall@
 
-It will check out latest sources and run tests for your application. If tests are broken - recipients will receive notifications.
+Cerberus will check out latest sources and run tests for your application. If tests are broken, recipients will receive notifications.
 
-But of course better to run Cerberus automatically i.e. from Cron. Run Cerberus for project each 10 minutes would be ok.
+But of course it is better to run Cerberus automatically i.e. from Cron, say, every 10 minutes.
 
-Also if you have possibility to install own software where your Subversion server located then better to run cerberus from Subversion hook. In this case Cerberus would run right after checkout withot any delays!
+Also, if you have the option of installing your own software where the Subversion server is located then it is better to run cerberus from Subversion hook. In this case Cerberus would run right after commit without any delays!
 
-Now you see that Cerberus setup is very easy thing - no need long manuals and payable training, no any consultants and weeks of setup process. Cerberus - just use it! (c)
+Now you can see that to setup Cerberus is a very easy thing to do - no need for long manuals and costly training, no consultants whatsoever or weeks of setting up the software. Cerberus - Just Use It!(C)
