@@ -27,7 +27,7 @@ module Cerberus
         when :revival
           "Build fixed by #{manager.scm.last_author} (##{manager.scm.current_revision})"
         when :successful
-          "Build was successfully built (##{manager.scm.current_revision})"
+          "Build successful (##{manager.scm.current_revision})"
         else                              
           raise "Unknown build state '#{state.current_state.to_s}'"
         end
