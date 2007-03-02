@@ -5,35 +5,38 @@ orderInfo: 2
 ---
 h2. FAQ
 
-h3. Why Cerberus uses external scheduler and not internal like CruiseControl do.
+h3. Why Cerberus uses an external scheduler and not internal one like CruiseControl?
 
-Cerberus was developed as __stateless__ continuous building tool.
+Cerberus was developed as a __stateless__ continuous building tool.
 
-Stateless in this sentence means that application does not sit in the RAM all the time.
-For example CruiseControl requires 120 Megabites of RAM even if it anything does not do.
-If you have dedicated server just for running Continuous Integration tool then probably you would not care about it. 
-But if you like to use your development computer for building projects then probably you would like to avoid wasting of RAM and CPU cycles of your computer.
+In this context it means that Cerberus won't consume RAM all the time.
+For example, CruiseControl requires about 120 Megabites of RAM even if it has 
+nothing to do. If you have a dedicated server just for running Continuous Integration 
+tool, then probably you would not care about it. But if you like to use your 
+development computer for building projects, then probably you would like to avoid
+wasting your computer's resources like RAM and CPU cycles. In that kindof situation 
+stateless nature of Cerberus is appropriate. Contrary to CruiseControl, Cerberus 
+process will not be running most of the time. Every now and then Cerberus would be activated 
+by an external scheduler (or subversion hook, or something else) to check if your sources 
+the software repository have changed. Time to check this is usually small, so 
+Cerberus process will not require any resources for too long.
 
-In this situation stateless  nature of Cerberus would help you.
-Contrary to CruiseControl Cerberus process would not be run most of the time. Time to time Cerberus would be activated by external scheduler (or subversion hook or anything else) 
-to check if sources in repository are changed. Time of checking usually small so Cerberus process would not take memory too long.
+It is a really smart and nifty technique.
 
-It is really smart and thrifty technique.
+h3. How to change task(s) for Rake
 
-h3. How to change task for Rake
+__Q: In my project we need to run Rails migrations before tests. But by default Cerberus runs the :default task.
+How could I run eg. migations?__
 
-__Q: In my project we need to run Rails migrations before tests. But by default Cerberus runs :default task.
-How could I run migations?__
-
-It is easy to do - just set Rake tasks option in config
+It is easy - just set Rake task option in config:
 <pre>
 builder:
   rake:
     task: migrate test
 </pre>
 
-And it would run migrations and then tests. You could set __task__ option to any other task set.
-
+which would run first migrations and then tests. You could set __task__ option 
+to any other combination of Rake tasks.
 
 h3. How to schedule Cerberus build on nnCron
 
