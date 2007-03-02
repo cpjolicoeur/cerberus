@@ -3,15 +3,13 @@ title: In the Web
 inMenu: true
 orderInfo: 5
 ---
-h2. Interestin in the Web
+h2. Interesting web articles
 
-Here you could find list of interesting articles that have relation to Cerberus.
+Below is a list of articles related to Cerberus.
 
-* Legendary "article about Continuous Integration":http://www.martinfowler.com/articles/continuousIntegration.html from Martin Fowler
-* Very interesting reading about automated builds "Daily Builds Are Your Friend":http://www.joelonsoftware.com/articles/fog0000000023.html from Joel Spolsky
-* "Theory of Broken Windows":http://en.wikipedia.org/wiki/Fixing_Broken_Windows explanation. This theory says that big problems starts from small ones. 
-And if you are able quick and effectively solve small problems (like broken windows) you would avoid most of the big problems (like crime).
-
-* Very good "Cerberus tutorial":http://www.degrunt.net/articles/2006/08/27/cerberus-continious-integration-for-rails/#extended  from Tom de Grunt
+* Legendary "article about Continuous Integration":http://www.martinfowler.com/articles/continuousIntegration.html by Martin Fowler
+* Very interesting reading about automated builds "Daily Builds Are Your Friend":http://www.joelonsoftware.com/articles/fog0000000023.html by Joel Spolsky
+* "Theory of Broken Windows":http://en.wikipedia.org/wiki/Fixing_Broken_Windows explanation. This theory says that big problems start from small ones. And if you are able to quickly and effectively solve small ones (like broken windows) you'll avoid most of the big problems (like crime).
+* Very good "Cerberus tutorial":http://www.degrunt.net/articles/2006/08/27/cerberus-continious-integration-for-rails/#extended from Tom de Grunt
 * "Josh's article":http://www.cuberick.com/?p=43
 * "Yurii Rashkovskii's great intro article about Cerberus setup":http://rashkovskii.com/articles/2007/1/10/continuous-integration-cerberus

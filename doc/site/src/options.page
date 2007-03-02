@@ -5,7 +5,7 @@ orderInfo: 4
 ---
 h2. Configuration Options
 
-h4. Options available from config files
+h4. Options available in config files
 
 <pre>
 bin_path:
@@ -68,9 +68,9 @@ hook:
     action: 
 
 
-h4. Option available from command line
+h4. Options available in command line
 
-Following option available from command line during adding new application
+The following options are available in command line when adding new application:
 <pre>
 recipients
 application_name
