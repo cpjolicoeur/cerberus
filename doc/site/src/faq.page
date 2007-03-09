@@ -26,28 +26,28 @@ It is a really smart and nifty technique.
 h3. How to change task(s) for Rake
 
 __Q: In my project we need to run Rails migrations before tests. But by default Cerberus runs the :default task.
-How could I run eg. migations?__
+How could I run eg. migrations?__
 
-It is easy - just set Rake task option in config:
+It is easy - just setup rake task option in config:
 <pre>
 builder:
   rake:
-    task: migrate test
+    task: db:migrate test
 </pre>
 
-which would run first migrations and then tests. You could set __task__ option 
+given configuration above, rake would run first migrations and then tests. You could set __task__ option 
 to any other combination of Rake tasks.
 
 h3. How to schedule Cerberus build on nnCron
 
-"nnCron":http://www.nncron.ru/download/nncron191.exe is scheduling tool for Windows. It is a good replacement for Unix Cron
-on Windows platform. nnCron has simple user interface and it is easy to add new scheduled task.
+"nnCron":http://www.nncron.ru/download/nncron191.exe is a scheduling tool for Windows. It is a good replacement for Unix Cron
+on the Windows platform. nnCron has simple user interface and it is easy to add new scheduled tasks.
 
-There is only issue - nnCron do not pass __HOME__ environment variable to process so you need to add it to nncron.tab file. 
-You could add __CERBERUS_HOME__ envronment variable or __HOME__ (in last case __CERBERUS_HOME__ would be calculated as 
+There is only one issue - nnCron doesn't pass __HOME__ environment variable to process, so you need to add it to nncron.tab file. 
+You could add __CERBERUS_HOME__ environment variable or __HOME__ (in the last case __CERBERUS_HOME__ would evaluate to 
 HOME/.cerberus)
 
-Mine nncron.tab file looks like below
+My nncron.tab file looks as follows:
 
 <pre>
 SET CERBERUS_HOME="C:\Documents and Settings\anatol\.cerberus"
@@ -62,54 +62,54 @@ START-APPW: c:\progra~1\ruby\bin\cerberus.CMD buildall
 )#
 </pre>
 
-h3. Run Cerberus from Subversion __post-commit__ hook
+h3. Running Cerberus from Subversion __post-commit__ hook
 
-Subversion as well as others SCM allow you to "hook action on commit":http://svnbook.red-bean.com/en/1.1/ch05s02.html#svn-ch-5-sect-2.1.
-And if you install Cerberus on the same box where you keep your Subversion repository you could add custom hook
-that would run CI tool right after user commit. In this case you no need to use Cron.
+Subversion as well as other SCMs allow you to "hook actions on commit":http://svnbook.red-bean.com/en/1.1/ch05s02.html#svn-ch-5-sect-2.1.
+If you install Cerberus on the same system where you keep your Subversion repository, you could add a custom hook
+to run CI tool right after the user commit. In this case you don't need to use cron or any other scheduling system.
 
-Here you find a short guide how to make it. It is very simple in fact.
+Next follows a short guide how to do it, in fact, it is very simple.
 
 First you need to copy SUBVERSION_REPO/hooks/post-commit.tmpl to SUBVERSION_REPO/hooks/post-commit and make it executable
-for *user that would manage this repository*. For example on Ubuntu Linux and subversion repository that served by Apache (through mod_svn)
-hooks are run with user __www-data__ so change ownership of post-commit to www-data
+for *user who would manage the repository*. For example, on Ubuntu Linux with subversion repository served by Apache (through mod_svn)
+hooks are run as user __www-data__ so change the ownership of post-commit to www-data:
 
 <pre>
 sudo chown www-data:www-data SUBVERSION_REPO/hooks/post-commit
 </pre>
 
-Remember that cerberus would be run *under this user*. So be careful with permissions of CERBERUS_HOME folder.
+Remember that cerberus will run as *user owning post-commit*. So be careful with permissions of CERBERUS_HOME folder.
 
-Then add following content to SUBVERSION_REPO/hooks/post-commit file
+Then add the following content to SUBVERSION_REPO/hooks/post-commit:
 
 <pre>
 #!/bin/sh
 /usr/bin/env cerberus build YOUR_APPLICATION_NAME &
 </pre>
 
-To test correctness of the hook please run
+To test correctness of the hook, just run
 
 <pre>
 sudo -u YOUR_USER post-commit
 </pre>
 
-If you have any problems with permissions (for example CERBERUS_HOME not writable for user) command above would say it to you.
+If you have any problems with permissions (for example CERBERUS_HOME not writable for user), the command above would tell you so.
 
-If this command finished successfully you should have file in CERBERUS_HOME/work/YOUR_APPLICATION_NAME/logs
+If command finished successfully, you should have a file in CERBERUS_HOME/work/YOUR_APPLICATION_NAME/logs.
 
 
-h3. I would like to disable (but not to remove) project in Cerberus
+h3. I would like to disable (but not remove) a project in Cerberus
 
-Sometime we need to disable temporary application and do not allow __cerberus buildall__ command run it.
+Sometimes we need to temporarily disable an application and not allow __cerberus buildall__ command to build it.
 
-To achieve it just rename configuration file for YOUR_APPLICATION from
-__config/YOUR_APPLICATION.yml__ to __config/YOUR_APPLICATION.yml.disabled__
+To achieve this, just rename configuration file for YOUR_APPLICATION from
+__config/YOUR_APPLICATION.yml__ to eg. __config/YOUR_APPLICATION.yml.disabled__
 
 Cerberus picks up only configurations that end with .yml
 
 h3. Cerberus hangs on updating password-protected repository
 
-When subversion tries to update password-protected repository it prompts user to enter user credentials. Cerberus could not interact with subversion client in interactive way. So subversion would wait password from Cerberus for infinity.
+When subversion tries to update password-protected repository, it prompts for user to enter appropriate credentials. Cerberus cannot interact with subversion client in an interactive way, making subversion to wait for password infinitely.
 
 To solve it you need to specify username and password pair like in example below.
 <pre>
@@ -120,35 +120,37 @@ scm:
   password: somepassword
 </pre>
 
-h3. I have added Cerberus job to Cron but it does not work for me. It is even do not start building.
+Another and even better option would be to create a ssh key pair in repository and
+copy resulting private key to the same host cerberus is running and configure
+your ssh client to use it. 
+ 
+h3. I have added Cerberus job to Cron but it does not work for me. It doesn't even start to build.
 
-Seems that you configured Cron incorrectly.
+It seems that you configured Cron incorrectly.
 
-Lets imagine that you trying to run Cerberus each 10 minutes. You need to start editing your crontab file.
+Let's imagine you are trying to run Cerberus every 10 minutes. You need edit your crontab file:
 Type <pre>crontab -e</pre>
 And then add your job here <pre>*/10 * * * * cerberus buildall</pre>
-This task would start checking all projects each 10 minutes. Take into account that tests would be run only if source changes were detected.
+This task would check all projects every 10 minutes. Note that build would happend only if sources actually changed.
 
-
-You also need to say cron where to find executables like 'cerberus', 'svn', 'darcs', 'rake' and others. For it you need to add PATH environment variable on the top of crontab file.
+You also need to tell cron where to find executables like 'cerberus', 'svn', 'darcs', 'rake' and others. For this you need to add PATH environment variable at the top of the crontab file:
 <pre>PATH=/opt/local/bin/</pre> Of course path depends on your system.
 
-It works for me. But if you have some strange errors following trick could help you. Add <pre>MAILTO=your.mail.go@s.here</pre> on the top of crontab file and all Cron output would be directed to your mailbox.
+This works for me. But if you get some strange errors, the following trick might help you. Add <pre>MAILTO=your.mail.go@s.here</pre> on the top of the crontab file and all Cron output would be directed to your mailbox.
 
-For more info please read Cron mainual <pre>man crontab</pre>
+For more info please read Cron manual: <pre>man crontab</pre>
 
 h3. How to change location of Cerberus directory
 
-By default cerberus creates its own files in user's home directoy. But you could change it by setting environment variable 
-__CERBERUS_HOME__
-
+By default cerberus creates its own files in user's home directoy. But you could change it by setting the environment variable 
+__CERBERUS_HOME__:
 <pre>
 export CERBERUS_HOME=/var/cerberus
 </pre>
 
-h3. How to add darcs project to Cerberus
+h3. How to add Darcs project to Cerberus
 
-If you want to add darcs (or other custom SCM) project to cerberus you should explicitly say it to cerberus.
+If you want to add Darcs (or other custom SCM) project to cerberus, you should explicitly tell that to cerberus.
 <pre>cerberus add PROJECT_DIR SCM=darcs</pre>
 
-Currently supported scm are: svn, darcs, perforce.
+Currently supported SCM systems are SVN, Darcs, Perforce and CVS.
