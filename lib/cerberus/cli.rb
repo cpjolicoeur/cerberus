@@ -8,15 +8,17 @@ module Cerberus
       say HELP if args.empty?
 
       command = args.shift
-      say HELP unless %w(add build buildall list).include?(command)
+      say HELP unless %w(add remove build buildall list).include?(command)
 
       cli_options = extract_options(args)
 
       case command
       when 'add'
         path = args.shift || Dir.pwd
-        
         command = Cerberus::AddCommand.new(path, cli_options)
+        command.run
+      when 'remove'
+        command = Cerberus::RemoveCommand.new(args.shift, cli_options)
         command.run
       when 'build'
         say HELP if args.empty?
@@ -59,6 +61,7 @@ module Cerberus
     Usage:
       cerberus add <URL>     --- add project from svn repository to list watched of applications
       cerberus add <PATH>    --- add project from local path to list of watched applications
+      cerberus remove <NAME>    --- add project from local path to list of watched applications
       cerberus build <NAME>  --- build watched application
       cerberus buildall      --- build all watched applications
       cerberus list          --- see the list of all watched applications
