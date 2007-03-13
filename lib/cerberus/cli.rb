@@ -61,7 +61,7 @@ module Cerberus
     Usage:
       cerberus add <URL>     --- add project from svn repository to list watched of applications
       cerberus add <PATH>    --- add project from local path to list of watched applications
-      cerberus remove <NAME>    --- add project from local path to list of watched applications
+      cerberus remove <NAME> --- remove given project from cerberus
       cerberus build <NAME>  --- build watched application
       cerberus buildall      --- build all watched applications
       cerberus list          --- see the list of all watched applications
