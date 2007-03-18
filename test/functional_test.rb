@@ -11,7 +11,8 @@ class FunctionalTest < Test::Unit::TestCase
   end
 
   def teardown
-    Dir.chdir HOME + '/../' #We need change working directory to some non-removable dir otherwise we would have warning after removing that working directory absent
+    dir = HOME + '/../'
+    Dir.chdir(dir) if test(?d, dir) #We need change working directory to some non-removable dir otherwise we would have warning after removing that working directory absent
     FileUtils.rm_rf HOME
   end
 
