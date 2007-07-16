@@ -4,5 +4,5 @@ module Cerberus
 
   LOCK_WAIT = 30 * 60 #30 minutes
 
-  VERSION = '0.3.5'
+  VERSION = '0.3.6'
 end

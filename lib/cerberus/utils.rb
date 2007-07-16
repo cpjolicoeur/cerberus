@@ -3,7 +3,7 @@ require 'yaml'
 module Cerberus
   module Utils
     def say(msg)
-      STDERR << msg
+      STDERR << msg << "\n"
       exit 1
     end
 

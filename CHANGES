@@ -9,7 +9,26 @@ RSpec
   builder:
     rspec:
       task: test
-  
+
+* Config files now preprocessed by ERB, so it is possible to use dynamic configuration like below
+  publisher:
+    mail:
+      username: <%= ENV['MY_MAIL_ACCOUNT'] %>
+      password: <%= IO.read('~/.secret_password') %>
+
+* Added support of sending mails using gmailer (http://rubyforge.org/projects/gmailutils) instead of plain mailer sender.
+  It would be helpful if you are in corporate environment with proxy and only 80 port is open for communication.
+  Usage is standart
+
+  publisher:
+    gmailer:
+      recipients: hello@world.com
+
+  Configuration options for gmailer are:
+    :username, :password, :proxy_host, :proxy_port, :proxy_user, :proxy_pass
+
+* Remove to_xs helper. Using one from actionsuport
+      
 
 == Version 0.3.5
 Bug fixing

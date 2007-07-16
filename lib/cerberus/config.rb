@@ -1,13 +1,14 @@
 require 'cerberus/constants'
 require 'cerberus/utils'
+require 'erb'
 
 module Cerberus
   class Config
     def initialize(app_name = nil, cli_options = {})
       @config = HashWithIndifferentAccess.new
       if app_name
-        merge!(YAML.load(IO.read(CONFIG_FILE))) if test(?f, CONFIG_FILE)
-        merge!(YAML.load(IO.read(HOME + "/config/#{app_name}.yml")))
+        merge!(YAML.load(ERB.new(IO.read(CONFIG_FILE)).result)) if test(?f, CONFIG_FILE)
+        merge!(YAML.load(ERB.new(IO.read(HOME + "/config/#{app_name}.yml")).result))
       end
       merge!(cli_options)
     end
