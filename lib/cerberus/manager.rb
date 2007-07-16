@@ -71,7 +71,7 @@ module Cerberus
         say "Unknown application #{application_name}"
         exit(1) 
       end
-      FileUtils.rm_r @config[:application_root]
+      FileUtils.rm_rf @config[:application_root]
       File.unlink config_name
       puts "Application '#{application_name}' removed." unless @config[:quiet]
     end
