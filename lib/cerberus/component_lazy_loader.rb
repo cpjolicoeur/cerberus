@@ -56,6 +56,7 @@ module Cerberus
     TYPES = {
       :maven2 => 'Maven2', #Cerberus::Builder
       :rake => 'Rake',
+      :rspec => 'RSpec',
       :rant => 'Rant',
       :bjam => 'Bjam'
     }

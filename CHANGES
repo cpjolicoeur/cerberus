@@ -1,5 +1,16 @@
 = Cerberus Changelog
 
+== Version 0.3.6
+RSpec
+
+* Added out of box support of RSpec tests. 
+  Usage: add to your project configuration following config
+
+  builder:
+    rspec:
+      task: test
+  
+
 == Version 0.3.5
 Bug fixing
 

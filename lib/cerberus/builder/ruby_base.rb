@@ -3,14 +3,15 @@ require 'cerberus/builder/base'
 class Cerberus::Builder::RubyBase
   attr_reader :output
 
-  def initialize(config, cmd)
+  def initialize(config, name, cmd = name)
     @config = config
     @cmd = cmd
+    @name = name
   end
 
   def run
     Dir.chdir @config[:application_root]
-    @output = `#{@config[:bin_path]}#{choose_exec()} #{@config[:builder, @cmd.to_sym, :task]} 2>&1`
+    @output = `#{@config[:bin_path]}#{choose_exec()} #{@config[:builder, @name.to_sym, :task]} 2>&1`
     successful?
   end
 
