@@ -1,7 +1,7 @@
 = Cerberus Changelog
 
 == Version 0.3.6
-RSpec
+RSpec, Gmailer support
 
 * Added out of box support of RSpec tests. 
   Usage: add to your project configuration following config
