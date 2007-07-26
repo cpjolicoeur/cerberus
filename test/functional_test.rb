@@ -41,7 +41,8 @@ class FunctionalTest < Test::Unit::TestCase
     assert File.exists?(project_config)
     scm_conf = load_yml(project_config)['scm']
     assert_equal 'svn', scm_conf['type']
-    assert_match %r{svn(\+ssh)?://(\w+@)?rubyforge.org/var/svn/cerberus}, scm_conf['url']
+    scm_uri = URI.parse(scm_conf['url'])
+    assert_match 'rubyforge.org', scm_uri.host
 
     assert File.exists?(HOME + '/config.yml')
   end
