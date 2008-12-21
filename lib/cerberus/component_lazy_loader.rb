@@ -4,7 +4,8 @@ module Cerberus
       :svn => 'SVN', #Cerberus::SCM
       :darcs => 'Darcs',
       :perforce => 'Perforce',
-      :cvs => 'CVS'
+      :cvs => 'CVS',
+      :git => 'Git'
     }
 
     def self.get(type)
@@ -24,6 +25,8 @@ module Cerberus
           'darcs'
         when test(?d, path+'/.cvs')
           'cvs'
+        when test(?d, path+'/.git')
+          'git'          
         end
       else
         #guess SCM type by its url

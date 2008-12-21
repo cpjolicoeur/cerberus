@@ -61,6 +61,17 @@ class IntegrationTest < Test::Unit::TestCase
     assert_equal 'darcs', cfg['scm']['type']
     assert_equal DARCS_URL, cfg['scm']['url']
   end
+  
+  def test_add_git_scm
+    output = run_cerb("  add   #{GIT_URL}  SCM=git")
+    assert_match /has been added to Cerberus successfully/, output
+
+    assert File.exists?(HOME + '/config/git_repo.yml')
+    cfg = load_yml(HOME + '/config/git_repo.yml')
+
+    assert_equal 'git', cfg['scm']['type']
+    assert_equal GIT_URL, cfg['scm']['url']
+  end
 
   def test_run_unexist_project
     output = run_cerb("build some_project")

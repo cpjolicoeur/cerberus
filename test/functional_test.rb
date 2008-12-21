@@ -257,6 +257,69 @@ class FunctionalTest < Test::Unit::TestCase
     assert_equal false, build.scm.has_changes?
   end
 
+  def test_git
+    add_application('gitapp', GIT_URL, :scm => {:type => 'git'})
+
+    build = Cerberus::BuildCommand.new('gitapp')
+    build.run
+    assert build.scm.has_changes?
+    assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
+    mail = ActionMailer::Base.deliveries[0]
+    output = mail.body
+
+    #Check outpus that run needed tasks
+    assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
+    assert output !~ /Task 'custom1' has been invoked/
+    assert_match  /\[gitapp\] Cerberus set up for project/, mail.subject
+
+    status_file = HOME + '/work/gitapp/status.log'
+    assert File.exists?(status_file)
+    assert build_successful?(status_file)
+    assert 1, Dir[HOME + "/work/gitapp/logs/*.log"].size
+
+    #There were no changes - no reaction should be
+    build = Cerberus::BuildCommand.new('gitapp')
+    build.run
+    assert_equal false, build.scm.has_changes?
+    assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
+    assert 1, Dir[HOME + "/work/gitapp/logs/*.log"].size
+
+    #now we add new broken test
+    test_case_name = "test/#{rand(10000)}_test.rb"
+    File.open(GIT_REPO + '/' + test_case_name, 'w') { |f|
+      f << "require 'test/unit'
+        class A#{rand(10000)}Test < Test::Unit::TestCase
+          def test_ok
+            assert false
+          end
+        end"
+    }
+
+    curr_dir = Dir.pwd
+    Dir.chdir GIT_REPO
+    `git add #{test_case_name}`
+    `git commit -a -m 'somepatch'`
+    Dir.chdir curr_dir
+
+    build = Cerberus::BuildCommand.new('gitapp')
+    build.run
+    assert build.scm.has_changes?
+    assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
+    assert 2, Dir[HOME + "/work/gitsapp/logs/*.log"].size
+
+    build = Cerberus::BuildCommand.new('gitapp')
+    build.run
+    assert_equal false, build.scm.has_changes?
+    assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
+    assert 2, Dir[HOME + "/work/gitapp/logs/*.log"].size
+
+    #Now we broke remote repository (imitate that network unaccessage)
+    FileUtils.rm_rf GIT_REPO
+    build = Cerberus::BuildCommand.new('gitapp')
+    build.run
+    assert_equal false, build.scm.has_changes?
+  end
+
   def test_campfire_publisher
     #there were no any messages cause login/password is incorrect. We just check that there was no any exceptions
     add_application('campapp', SVN_URL, 'publisher' => {'active' => 'campfire', 'campfire' => 
