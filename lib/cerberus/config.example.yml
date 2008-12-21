@@ -11,6 +11,9 @@ publisher:
 #  jabber:
 #    jid: somemailbox@gmail.com/cerberus
 #    password: somepassword
+#  twitter:
+#    login: twitter_username
+#    password: twitter_password
 #  irc:
 #    nick: cerb
 #    server: irc.freenode.net

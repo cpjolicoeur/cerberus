@@ -167,6 +167,7 @@ module Cerberus
       if hash
         return hash[defining_key] if hash[defining_key]
         return hash.keys[0] if hash.size == 1
+        return hash.keys.join(' ') if hash.size > 1
       end
       return default_option
     end

@@ -45,7 +45,8 @@ module Cerberus
       :jabber => 'Jabber',
       :irc => 'IRC',
       :rss => 'RSS',
-      :campfire => 'Campfire'
+      :campfire => 'Campfire',
+      :twitter => 'Twitter'
     }
 
     def self.get(type)
