@@ -13,16 +13,16 @@ class Cerberus::SCM::Git
   end
 
   def update!
+    extract_last_commit_info
     if test(?d, @path + '/.git')
-      @status = execute('pull', '-v')
+      #@status = execute('pull', '')
+      @status = execute('fetch') + execute("reset", "--hard #{@revision}")
     else
       FileUtils.rm_rf(@path) if test(?d,@path)
 
       encoded_url = (@config[:scm, :url].include?(' ') ? "\"#{@config[:scm, :url]}\"" : @config[:scm, :url])
       @status = execute("clone", "#{encoded_url} #{@path}")
     end
-
-    extract_last_commit_info
   end
 
   def has_changes?
@@ -54,12 +54,17 @@ class Cerberus::SCM::Git
 
   private
   def execute(command, parameters = nil, with_path = true)
-    cmd = "#{@config[:bin_path]}git #{command} #{parameters}"
-    `#{cmd}`
+   if with_path
+     cmd = "cd #{@config[:application_root]} && #{@config[:bin_path]}git --git-dir=#{@path}/.git #{command} #{parameters}"
+   else
+     cmd = "#{@config[:bin_path]}git #{command} #{parameters}"
+   end
+   puts cmd if @config[:verbose]
+   `#{cmd}`
   end
 
   def extract_last_commit_info
-    message = execute("--git-dir=#{@path}/.git show", "--pretty='format:%an(%ae)|%ai|%H|%s'")
+    message = execute("show", "--pretty='format:%an(%ae)|%ai|%H|%s'")
     message = message.split("|")
     
     @author = message[0]
