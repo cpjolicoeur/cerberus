@@ -6,7 +6,6 @@ http://www.martinfowler.com/articles/continuousIntegration.html.
 Requirements: 
   ruby - 1.8.2 or higher
   rake - 0.7 or higher
-  svn client - 1.2 or higher
 
 What 'Cerberus' name means?
 Quote from Wikipedia (http://en.wikipedia.org/wiki/Cerberus)
@@ -53,16 +52,43 @@ Also check ~/.cerberus/config/<APPLICATION_NAME>.yml and make sure that you have
 
 And then run Cerberus 
 
-cerberus build APPLICATION_NAME    #Run project
+cerberus build APPLICATION_NAME    # Run project
 
 or
 
-cerberus buildall     #Run all available projects
+cerberus buildall     # Run all available projects
 
 
 It will check out latest sources and run tests for your application. If tests are broken - recipients will receive notifications.
 
 But of course better run Cerberus automatically from Cron. Run Cerberus for project each 10 minutes would be ok.
+
+== Features
+
+Cerberus currently supports the following SCM tools: 
+
+  * Subversion
+  * Git
+  * Darcs
+  * Perforce
+  * CVS
+
+Cerberus currently supports the following notification systems: 
+
+  * Email
+  * Jabber
+  * IRC
+  * RSS
+  * Campfire
+  * Twitter
+
+Cerberus currently supports the following build systems: 
+
+  * Rake
+  * RSpec
+  * Rant
+  * Maven2
+  * Bjam
 
 == License
 
@@ -73,3 +99,8 @@ is included in the LICENSE file.
 
 This software was created by Anatol Pomozov <anatol.pomozov@gmail.com> and is
 located at http://cerberus.rubyforge.org.
+
+== Contributors
+
+Craig P Jolicoeur <http://github.com/cpjolicoeur>
+Rob Kaufman <http://github.com/notch8>

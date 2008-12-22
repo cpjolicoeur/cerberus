@@ -42,6 +42,9 @@ publisher:
   campfire:
     url:
     on_event:
+  twitter:
+    login:
+    password:
 scm:
   type:
   url:

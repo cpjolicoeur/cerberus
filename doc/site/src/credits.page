@@ -10,3 +10,5 @@ The following people made notable contributions to the Cerberus tool:
 * "Anatol Pomozov":http://pomozov.info - original creator of Cerberus tool
 * Xavier Shay - several patches related to RSS publisher
 * Mark Noworolski - patches related to Subversion SCM
+* Rob Kaufman - Git SCM support
+* Craig Jolicoeur - Twitter publisher support

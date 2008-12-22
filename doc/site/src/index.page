@@ -16,6 +16,7 @@ Cerberus requires:
 * "darcs":http://darcs.net/ client - 1.0.7 or higher (optional)
 * "bjam":http://www.boost.org/tools/build/v2/index.html (optional)
 * "perforce":http://www.perforce.com/ (optional)
+* "git":http://git.or.cz (optional)
 
 h4. What does 'Cerberus' name mean?
 
