@@ -13,15 +13,14 @@ class Cerberus::SCM::Git
   end
 
   def update!
-    extract_last_commit_info
     if test(?d, @path + '/.git')
+      extract_last_commit_info
       #@status = execute('pull', '')
       @status = execute('fetch') + execute("reset", "--hard #{@revision}")
     else
-      FileUtils.rm_rf(@path) if test(?d,@path)
-
+      FileUtils.rm_rf(@path) if test(?d, @path)
       encoded_url = (@config[:scm, :url].include?(' ') ? "\"#{@config[:scm, :url]}\"" : @config[:scm, :url])
-      @status = execute("clone", "#{encoded_url} #{@path}")
+      @status = execute("clone", "#{encoded_url} #{@path}", false)
     end
   end
 

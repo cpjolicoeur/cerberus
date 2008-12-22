@@ -56,6 +56,7 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.add_dependency 'xmpp4r', '>= 0.3.1'
   s.add_dependency 'Ruby-IRC', '>= 1.0.7'
   s.add_dependency 'gmailer', '>= 0.1.7'
+  s.add_dependency 'twitter4r', '>= 0.3.0'
 
   s.files = Dir.glob("{bin,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
   s.files += %w(LICENSE README CHANGES Rakefile)
@@ -69,7 +70,7 @@ GEM_SPEC = Gem::Specification.new do |s|
 
   s.has_rdoc = false
 
-  s.test_suite_file = "test/integration_test.rb"
+  s.test_files = Dir.glob('test/*_test.rb')
 
   s.author = "Anatol Pomozov"
   s.email = "anatol.pomozov@gmail.com"
@@ -145,14 +146,14 @@ task :publish_news do
   end
 end
 
-if require 'webgen/rake/webgentask'
-
-  Webgen::Rake::WebgenTask.new do |t|
-    t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
-    t.clobber_outdir = true
-  end
-
-end
+# if require 'webgen/rake/webgentask'
+# 
+#   Webgen::Rake::WebgenTask.new do |t|
+#     t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
+#     t.clobber_outdir = true
+#   end
+# 
+# end
 
 task :publish_site => :webgen do
   sh %{scp -r -q doc/site/output/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/}

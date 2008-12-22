@@ -2,19 +2,33 @@ class IRCConnection
   @@messages = []
   @@connected = false
 
-  def self.messages
-    @@messages
-  end
+  class << self
+    def messages
+      @@messages
+    end
 
-  def self.connected
-    @@connected
-  end
+    def connected
+      @@connected
+    end
 
-  def self.send_to_server(msg)
-    @@messages << msg
-  end
+    def send_to_server(msg)
+      if msg =~ /QUIT/
+        @@connected = false
+      else
+        @@messages << msg
+      end
+    end
 
-  def self.handle_connection(server, port, nick, realname)
-    @@connected = true
+    def handle_connection(server, port, nick, realname, options)
+      @@connected = true
+    end
+  end
+end
+
+class IRCEvent
+  class << self
+    def add_callback(msg_id, &callback)
+      yield
+    end
   end
 end

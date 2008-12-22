@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'cerberus/cli'
 
 Cerberus::CLI.new(*ARGV)
