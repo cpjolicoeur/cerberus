@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 require 'cerberus/publisher/jabber'
+require 'cerberus/manager'
 require 'mock/xmpp4r'
 require 'mock/manager'
 

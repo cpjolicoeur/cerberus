@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 require 'cerberus/publisher/mail'
+require 'cerberus/manager'
 require 'mock/manager'
 
 class MailPublisherTest < Test::Unit::TestCase
