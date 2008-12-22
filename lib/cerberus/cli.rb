@@ -48,6 +48,9 @@ module Cerberus
         when '--force'
           result[:force] = true
           args.delete(arg)
+        when '--verbose', '-v'
+          result[:verbose] = true
+          args.delete(arg)
         end
       end
 
