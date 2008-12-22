@@ -70,7 +70,7 @@ GEM_SPEC = Gem::Specification.new do |s|
 
   s.has_rdoc = false
 
-  s.test_suite_file = "test/integration_test.rb"
+  s.test_files = Dir.glob('test/*_test.rb')
 
   s.author = "Anatol Pomozov"
   s.email = "anatol.pomozov@gmail.com"
