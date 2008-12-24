@@ -14,7 +14,7 @@ PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 RELEASE_NAME  = "REL #{PKG_VERSION}"
 
 RUBYFORGE_PROJECT = "cerberus"
-RUBYFORGE_USER    = "anatol"
+RUBYFORGE_USER    = ENV['RUBYFORGE_USER'] || "anatol"
 
 task :default => [:test, :clean]
 
