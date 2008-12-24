@@ -12,3 +12,4 @@ The following people made notable contributions to the Cerberus tool:
 * Mark Noworolski - patches related to Subversion SCM
 * Rob Kaufman - Git SCM support
 * Craig Jolicoeur - Twitter publisher support
+* Ken Mayer - patches related to properly checking shell command exitstatus
