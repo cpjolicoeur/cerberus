@@ -1,11 +1,11 @@
 ---
 title: FAQ
-inMenu: true
-orderInfo: 2
+in_menu: true
+sort_info: 2
 ---
-h2. FAQ
+## FAQ
 
-h3. Why Cerberus uses an external scheduler and not internal one like CruiseControl?
+### Why Cerberus uses an external scheduler and not internal one like CruiseControl?
 
 Cerberus was developed as a __stateless__ continuous building tool.
 
@@ -23,7 +23,7 @@ Cerberus process will not require any resources for too long.
 
 It is a really smart and nifty technique.
 
-h3. How to change task(s) for Rake
+### How to change task(s) for Rake
 
 __Q: In my project we need to run Rails migrations before tests. But by default Cerberus runs the :default task.
 How could I run eg. migrations?__
@@ -38,13 +38,13 @@ builder:
 given configuration above, rake would run first migrations and then tests. You could set __task__ option 
 to any other combination of Rake tasks.
 
-h3. How to schedule Cerberus build on nnCron
+### How to schedule Cerberus build on nnCron
 
 "nnCron":http://www.nncron.ru/download/nncron191.exe is a scheduling tool for Windows. It is a good replacement for Unix Cron
 on the Windows platform. nnCron has simple user interface and it is easy to add new scheduled tasks.
 
 There is only one issue - nnCron doesn't pass __HOME__ environment variable to process, so you need to add it to nncron.tab file. 
-You could add __CERBERUS_HOME__ environment variable or __HOME__ (in the last case __CERBERUS_HOME__ would evaluate to 
+You could add __CERBERUS\_HOME__ environment variable or __HOME__ (in the last case __CERBERUS\_HOME__ would evaluate to
 HOME/.cerberus)
 
 My nncron.tab file looks as follows:
@@ -78,9 +78,9 @@ hooks are run as user __www-data__ so change the ownership of post-commit to www
 sudo chown www-data:www-data SUBVERSION_REPO/hooks/post-commit
 </pre>
 
-Remember that cerberus will run as *user owning post-commit*. So be careful with permissions of CERBERUS_HOME folder.
+Remember that cerberus will run as *user owning post-commit*. So be careful with permissions of CERBERUS\_HOME folder.
 
-Then add the following content to SUBVERSION_REPO/hooks/post-commit:
+Then add the following content to SUBVERSION\_REPO/hooks/post-commit:
 
 <pre>
 #!/bin/sh
@@ -93,9 +93,9 @@ To test correctness of the hook, just run
 sudo -u YOUR_USER post-commit
 </pre>
 
-If you have any problems with permissions (for example CERBERUS_HOME not writable for user), the command above would tell you so.
+If you have any problems with permissions (for example CERBERUS\_HOME not writable for user), the command above would tell you so.
 
-If command finished successfully, you should have a file in CERBERUS_HOME/work/YOUR_APPLICATION_NAME/logs.
+If command finished successfully, you should have a file in CERBERUS_HOME/work/YOUR_APPLICATION\_NAME/logs.
 
 
 h3. I would like to disable (but not remove) a project in Cerberus
@@ -103,7 +103,7 @@ h3. I would like to disable (but not remove) a project in Cerberus
 Sometimes we need to temporarily disable an application and not allow __cerberus buildall__ command to build it.
 
 To achieve this, just rename configuration file for YOUR_APPLICATION from
-__config/YOUR_APPLICATION.yml__ to eg. __config/YOUR_APPLICATION.yml.disabled__
+__config/YOUR_APPLICATION.yml__ to eg. __config/YOUR\_APPLICATION.yml.disabled__
 
 Cerberus picks up only configurations that end with .yml
 
@@ -143,9 +143,9 @@ For more info please read Cron manual: <pre>man crontab</pre>
 h3. How to change location of Cerberus directory
 
 By default cerberus creates its own files in user's home directoy. But you could change it by setting the environment variable 
-__CERBERUS_HOME__:
+__CERBERUS\_HOME__:
 <pre>
-export CERBERUS_HOME=/var/cerberus
+export CERBERUS\_HOME=/var/cerberus
 </pre>
 
 h3. How to add Darcs project to Cerberus

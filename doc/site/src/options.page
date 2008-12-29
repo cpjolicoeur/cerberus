@@ -1,11 +1,11 @@
 ---
 title: Config Option Index
-inMenu: true
-orderInfo: 4
+in_menu: true
+sort_info: 4
 ---
-h2. Configuration Options
+## Configuration Options
 
-h4. Options available in config files
+#### Options available in config files
 
 <pre>
 bin_path:
@@ -71,7 +71,7 @@ hook:
     action: 
 
 
-h4. Options available in command line
+#### Options available in command line
 
 The following options are available in command line when adding new application:
 <pre>
