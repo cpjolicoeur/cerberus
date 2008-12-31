@@ -7,7 +7,7 @@ sort_info: 2
 
 ### Why Cerberus uses an external scheduler and not internal one like CruiseControl?
 
-Cerberus was developed as a __stateless__ continuous building tool.
+Cerberus was developed as a _stateless_ continuous building tool.
 
 In this context it means that Cerberus won't consume RAM all the time.
 For example, CruiseControl requires about 120 Megabites of RAM even if it has 
@@ -25,8 +25,8 @@ It is a really smart and nifty technique.
 
 ### How to change task(s) for Rake
 
-__Q: In my project we need to run Rails migrations before tests. But by default Cerberus runs the :default task.
-How could I run eg. migrations?__
+_Q: In my project we need to run Rails migrations before tests. But by default Cerberus runs the :default task.
+How could I run eg. migrations?_
 
 It is easy - just setup rake task option in config:
 <pre>
@@ -35,16 +35,16 @@ builder:
     task: db:migrate test
 </pre>
 
-given configuration above, rake would run first migrations and then tests. You could set __task__ option 
+given configuration above, rake would run first migrations and then tests. You could set _task_ option 
 to any other combination of Rake tasks.
 
 ### How to schedule Cerberus build on nnCron
 
-"nnCron":http://www.nncron.ru/download/nncron191.exe is a scheduling tool for Windows. It is a good replacement for Unix Cron
+[nnCron](http://www.nncron.ru/download/nncron191.exe) is a scheduling tool for Windows. It is a good replacement for Unix Cron
 on the Windows platform. nnCron has simple user interface and it is easy to add new scheduled tasks.
 
-There is only one issue - nnCron doesn't pass __HOME__ environment variable to process, so you need to add it to nncron.tab file. 
-You could add __CERBERUS\_HOME__ environment variable or __HOME__ (in the last case __CERBERUS\_HOME__ would evaluate to
+There is only one issue - nnCron doesn't pass _HOME_ environment variable to process, so you need to add it to nncron.tab file. 
+You could add _CERBERUS\_HOME_ environment variable or _HOME_ (in the last case _CERBERUS\_HOME_ would evaluate to
 HOME/.cerberus)
 
 My nncron.tab file looks as follows:
@@ -62,9 +62,9 @@ START-APPW: c:\progra~1\ruby\bin\cerberus.CMD buildall
 )#
 </pre>
 
-h3. Running Cerberus from Subversion __post-commit__ hook
+### Running Cerberus from Subversion _post-commit_ hook
 
-Subversion as well as other SCMs allow you to "hook actions on commit":http://svnbook.red-bean.com/en/1.1/ch05s02.html#svn-ch-5-sect-2.1.
+Subversion as well as other SCMs allow you to [hook actions on commit](http://svnbook.red-bean.com/en/1.1/ch05s02.html#svn-ch-5-sect-2.1).
 If you install Cerberus on the same system where you keep your Subversion repository, you could add a custom hook
 to run CI tool right after the user commit. In this case you don't need to use cron or any other scheduling system.
 
@@ -72,7 +72,7 @@ Next follows a short guide how to do it, in fact, it is very simple.
 
 First you need to copy SUBVERSION_REPO/hooks/post-commit.tmpl to SUBVERSION_REPO/hooks/post-commit and make it executable
 for *user who would manage the repository*. For example, on Ubuntu Linux with subversion repository served by Apache (through mod_svn)
-hooks are run as user __www-data__ so change the ownership of post-commit to www-data:
+hooks are run as user _www-data_ so change the ownership of post-commit to www-data:
 
 <pre>
 sudo chown www-data:www-data SUBVERSION_REPO/hooks/post-commit
@@ -84,7 +84,7 @@ Then add the following content to SUBVERSION\_REPO/hooks/post-commit:
 
 <pre>
 #!/bin/sh
-/usr/bin/env cerberus build YOUR_APPLICATION_NAME &
+/usr/bin/env cerberus build YOUR_APPLICATION_NAME &amp;
 </pre>
 
 To test correctness of the hook, just run
@@ -98,16 +98,16 @@ If you have any problems with permissions (for example CERBERUS\_HOME not writab
 If command finished successfully, you should have a file in CERBERUS_HOME/work/YOUR_APPLICATION\_NAME/logs.
 
 
-h3. I would like to disable (but not remove) a project in Cerberus
+### I would like to disable (but not remove) a project in Cerberus
 
-Sometimes we need to temporarily disable an application and not allow __cerberus buildall__ command to build it.
+Sometimes we need to temporarily disable an application and not allow _cerberus buildall_ command to build it.
 
 To achieve this, just rename configuration file for YOUR_APPLICATION from
-__config/YOUR_APPLICATION.yml__ to eg. __config/YOUR\_APPLICATION.yml.disabled__
+_config/YOUR_APPLICATION.yml_ to eg. _config/YOUR\_APPLICATION.yml.disabled_
 
 Cerberus picks up only configurations that end with .yml
 
-h3. Cerberus hangs on updating password-protected repository
+### Cerberus hangs on updating password-protected repository
 
 When subversion tries to update password-protected repository, it prompts for user to enter appropriate credentials. Cerberus cannot interact with subversion client in an interactive way, making subversion to wait for password infinitely.
 
@@ -124,7 +124,7 @@ Another and even better option would be to create a ssh key pair in repository a
 copy resulting private key to the same host cerberus is running and configure
 your ssh client to use it. 
  
-h3. I have added Cerberus job to Cron but it does not work for me. It doesn't even start to build.
+### I have added Cerberus job to Cron but it does not work for me. It doesn't even start to build.
 
 It seems that you configured Cron incorrectly.
 
@@ -140,15 +140,15 @@ This works for me. But if you get some strange errors, the following trick might
 
 For more info please read Cron manual: <pre>man crontab</pre>
 
-h3. How to change location of Cerberus directory
+### How to change location of Cerberus directory
 
 By default cerberus creates its own files in user's home directoy. But you could change it by setting the environment variable 
-__CERBERUS\_HOME__:
+_CERBERUS\_HOME_:
 <pre>
 export CERBERUS\_HOME=/var/cerberus
 </pre>
 
-h3. How to add Darcs project to Cerberus
+### How to add Darcs project to Cerberus
 
 If you want to add Darcs (or other custom SCM) project to cerberus, you should explicitly tell that to cerberus.
 <pre>cerberus add PROJECT_DIR SCM=darcs</pre>
