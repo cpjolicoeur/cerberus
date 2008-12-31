@@ -1,9 +1,9 @@
 ---
 title: Credits
-inMenu: true
-orderInfo: 6
+in_menu: true
+sort_info: 6
 ---
-h2. Credits
+## Credits
 
 The following people made notable contributions to the Cerberus tool: 
 
