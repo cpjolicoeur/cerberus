@@ -1,5 +1,11 @@
 = Cerberus Changelog
 
+== Version 0.4.1
+Minor bugfixes
+
+* Fixed potential Git version issue when updating repository
+* Fixed problem with rspec builder always returning false even when build was successful
+
 == Version 0.4.0
 Git, Twitter support
 
