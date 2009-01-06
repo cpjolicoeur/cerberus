@@ -1,11 +1,11 @@
 ---
 title: Who uses
-inMenu: true
-orderInfo: 3
+in_menu: true
+sort_info: 3
 ---
-h2. Who uses
+## Who uses
 
-h4. "Anatol Pomozov":http://blog.pomozov.info/tags/english/
+#### [Anatol Pomozov](http://blog.pomozov.info/tags/english/)
 
 After using "Ruby On Rails":http://rubyonrails.com framework for a while in my day-job I became test-infected developer. 
 RoR allows you to create tests for your application with exciting simplicity so it is hard not to be test-infected.
@@ -26,7 +26,7 @@ Now I am using Cerberus for my 8 Ruby projects and happy with it. I have schedul
 run each 15 minutes and if tests for any of my project are broken Cerberus would notify me about that.
 
 
-h4. "Abonja":http://www.abonja.nl
+#### [Abonja](http://www.abonja.nl)
 
 At Abonja we have been using unit-tests and continuous builds for our C++
 projects. Next to our C++ work we are now using Ruby on Rails for the

@@ -14,7 +14,7 @@ PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 RELEASE_NAME  = "REL #{PKG_VERSION}"
 
 RUBYFORGE_PROJECT = "cerberus"
-RUBYFORGE_USER    = "anatol"
+RUBYFORGE_USER    = ENV['RUBYFORGE_USER'] || "anatol"
 
 task :default => [:test, :clean]
 
@@ -146,14 +146,16 @@ task :publish_news do
   end
 end
 
-# if require 'webgen/rake/webgentask'
-# 
-#   Webgen::Rake::WebgenTask.new do |t|
-#     t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
-#     t.clobber_outdir = true
-#   end
-# 
-# end
+
+
+require 'webgen/webgentask'
+
+task :www => :webgen
+
+  Webgen::WebgenTask.new do |t|
+    t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
+    t.clobber_outdir = true
+  end
 
 task :publish_site => :webgen do
   sh %{scp -r -q doc/site/output/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/}

@@ -1,5 +1,23 @@
 = Cerberus Changelog
 
+== Version 0.4.0
+Git, Twitter support
+
+* Added support for publishing to Twitter
+  Usage: add the following to your project config
+
+  publisher:
+    twitter:
+      login: twitter_login
+      passwordd: twitter_password
+
+* Git is now supported as an SCM
+  Usage specify SCM=git for the Cerberus add command
+
+  cerberus add PROJECT_URL SCM=git
+
+* Several minor bugfixes
+
 == Version 0.3.6
 RSpec, Gmailer support
 

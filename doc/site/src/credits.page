@@ -1,12 +1,15 @@
 ---
 title: Credits
-inMenu: true
-orderInfo: 6
+in_menu: true
+sort_info: 6
 ---
-h2. Credits
+## Credits
 
 The following people made notable contributions to the Cerberus tool: 
 
-* "Anatol Pomozov":http://pomozov.info - original creator of Cerberus tool
+* [Anatol Pomozov](http://pomozov.info) - original creator of Cerberus tool
 * Xavier Shay - several patches related to RSS publisher
 * Mark Noworolski - patches related to Subversion SCM
+* [Rob Kaufman](http://notch8.com) - Git SCM support
+* [Craig Jolicoeur](http://craigjolicoeur.com) - Twitter publisher support
+* Ken Mayer - patches related to properly checking shell command exitstatus

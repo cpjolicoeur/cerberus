@@ -39,10 +39,11 @@ module Cerberus
     def exec_successful?(cmd)
       begin
         `#{cmd}`
-        return true
+        return true if $?.exitstatus == 0
       rescue
-        return false
+        # if anything bad happens, return false
       end
+      return false
     end
 
     def interpret_state(state, with_default = true)
