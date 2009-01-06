@@ -6,6 +6,7 @@
 + Improve Configuration Index (docs)
 + Refactor logger. Use logger also in mail publisher.
 + Add smart algorithm for calculating of person's name who broke release
++ Fix text suite
 
 Before release!
 ! Add on_success on_failure and on_finish opions to builders
