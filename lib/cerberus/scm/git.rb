@@ -16,7 +16,7 @@ class Cerberus::SCM::Git
     if test(?d, @path + '/.git')
       extract_last_commit_info
       #@status = execute('pull', '')
-      @status = execute('fetch') + execute("reset", "--hard #{@revision}")
+      @status = execute("reset", "--hard #{@revision}") + execute('pull')
     else
       FileUtils.rm_rf(@path) if test(?d, @path)
       encoded_url = (@config[:scm, :url].include?(' ') ? "\"#{@config[:scm, :url]}\"" : @config[:scm, :url])
