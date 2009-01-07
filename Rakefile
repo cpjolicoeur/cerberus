@@ -158,7 +158,7 @@ task :www => :webgen
   end
 
 task :publish_site => :webgen do
-  sh %{scp -r -q doc/site/output/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/}
+  sh %{scp -r -q doc/site/out/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/}
 end
 
 task :release => [:release_files, :publish_news, :publish_site]
