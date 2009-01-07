@@ -35,8 +35,8 @@ Main advantages of Cerberus over other solutions:
 * Cerberus works not only for Rails projects, but also for any other Ruby projects (more precisely, for all projects using Rake).
 * Cerberus is multiplatform solution: it runs great on \*nix and Windows.
 * Cerberus is distributed via RubyGems, so it is very easy to install and update to the latest available version.
-* Cerberus is very easy to start using. Just type @cerberus add PROJECT_URL|PROJECT_DIR@.
-* Cerberus is a lightweight solution: most of the time Ruby process will not even run. Cerberus runs @rake@ only in case of changes are found in the project.
+* Cerberus is very easy to start using. Just type `cerberus add PROJECT_URL|PROJECT_DIR`.
+* Cerberus is a lightweight solution: most of the time Ruby process will not even run. Cerberus runs `rake` only in case of changes are found in the project.
 
  
 It is very easy to use Cerberus. First install it. Using RubyGems package manager is the easiest way to do it.
@@ -47,7 +47,7 @@ or just get Cerberus distribution package right from [the download page](http://
 
 Then you need to add project which will be watched by Cerberus. Do it by
 
-<pre>cerberus add (DIR|SVN_URL) APPLICATION\_NAME=some_app RECIPIENTS=dev1@project.com</pre>
+<pre>cerberus add (DIR|SVN_URL) APPLICATION_NAME=some_app RECIPIENTS=dev1@project.com</pre>
 
 as a second parameter you could pass URL to subversion repository or directory with working SVN folder.
 
@@ -70,7 +70,7 @@ Also check ~/.cerberus/config/&lt;APPLICATION\_NAME&gt;.yml and make sure your o
 
 Then run Cerberus for the project:
 
-<pre>cerberus build APPLICATION\_NAME</pre>
+<pre>cerberus build APPLICATION_NAME</pre>
 
 or build __all__ registered projects:
 
