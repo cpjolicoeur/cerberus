@@ -27,9 +27,11 @@ end
 
 desc "Clean all generated files"
 task :clean => :clobber_package do
-  rm_rf "#{File.dirname(__FILE__)}/test/__workdir"
-  rm_rf "#{File.dirname(__FILE__)}/coverage"
-  rm_rf "#{File.dirname(__FILE__)}/doc/site/output"
+  root = File.dirname(__FILE__)
+  rm_rf "#{root}/test/__workdir"
+  rm_rf "#{root}/coverage"
+  rm_rf "#{root}/doc/site/out"
+  rm_rf "#{root}/doc/site/webgen.cache"
 end
 
 
@@ -146,18 +148,15 @@ task :publish_news do
   end
 end
 
-
-
 require 'webgen/webgentask'
-
-task :www => :webgen
+task :generate_site => :webgen
 
   Webgen::WebgenTask.new do |t|
     t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
     t.clobber_outdir = true
   end
 
-task :publish_site => :webgen do
+task :publish_site => :generate_site do
   sh %{scp -r -q doc/site/out/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/}
 end
 
