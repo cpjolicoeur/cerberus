@@ -6,7 +6,7 @@ class Cerberus::Builder::RSpec < Cerberus::Builder::RubyBase
   end
 
   def brokeness
-    if @output =~ /\d+ examples, (\d+) failures/
+    if @output =~ /\d+ examples, (\d+) failures, \d+ pending/
       $1.to_i
     end
   end

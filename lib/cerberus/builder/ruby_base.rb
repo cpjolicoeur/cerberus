@@ -29,7 +29,7 @@ class Cerberus::Builder::RubyBase
         return $1.to_i + $2.to_i
       end
     else
-      if @output =~ /\d+ examples, (\d+) failures, 1 pending/
+      if @output =~ /\d+ examples, (\d+) failures, \d+ pending/
         return $1.to_i
       end
     end
