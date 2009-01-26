@@ -5,6 +5,7 @@ require 'test/unit'
 require 'fileutils'
 
 require 'cerberus/utils'
+require 'mock/manager'
 
 class Test::Unit::TestCase
   TEMP_DIR = File.expand_path(File.dirname(__FILE__)) + '/__workdir'
@@ -110,7 +111,7 @@ end"
   end
 
   def build_status(successful)
-    Cerberus::Status.new('state' => successful)
+    DummyStatus.new('state' => successful)
   end
 end
 
