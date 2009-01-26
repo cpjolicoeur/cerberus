@@ -4,3 +4,4 @@ test/__workdir
 doc/site/out
 doc/site/webgen.cache
 FIXME
+*.bak

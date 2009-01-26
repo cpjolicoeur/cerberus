@@ -30,6 +30,11 @@ class IntegrationTest < Test::Unit::TestCase
     assert_match /mamba/, output
   end
 
+  def test_status_command
+    # FIXME: add real tests
+    assert true
+  end
+
   def test_add_project_with_parameters
     output = run_cerb("  add   #{SVN_URL}  APPLICATION_NAME=hello_world  RECIPIENTS=aa@gmail.com   BUILDER=maven2")
     assert_match /has been added to Cerberus successfully/, output

@@ -18,7 +18,7 @@ RUBYFORGE_USER    = ENV['RUBYFORGE_USER'] || "anatol"
 
 task :default => [:test, :clean]
 
-desc "Run the unit tests in test/unit"
+desc "Run the tests in the test/ directory"
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"
   t.pattern = 'test/*_test.rb'

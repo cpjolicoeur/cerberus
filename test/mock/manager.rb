@@ -15,7 +15,7 @@ class DummyStatus
 
   def initialize(param)
     @hash = param
-    @current_build_sucessful = @hash['state']
+    @current_build_successful = @hash['state']
     @previous_build_successful = @hash['previous_build'] || false
     @previous_brokeness = @hash['previous_brokeness'] || ''
     @current_brokeness = @hash['current_brokeness'] || ''

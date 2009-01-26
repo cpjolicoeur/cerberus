@@ -56,6 +56,7 @@ class Cerberus::SCM::Git
   end
 
   private
+
   def execute(command, parameters = nil, with_path = true)
    if with_path
      cmd = "cd #{@config[:application_root]} && #{@config[:bin_path]}git --git-dir=#{@path}/.git #{command} #{parameters}"
