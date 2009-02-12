@@ -1,5 +1,11 @@
 = Cerberus Changelog
 
+== Version 0.4.2
+RSpec builder bugfixes
+
+* Fixed bugs with rspec builder not giving correct error count
+* Extracted rspec-specific code to the rspec builder
+
 == Version 0.4.1
 Minor bugfixes
 
