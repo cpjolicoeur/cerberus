@@ -134,7 +134,7 @@ module Cerberus
               raise "Publisher have no configuration: #{pub}" unless publisher_config
               
               events = interpret_state(publisher_config[:on_event] || @config[:publisher, :on_event] || 'default')
-              Publisher.get(pub).publish(@status, self, @config) if events.include?(@status.current_state)
+              Publisher.get(pub, publisher_config).publish(@status, self, @config) if events.include?(@status.current_state)
             end
             
             
