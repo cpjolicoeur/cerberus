@@ -16,22 +16,12 @@ class Cerberus::Builder::RubyBase
   end
 
   def successful?
-    if @output.include?("errors")
-      $?.exitstatus == 0 and not @output.include?("#{@cmd} aborted!") and @output.include?("0 failures, 0 errors")
-    else
-      $?.exitstatus == 0 and not @output.include?("#{@cmd} aborted!") and @output.include?("0 failures")
-    end
+    $?.exitstatus == 0 and not @output.include?("#{@cmd} aborted!") and @output.include?("0 failures, 0 errors")
   end
 
   def brokeness
-    if @output.include?("errors")
-      if @output =~ /\d+ tests, \d+ assertions, (\d+) failures, (\d+) errors/
-        return $1.to_i + $2.to_i
-      end
-    else
-      if @output =~ /\d+ examples, (\d+) failures, \d+ pending/
-        return $1.to_i
-      end
+    if @output =~ /\d+ tests, \d+ assertions, (\d+) failures, (\d+) errors/
+      return $1.to_i + $2.to_i
     end
   end
 
