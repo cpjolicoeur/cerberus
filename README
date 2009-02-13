@@ -90,6 +90,14 @@ Cerberus currently supports the following build systems:
   * Maven2
   * Bjam
 
+== Mailing List / Public Forums
+
+http://groups.google.com/group/cerberusci
+
+== Issue Tracker
+
+http://cpjolicoeur.lighthouseapp.com/projects/22299-cerberus
+
 == License
 
 This plugin is licensed under the MIT license. Complete license text
