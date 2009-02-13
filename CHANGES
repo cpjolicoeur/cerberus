@@ -1,5 +1,10 @@
 = Cerberus Changelog
 
+== Version 0.4.3
+Custom Builder Scheduling
+
+* Added at_time project config option to schedule when project is built via "cerberus buildall" command
+
 == Version 0.4.2
 RSpec builder bugfixes
 

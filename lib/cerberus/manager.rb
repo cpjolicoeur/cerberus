@@ -81,7 +81,8 @@ module Cerberus
     attr_reader :builder, :success, :scm, :status
     
     DEFAULT_CONFIG = {:scm => {:type => 'svn'}, 
-      :log => {:enable => true}
+      :log => {:enable => true},
+      :at_time => '* *',
     }
     
     def initialize(application_name, cli_options = {})
@@ -161,6 +162,15 @@ module Cerberus
         end
       end
     end
+
+    def run_time?(time)
+      minute, hour = @config[:at_time].split
+      say "Run time is configured wrong." if minute.nil? or hour.nil?
+      if hour.cron_match?(time.hour)
+        return minute.cron_match?(time.min)
+      end
+      return false
+    end
     
     private
     def get_configuration_option(hash, defining_key = nil, default_option = nil)
@@ -184,7 +194,7 @@ module Cerberus
         application_name = $1
         
         command = Cerberus::BuildCommand.new(application_name, @cli_options)
-        threads << Thread.new { command.run }
+        threads << Thread.new { command.run } if command.run_time?(Time.now)
       end
       
       @already_waited = false

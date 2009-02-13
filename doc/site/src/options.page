@@ -69,6 +69,7 @@ hook:
   HOOK_NAME:
     on_event: 
     action: 
+at_time:
 </pre>
 
 
