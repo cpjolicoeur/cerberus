@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + '/test_helper'
 require 'cerberus/publisher/rss'
 require 'mock/manager'
 require 'tempfile'
+require 'rexml/document'
 
 class RSSPublisherTest < Test::Unit::TestCase
   def test_publisher

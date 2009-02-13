@@ -1,4 +1,6 @@
 require 'cerberus/publisher/base'
+require 'time'
+require 'builder'
 
 class Cerberus::Publisher::RSS < Cerberus::Publisher::Base
   def self.publish(state, manager, options)
