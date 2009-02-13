@@ -155,3 +155,33 @@ class IO
     File.open(filename, 'w'){|f| f.write str}
   end
 end
+
+class String
+  def cron_match?(number)
+    return false if not number.is_a?(Integer)
+    return true if self == "*"
+    parts = self.split(",")
+    parts.each do |p|
+      match = p.match(/(\d+|\*)-?(\d+)?(\/(\d+))?$/)
+      return false if not match
+      if not match[2]
+        if match[1] == "*" and match[4]
+          return true if number % match[4].to_i == 0
+        end
+        return true if match[1].to_i == number
+      else
+        range = (match[1].to_i)..(match[2].to_i)
+        if not match[3]
+          return true if range.include?(number)
+        else
+          range.each do |r|
+            if (r - range.first) % match[4].to_i == 0
+              return true if r == number
+            end
+          end
+        end
+      end
+    end
+    return false
+  end
+end

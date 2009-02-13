@@ -13,3 +13,4 @@ The following people made notable contributions to the Cerberus tool:
 * [Rob Kaufman](http://notch8.com) - Git SCM support
 * [Craig Jolicoeur](http://craigjolicoeur.com) - Twitter publisher support
 * Ken Mayer - patches related to properly checking shell command exitstatus
+* Niklas Koponen - patches for builder CRON-like scheduling and custom publishers
