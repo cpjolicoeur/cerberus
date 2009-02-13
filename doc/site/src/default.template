@@ -20,8 +20,10 @@
             {menu: }
             <dl>
               <dt><a href="http://rubyforge.org/frs/?group_id=1794">Downloads</a><br /></dt>
-              <dt><a href="http://rubyforge.org/tracker/?group_id=1794">Issue Tracker</a><br /></dt>
-              <dt><a href="http://rubyforge.org/forum/?group_id=1794">Public Forum</a><br /></dt>
+              <dt><a href="http://cpjolicoeur.lighthouseapp.com/projects/22299-cerberus">Issue Tracker</a><br /></dt>
+              <dt><a href="http://groups.google.com/group/cerberusci">Public Forum / Mailing List</a><br /></dt>
+              <dt><a href="http://wiki.github.com/cpjolicoeur/cerberus">Wiki</a><br /></dt>
+              <dt><a href="http://github.com/cpjolicoeur/cerberus/tree">GitHub Source</a><br /></dt>
             </dl>
           </div>
         </div>
