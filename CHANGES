@@ -1,5 +1,10 @@
 = Cerberus Changelog
 
+== Version 0.4.4
+Custom Publisher Support
+
+* Added ability for users to create and use their own publishers with the Cerberus build system
+
 == Version 0.4.3
 Custom Builder Scheduling
 
