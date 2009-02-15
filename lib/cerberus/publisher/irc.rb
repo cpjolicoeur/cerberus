@@ -9,19 +9,19 @@ class Cerberus::Publisher::IRC < Cerberus::Publisher::Base
     subject,body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
     message = subject + "\n" + '*' * subject.length + "\n" + body
 
-
     channel = '#' + irc_options[:channel]
     bot = IRC.new(irc_options[:nick] || 'cerberus', irc_options[:server], irc_options[:port] || 6667)
 
-    silence_stream(STDOUT) {
-      IRCEvent.add_callback('endofmotd') { |event| 
+    silence_stream(STDOUT) do
+      IRCEvent.add_callback('endofmotd') do |event| 
         bot.add_channel(channel) 
-        message.split("\n").each{|line|
+        message.split("\n").each do |line|
           bot.send_message(channel, line)
-        }
+        end
         bot.send_quit
-      }
+      end
       bot.connect
-    }
+    end
+
   end
 end

@@ -9,10 +9,10 @@ module Cerberus
     }
 
     def self.get(type)
-       class_name = TYPES[type.to_sym]
-       say "SCM #{type} not supported" unless class_name
-       require "cerberus/scm/#{type}"
-       const_get(class_name)
+      class_name = TYPES[type.to_sym]
+      say "SCM #{type} not supported" unless class_name
+      require "cerberus/scm/#{type}"
+      const_get(class_name)
     end
 
 
@@ -49,11 +49,16 @@ module Cerberus
       :twitter => 'Twitter'
     }
 
-    def self.get(type)
-       class_name = TYPES[type.to_sym]
-       say "Publisher #{type} not supported" unless class_name
-       require "cerberus/publisher/#{type}"
-       const_get(class_name)
+    def self.get(type, config)
+      class_name = TYPES[type.to_sym]
+      if not class_name
+        class_name = config[:class_name]
+        say "Publisher #{type} not supported" unless class_name
+        require config[:require]
+      else
+        require "cerberus/publisher/#{type}"
+      end
+      const_get(class_name)
     end
   end
 
@@ -67,10 +72,10 @@ module Cerberus
     }
 
     def self.get(type)
-       class_name = TYPES[type.to_sym]
-       say "Builder #{type} not supported" unless class_name
-       require "cerberus/builder/#{type}"
-       const_get(class_name)
+      class_name = TYPES[type.to_sym]
+      say "Builder #{type} not supported" unless class_name
+      require "cerberus/builder/#{type}"
+      const_get(class_name)
     end
   end
 end
