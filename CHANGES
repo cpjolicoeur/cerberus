@@ -1,5 +1,10 @@
 = Cerberus Changelog
 
+== Version 0.4.5
+Update to Maven2 builder
+
+* Fix potential cerberus failure due to missing file
+
 == Version 0.4.4
 Custom Publisher Support
 
