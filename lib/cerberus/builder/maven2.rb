@@ -31,7 +31,8 @@ class Cerberus::Builder::Maven2
       $` =~ /^(.|\n)*Running (.*)$/
       failed_class = $2
       @output << $` << $& << ' <<< FAILURE!'
-      @output << "\n" << IO.readlines("#{@config[:application_root]}/target/surefire-reports/#{failed_class}.txt")[4..-1].join.lstrip   #map{|str| '  ' + str}..gsub('  <<< FAILURE!','')
+      surefire_report_filename = "#{@config[:application_root]}/target/surefire-reports/#{failed_class}.txt"
+      @output << "\n" << IO.readlines(surefire_report_filename)[4..-1].join.lstrip if test(?e, surefire_report_filename)
       str = s
     end
     @output << str
