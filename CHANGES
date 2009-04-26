@@ -1,5 +1,11 @@
 = Cerberus Changelog
 
+== Version 0.4.5.1
+Bugfix for ticket #6
+
+* Ruby 1.8.7 SMTP lib changes from Ruby 1.8.6
+* http://cpjolicoeur.lighthouseapp.com/projects/22299-cerberus/tickets/6-error-when-sending-the-email
+
 == Version 0.4.5
 Update to Maven2 builder
 
