@@ -2,9 +2,6 @@ require 'cerberus/manager'
 require 'cerberus/utils'
 require 'cerberus/constants'
 
-require 'rubygems'
-require 'ruby-debug'
-
 module Cerberus
   class CLI     
     def initialize(*args)
