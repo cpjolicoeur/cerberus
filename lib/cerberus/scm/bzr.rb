@@ -2,6 +2,7 @@ require 'cerberus/utils'
 require 'time'
 
 class Cerberus::SCM::Bazaar
+
   def initialize(path, config = {})
     raise "Path can't be nil" unless path
 
@@ -14,19 +15,20 @@ class Cerberus::SCM::Bazaar
   end
 
   def update!
-    if test(?d, @path + '/.bzr')
+    if test(?d, File.join(@path, '.bzr'))
       extract_last_commit_info
+      @old_revision = @revision
       @status = execute("update", "2>&1")
     else
+      @old_revision = 0
       FileUtils.rm_rf(@path) if test(?d, @path)
       @status = execute("checkout", nil, @config[:scm, :url])
     end
+    extract_last_commit_info
   end
 
   def has_changes?
-    new_revision = @status.match(/^Updated to revision (\d+).$/)
-    new_revision = new_revision[1] unless new_revision.nil?
-    new_revision.to_i > current_revision
+    @revision.to_i > @old_revision.to_i
   end
 
   def current_revision
