@@ -214,7 +214,7 @@ module Cerberus
     def run
       projects = Dir["#{HOME}/config/*.yml"]
       if projects.empty?
-        puts "There are no any active projects" 
+        puts "There are not any active projects" 
       else
         puts "List of active projects:"
         
