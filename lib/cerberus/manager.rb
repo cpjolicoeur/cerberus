@@ -228,6 +228,48 @@ module Cerberus
       end
     end
   end
+
+  class StatusCommand
+    def initialize(cli_options = {})                                                                             
+    end
+    
+    def run
+      projects = Dir["#{HOME}/config/*.yml"].map { |fn| fn.gsub(/.*\/(.*).yml$/, '\1') }
+      if projects.empty?
+        puts "There are not any active projects" 
+      else
+        delim = ' | '
+        cols  = [
+          ['Project Name', 30, lambda { |p, s| p }],
+          ['Revision',     10, lambda { |p, s| "r#{s.revision }"}],
+          ['Status',       10, lambda { |p, s| s.previous_build_successful ? 'Pass' : 'Fail' }],
+          ['Last Success', 10, lambda { |p, s| "r#{s.successful_build_revision}"}],
+        ]
+        header = cols.map { |head, size, lamb| head.ljust(size) }.join(delim)
+        puts '-' * header.length
+        puts header
+        puts '-' * header.length
+        projects.each do |proj|
+          status = Status.read("#{HOME}/work/#{proj}/status.log")
+          row    = cols.map { |head, size, lamb| lamb.call(proj, status).to_s.ljust(size) }.join(delim)
+          puts status.previous_build_successful ? ansi_green(row) : ansi_red(row)
+        end
+      end
+    end
+
+    def ansi_green(str)
+      ansi_escape('32m', str)
+    end
+
+    def ansi_red(str)
+      ansi_escape('31m', str)
+    end
+
+    def ansi_escape(code, str)
+      "\033[#{code}" + str + "\033[0m"
+    end
+
+  end
   
   #Fields that are contained in status file
   # successful (true mean previous build was successful, otherwise - false)

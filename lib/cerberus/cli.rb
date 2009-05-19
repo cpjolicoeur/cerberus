@@ -8,7 +8,6 @@ module Cerberus
       say HELP if args.empty?
 
       command = args.shift
-      say HELP unless %w(add remove build buildall list).include?(command)
 
       cli_options = extract_options(args)
 
@@ -33,6 +32,11 @@ module Cerberus
       when 'list'
         command = Cerberus::ListCommand.new(cli_options)
         command.run
+      when 'status'
+        command = Cerberus::StatusCommand.new(cli_options)
+        command.run
+      else 
+        say HELP
       end
     end
 
