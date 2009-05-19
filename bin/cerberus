@@ -6,8 +6,5 @@ CERBERUS_LIB_DIR = File.join(File.dirname(Pathname.new(__FILE__).realpath),'..',
 $: << CERBERUS_LIB_DIR 
 
 require 'cerberus/cli'
-require 'cerberus/latch'
 
-Cerberus::Latch.lock('/tmp/cerberus.lock', :lock_ttl => 2 * Cerberus::LOCK_WAIT ) do
-  Cerberus::CLI.new(*ARGV)
-end
+Cerberus::CLI.new(*ARGV)
