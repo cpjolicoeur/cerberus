@@ -264,6 +264,9 @@ module Cerberus
       
       @previous_build_successful = @hash['successful']
       @previous_brokeness = @hash['brokeness']
+
+      # Create some convenience methods to access status
+      @hash.keys.each { |key| self.class.send(:define_method, key) { @hash[key] } }
     end
     
     def self.read(file_name)
