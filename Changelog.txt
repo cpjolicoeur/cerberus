@@ -1,5 +1,11 @@
 = Cerberus Changelog
 
+== Version 0.5
+Bugfixes and Ticket Support
+
+* git branch support
+* updates to maven2 config support for custom builder options
+
 == Version 0.4.5.1
 Bugfix for ticket #6
 

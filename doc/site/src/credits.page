@@ -11,6 +11,6 @@ The following people made notable contributions to the Cerberus tool:
 * Xavier Shay - several patches related to RSS publisher
 * Mark Noworolski - patches related to Subversion SCM
 * [Rob Kaufman](http://notch8.com) - Git SCM support
-* [Craig Jolicoeur](http://craigjolicoeur.com) - Twitter publisher support
+* [Craig Jolicoeur](http://craigjolicoeur.com) - Twitter publisher support & project maintenance
 * Ken Mayer - patches related to properly checking shell command exitstatus
 * Niklas Koponen - patches for builder CRON-like scheduling and custom publishers
