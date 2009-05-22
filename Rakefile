@@ -58,7 +58,7 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.add_dependency 'twitter4r', '>= 0.3.0'
 
   s.files = Dir.glob("{bin,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
-  s.files += %w(LICENSE README CHANGES Rakefile)
+  s.files += %w(License.txt Readme.txt Changelog.txt Rakefile)
   s.files += Dir.glob("doc/*").delete_if { |item| item.include?('__workdir') }
 
   s.bindir = "bin"
