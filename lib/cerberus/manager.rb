@@ -241,9 +241,9 @@ module Cerberus
         delim = ' | '
         cols  = [
           ['Project Name', 30, lambda { |p, s| p }],
-          ['Revision',     10, lambda { |p, s| "r#{s.revision }"}],
+          ['Revision',     10, lambda { |p, s| "r#{s.revision.slice( 0, 8 ) }"}],
           ['Status',       10, lambda { |p, s| s.previous_build_successful ? 'Pass' : 'Fail' }],
-          ['Last Success', 10, lambda { |p, s| "r#{s.successful_build_revision}"}],
+          ['Last Success', 10, lambda { |p, s| "r#{s.successful_build_revision.slice( 0, 8 )}"}],
         ]
         header = cols.map { |head, size, lamb| head.ljust(size) }.join(delim)
         puts '-' * header.length
@@ -254,6 +254,7 @@ module Cerberus
           row    = cols.map { |head, size, lamb| lamb.call(proj, status).to_s.ljust(size) }.join(delim)
           puts status.previous_build_successful ? ansi_green(row) : ansi_red(row)
         end
+        puts '-' * header.length
       end
     end
 
@@ -271,15 +272,18 @@ module Cerberus
 
   end
   
-  #Fields that are contained in status file
-  # successful (true mean previous build was successful, otherwise - false)
-  # timestamp
-  # revision
-  # brokeness
-  # successful_build_timestamp
-  # successful_build_revision
+  #
+  # Fields that are contained in status file
+  #
+  #   successful_build_timestamp
+  #   timestamp
+  #   successful (true mean previous build was successful, otherwise - false)
+  #   revision
+  #   brokeness
+  #   successful_build_revision
+  #
   class Status
-    attr_reader :previous_build_successful, :previous_brokeness, :current_build_successful, :current_brokeness
+    attr_reader :previous_build_successful, :previous_brokeness, :current_build_successful, :current_brokeness, :revision, :successful_build_revision
     
     def initialize(param)
       if param.is_a? Hash
@@ -304,6 +308,8 @@ module Cerberus
         @already_kept = false
       end
       
+      @revision = @hash['revision']
+      @successful_build_revision = @hash['successful_build_revision']
       @previous_build_successful = @hash['successful']
       @previous_brokeness = @hash['brokeness']
     end
