@@ -101,14 +101,4 @@ http://cpjolicoeur.lighthouseapp.com/projects/22299-cerberus
 == License
 
 This plugin is licensed under the MIT license. Complete license text
-is included in the LICENSE file.
-
-== Author
-
-This software was created by Anatol Pomozov <anatol.pomozov@gmail.com> and is
-located at http://cerberus.rubyforge.org.
-
-== Contributors
-
-Craig P Jolicoeur <http://github.com/cpjolicoeur>
-Rob Kaufman <http://github.com/notch8>
+is included in the License.txt file.
