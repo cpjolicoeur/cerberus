@@ -11,9 +11,18 @@ class Cerberus::Builder::Maven2
     Dir.chdir @config[:application_root]
     cmd = @config[:builder, :maven2, :cmd] || 'mvn'
     task = @config[:builder, :maven2, :task] || 'test'
-    @output = `#{@config[:bin_path]}#{cmd} #{task} 2>&1`
+    @output = `#{@config[:bin_path]}#{cmd} #{settings} #{task} 2>&1`
     add_error_information
     successful?
+  end
+
+  def settings
+    settings_file = @config[:builder, :maven2, :settings]
+    if settings_file
+      return "-s #{settings_file}"
+    else
+      return ''
+    end
   end
 
   def successful?
