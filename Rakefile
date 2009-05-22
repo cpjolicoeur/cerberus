@@ -138,7 +138,7 @@ task :publish_news do
     publisher.user_name = RUBYFORGE_USER
     publisher.password = ENV['RUBYFORGE_PASSWORD']
     publisher.subject = "[ANN] Cerberus #{PKG_VERSION} Released"
-    publisher.details = IO.read(File.dirname(__FILE__) + '/CHANGES')
+    publisher.details = IO.read(File.dirname(__FILE__) + '/Changelog.txt')
   end
 end
 
