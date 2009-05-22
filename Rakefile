@@ -46,9 +46,6 @@ GEM_SPEC = Gem::Specification.new do |s|
     Cerberus is a Continuous Integration software for Ruby projects. CI helps you keep your project
     in a good shape.
 
-    For now Cerberus only work with projects that use Subversion but in the future it would be provided
-    support for other VCS.
-
     Cerberus could be easily invoked from Cron (for Unix) or nnCron (for Windows) utilities.
   DESC
 
@@ -67,15 +64,12 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.bindir = "bin"
   s.executables = ["cerberus"]
   s.default_executable = "cerberus"
-
   s.require_path = 'lib'
-
   s.has_rdoc = false
-
   s.test_files = Dir.glob('test/*_test.rb')
 
-  s.author = "Anatol Pomozov"
-  s.email = "anatol.pomozov@gmail.com"
+  s.author = "Craig P Jolicoeur"
+  s.email = "cpjolicoeur@gmail.com"
   s.homepage = "http://rubyforge.org/projects/cerberus"
   s.rubyforge_project = RUBYFORGE_PROJECT
 end
