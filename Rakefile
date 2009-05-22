@@ -143,16 +143,12 @@ task :publish_news do
 end
 
 require 'webgen/webgentask'
-task :generate_site => :webgen do
-
-  Webgen::WebgenTask.new do |t|
-    t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
-    t.clobber_outdir = true
-  end
-
+Webgen::WebgenTask.new do |t|
+  t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
+  t.clobber_outdir = true
 end
 
-task :publish_site => :generate_site do
+task :publish_site => :webgen do
   sh %{scp -r -q doc/site/out/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/}
 end
 
