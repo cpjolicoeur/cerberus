@@ -11,9 +11,26 @@ class Cerberus::Builder::Maven2
     Dir.chdir @config[:application_root]
     cmd = @config[:builder, :maven2, :cmd] || 'mvn'
     task = @config[:builder, :maven2, :task] || 'test'
-    @output = `#{@config[:bin_path]}#{cmd} #{settings} #{task} 2>&1`
+    @output = `#{@config[:bin_path]}#{cmd} #{system_properties} #{settings} #{task} 2>&1`
     add_error_information
     successful?
+  end
+
+  def successful?
+    $?.exitstatus == 0 and not @output.include?('[ERROR] BUILD FAILURE')
+  end
+
+  private
+
+  def system_properties
+    properties = []
+    system_properties = @config[:builder, :maven2, :system_properties]
+    if system_properties
+      system_properties.each do |p|
+        properties << %Q(-D#{p[0]}="#{p[1]}")
+      end
+    end
+    properties.join(' ')
   end
 
   def settings
@@ -23,10 +40,6 @@ class Cerberus::Builder::Maven2
     else
       return ''
     end
-  end
-
-  def successful?
-    $?.exitstatus == 0 and not @output.include?('[ERROR] BUILD FAILURE')
   end
 
   def add_error_information
