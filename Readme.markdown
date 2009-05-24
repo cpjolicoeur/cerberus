@@ -21,6 +21,7 @@ So Cerberus will guard your tests and not allow your project to go to the world 
 There are several CI solutions already present, why do you need to use Cerberus?
 
 Main advantages of Cerberus over other solutions are:
+
 1. Cerberus could be installed on any machine not only where SVN repository located.
 2. Cerberus works not only for Rails projects, but for any other Ruby projects as well as for other platforms (Maven2 for Java)
 3. Cerberus multiplatform solution: it runs excellent both on *nix and Windows.
@@ -44,23 +45,23 @@ as second parameter you could pass URL to subversion repository or directory wit
 
 Go to ~/.cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here like email server, password, user_name and other options. See ActiveMailer description - Cerberus uses it as notification layer. My config file looks like this
 
-publisher:
-  mail:
-    address: mail.somesever.com
-    user_name: anatol
-    password: anatol
-    domain: somesever.com
-    authentication: login
+  publisher:
+    mail:
+      address: mail.somesever.com
+      user_name: anatol
+      password: anatol
+      domain: somesever.com
+      authentication: login
 
 Also check ~/.cerberus/config/<APPLICATION_NAME>.yml and make sure that you have right options.
 
 And then run Cerberus 
 
-cerberus build APPLICATION_NAME    # Run project
+  cerberus build APPLICATION_NAME    # Run project
 
 or
 
-cerberus buildall     # Run all available projects
+  cerberus buildall     # Run all available projects
 
 
 It will check out latest sources and run tests for your application. If tests are broken - recipients will receive notifications.
@@ -89,6 +90,7 @@ Cerberus currently supports the following notification systems:
 Cerberus currently supports the following build systems: 
 
   * Rake
+  * Ruby script
   * RSpec
   * Rant
   * Maven2
