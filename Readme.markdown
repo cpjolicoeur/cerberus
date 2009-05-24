@@ -1,13 +1,8 @@
 # Description
 
-Cerberus is a Continuous Builder software. Cerberus could be periodically run from scheduler and check if application tests are broken. If it happens then Cerberus will send notification to developers. Cerberus perfectly works both on Windows and *nix platforms.
+Cerberus is a Continuous Integration software written in Ruby. Cerberus can be periodically run from scheduler to check if application tests are broken. In the case of test failure, Cerberus will send notification alerts via various methods. Cerberus perfectly works both on Windows and *nix platforms.
 
-For more CI theory read this document from Martin Fowler 
-http://www.martinfowler.com/articles/continuousIntegration.html.
-
-Requirements: 
-*  ruby - 1.8.2 or higher
-*  rake - 0.7 or higher
+For more CI theory read this document from Martin Fowler: [http://www.martinfowler.com/articles/continuousIntegration.html][1]
 
 What 'Cerberus' name means?
 > Quote from Wikipedia (http://en.wikipedia.org/wiki/Cerberus)
@@ -15,53 +10,64 @@ What 'Cerberus' name means?
 > Cerberus or Kerberos (Kerberos, demon of the pit), was the hound of Hades-a monstrous three-headed dog (sometimes said to have 50 or 100 heads) with a snake for a tail and innumerable snake heads on his back.
 He guarded the gate to Hades (the Greek underworld) and ensured that the dead could not leave and the living could not enter. His brother was Orthrus. He is the offspring of Echidna and Typhon.
 
+So, put simply, Cerberus will guard your tests and not allow your project to go to the world of dead. 
 
-So Cerberus will guard your tests and not allow your project to go to the world of dead. 
 
 There are several CI solutions already present, why do you need to use Cerberus?
 
-Main advantages of Cerberus over other solutions are:
+Main advantages of Cerberus over other solutions include:
 
 1. Cerberus could be installed on any machine not only where SVN repository located.
 2. Cerberus works not only for Rails projects, but for any other Ruby projects as well as for other platforms (Maven2 for Java)
 3. Cerberus multiplatform solution: it runs excellent both on *nix and Windows.
 4. Cerberus distributed via RubyGems, so it is very easy to install and very easy to update to the latest stable version
 5. Cerberus very easy to start using. Just type 'cerberus add PROJECT_URL|PROJECT_DIR'
-6. Cerberus is lightweight solution: most of the time ruby process even not runs - Rake runs only in case if changes in project sources are found.
+6. Cerberus is lightweight solution: most of the time ruby process does not even run - Rake runs only when changes in the project repository are found.
+
+## Requirements
+
+* ruby - 1.8.2 or higher
+* rake - 0.7.3 or higher (optional)
+* actionmailer - 1.3.3 or higher (optional)
+* activesupport - 1.4.2 or higher (optional)
+* xmpp4r - 0.3.1 or higher (optional)
+* Ruby-IRC - 1.0.7 or higher (optional)
+* gmailer - 0.1.7 or higher (optional)
+* twitter4r - 0.3.0 or higher (optional)
 
 ## Usage
  
 To use Cerberus it is very easy. First install it. Easiest way to do it through RubyGems package manager.
 
-'gem install cerberus'
+    gem install cerberus
 
-or get Cerberus distribution package right from download page http://rubyforge.org/frs/?group_id=1794&release_id=6442
+or get Cerberus distribution package right from download page http://rubyforge.org/frs/?group_id=1794
 
 then you need to add project that will be watched by Cerberus. Do it by
 
-cerberus add (DIR|SVN_URL) APPLICATION_NAME=some_app RECIPIENTS=dev1@project.com,dev2@project.com
+    cerberus add (DIR | URL) APPLICATION_NAME=some_app RECIPIENTS=dev1@project.com,dev2@project.com
 
 as second parameter you could pass URL to subversion repository or directory with working SVN folder.
 
 Go to ~/.cerberus and edit config.yml file (only once after installing Cerberus). Enter your configuration options here like email server, password, user_name and other options. See ActiveMailer description - Cerberus uses it as notification layer. My config file looks like this
 
-  publisher:
-    mail:
-      address: mail.somesever.com
-      user_name: anatol
-      password: anatol
-      domain: somesever.com
-      authentication: login
+    publisher:
+      mail:
+        address: mail.somesever.com
+        user_name: anatol
+        password: anatol
+        domain: somesever.com
+        authentication: login
 
 Also check ~/.cerberus/config/<APPLICATION_NAME>.yml and make sure that you have right options.
 
 And then run Cerberus 
 
-  cerberus build APPLICATION_NAME    # Run project
+    cerberus build APPLICATION_NAME    # Run project
 
 or
 
-  cerberus buildall     # Run all available projects
+    cerberus buildall     # Run all available projects
 
 
 It will check out latest sources and run tests for your application. If tests are broken - recipients will receive notifications.
@@ -95,16 +101,27 @@ Cerberus currently supports the following build systems:
   * Rant
   * Maven2
   * Bjam
+  
+
+## Documentation
+
+For instructions, guides and documentation, [please refer to the GitHub wiki][2].
 
 ## Mailing List / Public Forums
 
-http://groups.google.com/group/cerberusci
+[http://groups.google.com/group/cerberusci][3]
 
 ## Issue Tracker
 
-http://cpjolicoeur.lighthouseapp.com/projects/22299-cerberus
+[http://cpjolicoeur.lighthouseapp.com/projects/22299-cerberus][4]
 
 ## License
 
 This plugin is licensed under the MIT license. Complete license text
 is included in the License.txt file.
+
+
+[1]:http://www.martinfowler.com/articles/continuousIntegration.html
+[2]:http://wiki.github.com/cpjolicoeur/cerberusci
+[3]:http://groups.google.com/group/cerberusci
+[4]:http://cpjolicoeur.lighthouseapp.com/projects/22299-cerberus
