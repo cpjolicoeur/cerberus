@@ -151,8 +151,8 @@ end
 
 
 class IO
-  def self.write(filename, str)
-    File.open(filename, 'w'){|f| f.write str}
+  def self.write(filename, str, mode='w')
+    File.open(filename, mode){|f| f.write str}
   end
 end
 
