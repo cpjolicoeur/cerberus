@@ -37,9 +37,10 @@ module Cerberus
     end
     
     private
+
     def extract_project_name(path)
       path = File.expand_path(path) if test(?d, path)
-      File.basename(path).strip
+      File.basename(path).strip.gsub( /\.git$/, '' )
     end
     
     def create_example_config
