@@ -20,12 +20,12 @@ There are several CI solutions already present, why do you need to use Cerberus?
 
 Main advantages of Cerberus over other solutions include:
 
-1. Cerberus could be installed on any machine not only where SVN repository located.
+1. Cerberus could be installed on any machine not only where the repository is located.
 2. Cerberus works not only for Rails projects, but for any other Ruby projects as well as for other platforms (Maven2 for Java)
-3. Cerberus multiplatform solution: it runs excellent both on *nix and Windows.
-4. Cerberus distributed via RubyGems, so it is very easy to install and very easy to update to the latest stable version
-5. Cerberus very easy to start using. Just type 'cerberus add PROJECT_URL|PROJECT_DIR'
-6. Cerberus is lightweight solution: most of the time ruby process does not even run - Rake runs only when changes in the project repository are found.
+3. Cerberus multi-platform solution: it runs excellent both on *nix and Windows.
+4. Cerberus is distributed via RubyGems, making it very easy to install and very easy to update to the latest stable version
+5. Cerberus is very easy to start using. Just type 'cerberus add PROJECT_URL|PROJECT_DIR'
+6. Cerberus is a lightweight solution: a simple command line CI tool that only runs when the repository has changes
 
 ## Requirements
 
