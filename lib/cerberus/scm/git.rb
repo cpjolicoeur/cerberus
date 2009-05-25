@@ -14,25 +14,27 @@ class Cerberus::SCM::Git
 
   def update!
     if test(?d, @path + '/.git')
-      extract_last_commit_info
-      @status = execute("reset", "--hard #{@revision}") + execute('pull')
+      get_updates
+      execute("reset", "--hard #{remote_head}")
     else
       FileUtils.rm_rf(@path) if test(?d, @path)
       encoded_url = (@config[:scm, :url].include?(' ') ? "\"#{@config[:scm, :url]}\"" : @config[:scm, :url])
+      @new = true
       @status = execute("clone", "#{encoded_url} #{@path}", false)
-      if @config[:scm, :branch]
-        branch = @config[:scm, :branch]
-        execute('branch', "--track #{branch} origin/#{branch}")
+      if branch = @config[:scm, :branch]
+        execute('branch', "--track #{branch} #{remote_head}")
         execute('checkout', branch)
       end
     end
   end
 
   def has_changes?
-    return false if @status =~ /Already up-to-date./
-    return true if @status =~ /Fast forward/
-    return true if @status =~ /Initialized empty Git repository/
-    return false
+    extract_current_head_revision
+    new? or ( last_tested_revision != @revision )
+  end
+
+  def new?
+    @new == true
   end
 
   def current_revision
@@ -56,6 +58,15 @@ class Cerberus::SCM::Git
   end
 
   private
+  
+  def get_updates
+    execute("fetch", remote_head)
+  end
+
+  def remote_head
+    branch = @config[:scm, :branch] 
+    branch ? "origin/#{branch}" : "origin"
+  end
 
   def execute(command, parameters = nil, with_path = true)
    if with_path
@@ -67,13 +78,25 @@ class Cerberus::SCM::Git
    `#{cmd}`
   end
 
-  def extract_last_commit_info
-    message = execute("show", "--pretty='format:%an(%ae)|%ai|%H|%s'")
-    message = message.split("|")
-    
-    @author = message[0]
-    @date = message[1]
-    @revision = message[2]
-    @message = message[3]
+  def extract_commit_info( commit=remote_head )
+    message = execute("show", "#{ commit } --pretty='format:%an(%ae)|%ai|%H|%s'").split("|")
+    { :author => message[0], :date => message[1], :revision => message[2], :message => message[3] }
+  end
+
+  def last_tested_revision
+    # TODO Is there a better way to extract the last tested commit?
+    app_name          = @config['application_name']
+    app_root          = "#{Cerberus::HOME}/work/#{app_name}"
+    status            = Cerberus::Status.new("#{app_root}/status.log")
+    commit_info = extract_commit_info(status.revision)
+    @last_tested_revision ||= commit_info[:revision]
+  end
+
+  def extract_current_head_revision
+    commit_info = extract_commit_info
+    @author     = commit_info[:author]
+    @date       = commit_info[:date]
+    @revision   = commit_info[:revision]
+    @message    = commit_info[:message]
   end
 end
