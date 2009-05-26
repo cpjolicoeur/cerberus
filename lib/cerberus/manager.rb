@@ -242,9 +242,9 @@ module Cerberus
         delim = ' | '
         cols  = [
           ['Project Name', 30, lambda { |p, s| p }],
-          ['Revision',     10, lambda { |p, s| "r#{s.revision.to_s.slice( 0, 8 ) }"}],
+          ['Revision',     10, lambda { |p, s| "#{s.revision.to_s.slice( 0, 8 ) }"}],
           ['Status',       10, lambda { |p, s| s.previous_build_successful ? 'Pass' : 'Fail' }],
-          ['Last Success', 10, lambda { |p, s| "r#{s.successful_build_revision.to_s.slice( 0, 8 )}"}],
+          ['Last Success', 10, lambda { |p, s| "#{s.successful_build_revision.to_s.slice( 0, 8 )}"}],
         ]
         header = cols.map { |head, size, lamb| head.ljust(size) }.join(delim)
         puts '-' * header.length

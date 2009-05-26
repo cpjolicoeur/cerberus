@@ -2,7 +2,9 @@
 
 Cerberus is a Continuous Integration software written in Ruby. Cerberus can be periodically run from scheduler to check if application tests are broken. In the case of test failure, Cerberus will send notification alerts via various methods. Cerberus perfectly works both on Windows and *nix platforms.
 
-For more CI theory, [read this document from Martin Fowler][1].
+For more CI theory, [read this document from Martin Fowler][1].  
+
+Cerberus's website is at [http://cerberus.rubyforge.org][6].
 
 ***
 
@@ -130,3 +132,4 @@ is included in the License.txt file.
 [3]:http://groups.google.com/group/cerberusci
 [4]:http://cpjolicoeur.lighthouseapp.com/projects/22299-cerberus
 [5]:http://rubyforge.org/frs/?group_id=1794
+[6]:http://cerberus.rubyforge.org
