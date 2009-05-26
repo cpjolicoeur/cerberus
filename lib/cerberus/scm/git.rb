@@ -60,7 +60,7 @@ class Cerberus::SCM::Git
   private
   
   def get_updates
-    execute("fetch", remote_head)
+    execute("fetch")
   end
 
   def remote_head
