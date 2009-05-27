@@ -14,11 +14,11 @@ PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 RELEASE_NAME  = "REL #{PKG_VERSION}"
 
 RUBYFORGE_PROJECT = "cerberus"
-RUBYFORGE_USER    = ENV['RUBYFORGE_USER'] || "anatol"
+RUBYFORGE_USER    = ENV['RUBYFORGE_USER'] || "cpjolicoeur"
 
 task :default => [:test, :clean]
 
-desc "Run the unit tests in test/unit"
+desc "Run the tests in the test/ directory"
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"
   t.pattern = 'test/*_test.rb'
@@ -46,9 +46,6 @@ GEM_SPEC = Gem::Specification.new do |s|
     Cerberus is a Continuous Integration software for Ruby projects. CI helps you keep your project
     in a good shape.
 
-    For now Cerberus only work with projects that use Subversion but in the future it would be provided
-    support for other VCS.
-
     Cerberus could be easily invoked from Cron (for Unix) or nnCron (for Windows) utilities.
   DESC
 
@@ -61,21 +58,18 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.add_dependency 'twitter4r', '>= 0.3.0'
 
   s.files = Dir.glob("{bin,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
-  s.files += %w(LICENSE README CHANGES Rakefile)
+  s.files += %w(License.txt Readme.markdown Changelog.txt Rakefile)
   s.files += Dir.glob("doc/*").delete_if { |item| item.include?('__workdir') }
 
   s.bindir = "bin"
   s.executables = ["cerberus"]
   s.default_executable = "cerberus"
-
   s.require_path = 'lib'
-
   s.has_rdoc = false
-
   s.test_files = Dir.glob('test/*_test.rb')
 
-  s.author = "Anatol Pomozov"
-  s.email = "anatol.pomozov@gmail.com"
+  s.author = "Craig P Jolicoeur"
+  s.email = "cpjolicoeur@gmail.com"
   s.homepage = "http://rubyforge.org/projects/cerberus"
   s.rubyforge_project = RUBYFORGE_PROJECT
 end
@@ -144,19 +138,17 @@ task :publish_news do
     publisher.user_name = RUBYFORGE_USER
     publisher.password = ENV['RUBYFORGE_PASSWORD']
     publisher.subject = "[ANN] Cerberus #{PKG_VERSION} Released"
-    publisher.details = IO.read(File.dirname(__FILE__) + '/CHANGES')
+    publisher.details = IO.read(File.dirname(__FILE__) + '/Changelog.txt')
   end
 end
 
 require 'webgen/webgentask'
-task :generate_site => :webgen
+Webgen::WebgenTask.new do |t|
+  t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
+  t.clobber_outdir = true
+end
 
-  Webgen::WebgenTask.new do |t|
-    t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
-    t.clobber_outdir = true
-  end
-
-task :publish_site => :generate_site do
+task :publish_site => :webgen do
   sh %{scp -r -q doc/site/out/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/}
 end
 

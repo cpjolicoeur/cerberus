@@ -72,6 +72,7 @@ module Cerberus
       cerberus build <NAME>  --- build watched application
       cerberus buildall      --- build all watched applications
       cerberus list          --- see the list of all watched applications
+      cerberus status        --- see the current status of all cerberus projects
 
     Version: #{Cerberus::VERSION}
     Cerberus Path: "#{Cerberus::HOME}"

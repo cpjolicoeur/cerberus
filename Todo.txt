@@ -1,0 +1,18 @@
++ Make possibility to run tests for all revisions (not only latest for that moment)
++ Send svn log not only for latest revision but from latest successfull. For that we need to store version of latest successful rev.
++ IRC: make message colorized. Make messages shorter to avoid irc flood (and ban to user)
++ Add heartbit message
++ Create Screencast for Cerberus
++ Improve Configuration Index (docs)
++ Refactor logger. Use logger also in mail publisher.
++ Add smart algorithm for calculating of person's name who broke release
++ Fix text suite
+
+Before release!
+! Add on_success on_failure and on_finish opions to builders
+
+
+- Add configuration migrations, for easier migration process
+
+Add support of X10 devices
+   http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/124460

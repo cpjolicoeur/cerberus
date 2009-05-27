@@ -1,0 +1,14 @@
+If you have contributed to Cerberus, you deserve to be on this list.
+Contact us (see: Authors.txt) and we will add you.
+
+Cerberus is Copyright (C) 2006-2009 by the following:
+
+Anatol Pomozov
+Xavier Shay
+Mark Noworolski
+Craig P Jolicoeur
+Rob Kaufman
+Ken Mayer
+Niklas Koponen
+Mike Gunderloy
+Joe Van Dyk

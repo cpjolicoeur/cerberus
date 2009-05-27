@@ -9,6 +9,9 @@ require 'mock/manager'
 
 class Test::Unit::TestCase
   TEMP_DIR = File.expand_path(File.dirname(__FILE__)) + '/__workdir'
+  HOME = TEMP_DIR + '/home'
+  ENV['CERBERUS_HOME'] = HOME
+  ENV['CERBERUS_ENV'] = 'TEST'
 
   SVN_REPO = TEMP_DIR + '/svn_repo'
   SVN_URL = 'file:///' + SVN_REPO.gsub(/\\/,'/').gsub(/^\//,'').gsub(' ', '%20')
@@ -19,16 +22,14 @@ class Test::Unit::TestCase
   GIT_REPO = TEMP_DIR + '/git_repo'
   GIT_URL = 'file:///' + GIT_REPO.gsub(/\\/,'/').gsub(/^\//,'').gsub(' ', '%20')
 
-  HOME = TEMP_DIR + '/home'
-  ENV['CERBERUS_HOME'] = HOME
-  ENV['CERBERUS_ENV'] = 'TEST'
-
   def self.refresh_repos
+    # setup base subversion repos
     FileUtils.rm_rf TEMP_DIR
     FileUtils.mkpath SVN_REPO
     `svnadmin create "#{SVN_REPO}"`
     `svnadmin load "#{SVN_REPO}" < "#{File.dirname(__FILE__)}/data/subversion.dump"`
 
+    # setup base darcs repos
     require 'rubygems'
     require 'zip/zip'
     FileUtils.mkpath DARCS_REPO
@@ -40,6 +41,7 @@ class Test::Unit::TestCase
       }
     }
     
+    # setup base git repos
     FileUtils.mkpath GIT_REPO
     Zip::ZipFile::open("#{File.dirname(__FILE__)}/data/git.zip") {|zf|
       zf.each { |e|

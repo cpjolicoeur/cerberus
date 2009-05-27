@@ -8,7 +8,6 @@ require 'mock/twitter'
 class TwitterPublisherTest < Test::Unit::TestCase
   def test_publisher
     options = Cerberus::Config.new(nil, :publisher => {:twitter => {:login => 'twittest', :password => 'twitpass'}}, :application_name => 'TestApp')
-    # options = Cerberus::Config.new(nil, :publisher => {:jabber => {:jid=>'from.cerberus@gmail.com', :recipients => ' jit1@google.com, another@google.com '}}, :application_name => 'MegaApp')
     build = DummyManager.new('last message', 'this is output', 1232, 'anatol')
 
     Cerberus::Publisher::Twitter.publish(build_status(false), build, options)

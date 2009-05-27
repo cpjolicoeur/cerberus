@@ -73,7 +73,8 @@ module Cerberus
       :rake => 'Rake',
       :rspec => 'RSpec',
       :rant => 'Rant',
-      :bjam => 'Bjam'
+      :bjam => 'Bjam',
+      :ruby => 'Ruby'
     }
 
     def self.get(type)

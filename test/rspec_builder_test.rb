@@ -9,6 +9,8 @@ end
 
 class RSpecBuilderTest < Test::Unit::TestCase
  def test_builder
+   `whoami` # clear $? for tests run via rake
+
    tmp = Dir::tmpdir
    builder = Cerberus::Builder::RSpec.new(:application_root => tmp)
 
