@@ -16,7 +16,7 @@ class Cerberus::Builder::RubyBase
   end
 
   def successful?
-    $?.exitstatus == 0 and not @output.include?("#{@cmd} aborted!") and @output.include?("0 failures, 0 errors")
+    $?.exitstatus == 0 and not @output.include?("#{@cmd} aborted!")
   end
 
   def brokeness
