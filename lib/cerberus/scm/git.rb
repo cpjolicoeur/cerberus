@@ -37,8 +37,8 @@ class Cerberus::SCM::Git
     @new == true
   end
 
-  def current_revision
-    @revision
+  def current_revision( _full=false )
+    _full ? @revision : @revision.slice(0,8)
   end
 
   def url
