@@ -7,7 +7,7 @@ module Cerberus
         subject = 
         case state.current_state
         when :setup
-          "Cerberus set up for project (##{manager.scm.current_revision})"
+          "Cerberus set up for project (#{manager.scm.current_revision})"
         when :broken
           additional_message = nil
           if state.previous_brokeness and state.current_brokeness
