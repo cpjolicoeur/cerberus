@@ -63,7 +63,7 @@ class FunctionalTest < Test::Unit::TestCase
     #Check outpus that run needed tasks
     assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
     assert output !~ /Task 'custom1' has been invoked/
-    assert_equal '[myapp] Cerberus set up for project (#2)', mail.subject
+    assert_equal '[myapp] Cerberus set up for project (2)', mail.subject
     assert output =~ %r{http://someurl.changeset.com/2}
 
     status_file = HOME + '/work/myapp/status.log'
