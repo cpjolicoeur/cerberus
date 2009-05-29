@@ -19,15 +19,15 @@ module Cerberus
                 ' and getting worse'
             end
           end
-          "Build still broken#{additional_message} (##{manager.scm.current_revision})"
+          "Build still broken#{additional_message} (#{manager.scm.current_revision})"
 
         #FIXME instead of using last author as person that broken build try to guess it. I.e. only if one author since last commit did commit - then he broken it.
         when :failed
-          "Build broken by #{manager.scm.last_author} (##{manager.scm.current_revision})"
+          "Build broken by #{manager.scm.last_author} (#{manager.scm.current_revision})"
         when :revival
-          "Build fixed by #{manager.scm.last_author} (##{manager.scm.current_revision})"
+          "Build fixed by #{manager.scm.last_author} (#{manager.scm.current_revision})"
         when :successful
-          "Build successful (##{manager.scm.current_revision})"
+          "Build successful (#{manager.scm.current_revision})"
         else                              
           raise "Unknown build state '#{state.current_state.to_s}'"
         end
