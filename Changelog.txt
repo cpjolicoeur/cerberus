@@ -1,5 +1,11 @@
 = Cerberus Changelog
 
+== Version 0.6.1
+Bugfix for issues with git-diff output
+
+* Projects using the Git SCM were not getting the full diff output in their
+Publishers
+
 == Version 0.6
 New Ruby builder, bugfixes, and refactoring
 
