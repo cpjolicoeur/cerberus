@@ -8,8 +8,6 @@ class Cerberus::Builder::Bjam
  end
 
  def run
-   Dir.chdir @config[:application_root]
-
    #set correct mountpoint if it present
    build_dir = @config[:builder, :bjam, :build_dir]
    Dir.chdir(build_dir) if build_dir
