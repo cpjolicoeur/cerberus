@@ -1,5 +1,11 @@
 = Cerberus Changelog
 
+== Version 0.6.1
+New configuration options
+
+* added 'build_dir' option for setting custom build directory
+* added 'setup_script' option for a custom script to be run before build command
+
 == Version 0.6
 New Ruby builder, bugfixes, and refactoring
 
