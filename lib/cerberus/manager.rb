@@ -114,7 +114,7 @@ module Cerberus
           
           if @scm.has_changes? or @config[:force] or @status.previous_build_successful.nil?
             Dir.chdir File.join(@config[:application_root], @config[:build_dir] || '')
-            `#{@config[:setup]}` if @config[:setup]
+            `#{@config[:setup_script]}` if @config[:setup_script]
 
             build_successful = @builder.run
             @status.keep(build_successful, @scm.current_revision, @builder.brokeness)
