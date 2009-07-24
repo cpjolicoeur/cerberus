@@ -1,2 +1,4 @@
+* Ruby 1.9 compatibility
+* Update or split-out the bin_path setting
 * make --verbose option work with all SCM, Builders and Publishers
 * update rake builder to only check exit status or aborted msg
