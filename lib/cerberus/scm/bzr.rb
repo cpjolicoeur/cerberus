@@ -18,6 +18,8 @@ class Cerberus::SCM::Bazaar
     if test(?d, File.join(@path, '.bzr'))
       extract_last_commit_info
       @old_revision = @revision
+      # Revert in an attempt to avoid conflicts from local file changes
+      execute("revert", "--no-backup 2>&1")
       @status = execute("update", "2>&1")
     else
       @old_revision = 0
