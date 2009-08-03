@@ -14,6 +14,6 @@ class TwitterPublisherTest < Test::Unit::TestCase
 
     statuses = Twitter::Client.statuses
     assert_equal 1, statuses.size
-    assert_equal '[TestApp] Build still broken (#1232)', statuses.first
+    assert_equal '[TestApp] Build still broken (1232)', statuses.first
   end
 end

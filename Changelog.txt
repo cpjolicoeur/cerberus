@@ -1,5 +1,22 @@
 = Cerberus Changelog
 
+== Version 0.6.1
+New configuration options, and bugfixes
+
+* added 'build_dir' option for setting custom build directory
+* added 'setup_script' option for a custom script to be run before build command
+* Projects using the Git SCM were not getting the full diff output in their
+Publishers
+
+== Version 0.6
+New Ruby builder, bugfixes, and refactoring
+
+* added new Ruby builder for using custom ruby scripts to build projects
+* fixed issue with require explicit version of the twitter4r gem
+* refactoring and cleanup of the git SCM code
+* some cleanup of the 'cerberus status' command output
+* only check for process exit status or abort message for ruby_base builder
+
 == Version 0.5
 Bugfixes and Ticket Support
 

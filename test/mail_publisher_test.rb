@@ -21,6 +21,6 @@ class MailPublisherTest < Test::Unit::TestCase
     assert_equal 1, mails.size
     mail = mails[0]
     assert_equal 'haha', mail.from_addrs[0].address
-    assert_equal '[MyApp] Cerberus set up for project (#1232)', mail.subject
+    assert_equal '[MyApp] Cerberus set up for project (1232)', mail.subject
   end
 end

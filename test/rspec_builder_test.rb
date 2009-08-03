@@ -17,6 +17,9 @@ class RSpecBuilderTest < Test::Unit::TestCase
    builder.output = RSPEC_TEST_OK_OUTPUT
    assert builder.successful?
 
+   builder.output = RSPEC_TEST_OK_OUTPUT_ALT
+   assert builder.successful?
+
    builder.output = RSPEC_TEST_OK_OUTPUT_WITH_PENDING
    assert builder.successful?
 
@@ -26,7 +29,7 @@ class RSpecBuilderTest < Test::Unit::TestCase
 
    builder.output = RSPEC_TEST_ERROR_OUTPUT_WITH_PENDING
    assert !builder.successful?
-   assert_equal 1, builder.brokeness
+   assert_equal 3, builder.brokeness
  end
 end
 
@@ -57,6 +60,40 @@ DashboardsController it should save user-customized layout should check access b
 Finished in 41.688393 seconds
 
 770 examples, 0 failures, 6 pending
+END
+
+RSPEC_TEST_OK_OUTPUT_ALT = <<-END
+Git commit message (fixes #111)
+diff...
+(in /Users/deployer/.cerberus/work/webapp/sources)
+Profiling enabled.
+..................................................................................................................................................
+.................................................................................................................................................
+
+
+Top 10 slowest examples:
+6.0324890 Setting should update the modified_time_unix attribute after
+destroy
+3.0633630 Recorded should update the modified_time_unix whenever the
+wildcard value is updated in nvp
+3.0267280 Setting should update the modified_time_unix attribute after
+save
+0.8593440 Audit searching for auditables should find audits for a
+deleted package and its children
+0.7079580 Package a fully activatable valid package should delete all
+child records when destroyed
+0.3543940 POST create should audit a time segment split
+0.3363000 Package a fully activatable valid package should insert into
+the db successfully
+0.3159420 Audit searching for auditables should find audits for a
+deleted number
+0.2989840 Audit searching for auditables should find all auditables in
+1 week as default
+0.2906990 POST create should audit the created profile
+
+Finished in 35.621931 seconds
+
+291 examples, 0 failures
 END
 
 RSPEC_TEST_OK_OUTPUT_WITH_PENDING =<<-END
@@ -98,5 +135,5 @@ count should not have changed, but did change from 1 to 2
 
 Finished in 0.245002 seconds
 
-15 examples, 1 failure, 1 pending
+15 examples, 3 failures, 1 pending
 END

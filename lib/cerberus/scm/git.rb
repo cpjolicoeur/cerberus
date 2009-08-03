@@ -21,6 +21,7 @@ class Cerberus::SCM::Git
       encoded_url = (@config[:scm, :url].include?(' ') ? "\"#{@config[:scm, :url]}\"" : @config[:scm, :url])
       @new = true
       @status = execute("clone", "#{encoded_url} #{@path}", false)
+      execute('config', 'pager.diff false') # turn off git-diff $PAGER by default
       if branch = @config[:scm, :branch]
         execute('branch', "--track #{branch} #{remote_head}")
         execute('checkout', branch)
@@ -37,8 +38,8 @@ class Cerberus::SCM::Git
     @new == true
   end
 
-  def current_revision
-    @revision
+  def current_revision( _full=false )
+    _full ? @revision : @revision.slice(0,8)
   end
 
   def url

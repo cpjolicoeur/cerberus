@@ -10,13 +10,12 @@ class Cerberus::Builder::RubyBase
   end
 
   def run
-    Dir.chdir @config[:application_root]
     @output = `#{@config[:bin_path]}#{choose_exec()} #{@config[:builder, @name.to_sym, :task]} 2>&1`
     successful?
   end
 
   def successful?
-    $?.exitstatus == 0 and not @output.include?("#{@cmd} aborted!") and @output.include?("0 failures, 0 errors")
+    $?.exitstatus == 0 and not @output.include?("#{@cmd} aborted!")
   end
 
   def brokeness
