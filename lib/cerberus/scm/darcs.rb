@@ -1,12 +1,7 @@
 require 'cerberus/utils'
+require 'cerberus/scm/base'
 
-class Cerberus::SCM::Darcs
-  def initialize(path, config = {})
-    raise "Path can't be nil" unless path
-
-    @path, @config = path.strip, config
-    @encoded_path = (@path.include?(' ') ? "\"#{@path}\"" : @path)
-  end
+class Cerberus::SCM::Darcs < Cerberus::SCM::Base
 
   def installed?
     exec_successful? "#{@config[:bin_path]}darcs --version"
@@ -35,10 +30,6 @@ class Cerberus::SCM::Darcs
 
   def current_revision
     @date
-  end
-
-  def url
-    @path
   end
 
   def last_commit_message

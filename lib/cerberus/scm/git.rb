@@ -1,19 +1,14 @@
 require 'cerberus/utils'
+require 'cerberus/scm/base'
 
-class Cerberus::SCM::Git
-  def initialize(path, config = {})
-    raise "Path can't be nil" unless path
-
-    @path, @config = path.strip, config
-    @encoded_path = (@path.include?(' ') ? "\"#{@path}\"" : @path)
-  end
-
+class Cerberus::SCM::Git < Cerberus::SCM::Base
+  
   def installed?
     exec_successful? "#{@config[:bin_path]}git --version"
   end
 
   def update!
-    if test(?d, @path + '/.git')
+    if test( ?d, File.join( @path,'.git' ) )
       get_updates
       execute("reset", "--hard #{remote_head}")
     else
@@ -40,10 +35,6 @@ class Cerberus::SCM::Git
 
   def current_revision( _full=false )
     _full ? @revision : @revision.slice(0,8)
-  end
-
-  def url
-    @path
   end
 
   def last_commit_message
@@ -81,7 +72,7 @@ class Cerberus::SCM::Git
 
   def extract_commit_info( commit=remote_head )
     message = execute("show", "#{ commit } --pretty='format:%an(%ae)|%ai|%H|%s'").split("|")
-    { :author => message[0], :date => message[1], :revision => message[2], :message => message[3] }
+    return { :author => message[0], :date => message[1], :revision => message[2], :message => message[3] }
   end
 
   def last_tested_revision
