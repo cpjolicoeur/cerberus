@@ -53,7 +53,6 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.add_dependency 'activesupport', '>= 1.4.2'
   s.add_dependency 'rake', '>= 0.7.3'
   s.add_dependency 'xmpp4r', '>= 0.3.1'
-  s.add_dependency 'Ruby-IRC', '>= 1.0.7'
   s.add_dependency 'gmailer', '>= 0.1.7'
   s.add_dependency 'twitter4r', '>= 0.3.0'
 
