@@ -2,9 +2,6 @@
 | BEFORE RELEASE |
 ==================
 
-* merge in Bazaar SCM support
-* fix issue with ActionMailer 2.3.3
-
 
 ==========
 | FUTURE |
