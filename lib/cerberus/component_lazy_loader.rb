@@ -45,8 +45,7 @@ module Cerberus
 
   module Publisher
     TYPES = {
-      :mail => 'Mail', #Cerberus::Publisher
-      :gmailer => 'Gmailer',
+      :mail => 'Mail',
       :jabber => 'Jabber',
       :irc => 'IRC',
       :rss => 'RSS',
