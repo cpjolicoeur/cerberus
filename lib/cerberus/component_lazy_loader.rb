@@ -5,6 +5,7 @@ module Cerberus
       :darcs => 'Darcs',
       :perforce => 'Perforce',
       :cvs => 'CVS',
+      :bzr => 'Bazaar',
       :git => 'Git'
     }
 
@@ -25,6 +26,8 @@ module Cerberus
           'darcs'
         when test(?d, path+'/.cvs')
           'cvs'
+        when test(?d, path+'/.bzr')
+          'bzr'          
         when test(?d, path+'/.git')
           'git'          
         end
@@ -33,6 +36,8 @@ module Cerberus
         case path
         when /^:(pserver|ext|local):/
           'cvs'
+        when /^(bzr+ssh|bzr)/
+          'bzr'
         end
       end
     end

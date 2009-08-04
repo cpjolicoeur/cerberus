@@ -218,7 +218,7 @@ module Cerberus
     def run
       projects = Dir["#{HOME}/config/*.yml"]
       if projects.empty?
-        puts "There are no any active projects" 
+        puts "There are not any active projects" 
       else
         puts "List of active projects:"
         
@@ -316,6 +316,9 @@ module Cerberus
       @successful_build_revision = @hash['successful_build_revision']
       @previous_build_successful = @hash['successful']
       @previous_brokeness = @hash['brokeness']
+
+      # Create some convenience methods to access status
+      @hash.keys.each { |key| self.class.send(:define_method, key) { @hash[key] } }
     end
     
     def self.read(file_name)
