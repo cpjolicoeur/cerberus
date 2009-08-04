@@ -2,8 +2,8 @@
 
 # Add lib dir to load path so that we don't have to be installed in rubygems
 require 'pathname' # Use Pathname to follow symlinks
-CERBERUS_LIB_DIR = File.join(File.dirname(Pathname.new(__FILE__).realpath),'..','lib')
-$: << CERBERUS_LIB_DIR 
+CERBERUS_LIB_DIR = File.join( File.dirname( Pathname.new( __FILE__ ).realpath ),'..','lib' )
+$:.unshift CERBERUS_LIB_DIR
 
 require 'cerberus/cli'
 
