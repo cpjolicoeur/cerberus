@@ -1,18 +1,33 @@
-+ Make possibility to run tests for all revisions (not only latest for that moment)
-+ Send svn log not only for latest revision but from latest successfull. For that we need to store version of latest successful rev.
-+ IRC: make message colorized. Make messages shorter to avoid irc flood (and ban to user)
-+ Add heartbit message
-+ Create Screencast for Cerberus
-+ Improve Configuration Index (docs)
-+ Refactor logger. Use logger also in mail publisher.
-+ Add smart algorithm for calculating of person's name who broke release
-+ Fix text suite
+==================
+| BEFORE RELEASE |
+==================
 
-Before release!
-! Add on_success on_failure and on_finish opions to builders
+* merge in Bazaar SCM support
+* fix issue with ActionMailer 2.3.3
 
 
-- Add configuration migrations, for easier migration process
+==========
+| FUTURE |
+==========
 
-Add support of X10 devices
-   http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/124460
+* Ruby 1.9 compatibility
+* Update or split-out the bin_path setting
+* make --verbose option work with all SCM, Builders and Publishers
+* update rake builder to only check exit status or aborted msg
+* Add smart algorithm for calculating of person's name who broke release
+* Add on_success on_failure and on_finish opions to builders
+
+
+=============
+| WISH LIST |
+=============
+
+* Make possibility to run tests for all revisions (not only latest for that moment)
+* Send svn log not only for latest revision but from latest successfull. For that we need to store version of latest successful rev.
+* IRC: make message colorized. Make messages shorter to avoid irc flood (and ban to user)
+* Add heartbit message
+* Create Screencast for Cerberus
+* Improve Configuration Index (docs)
+* Refactor logger. Use logger also in mail publisher.
+* Add configuration migrations, for easier migration process
+* Add support of X10 devices - http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/124460
