@@ -142,10 +142,16 @@ task :publish_news do
   end
 end
 
-require 'webgen/webgentask'
-Webgen::WebgenTask.new do |t|
-  t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
-  t.clobber_outdir = true
+begin
+  gem 'webgen', '>=0.5.6'
+  require 'webgen/webgentask'
+
+  Webgen::WebgenTask.new do |t|
+    t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
+    t.clobber_outdir = true
+  end
+rescue Gem::LoadError
+  puts "webgen gem is required to build website output"
 end
 
 task :publish_site => :webgen do
