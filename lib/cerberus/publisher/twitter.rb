@@ -13,7 +13,6 @@ require 'cerberus/utils'
 class Cerberus::Publisher::Twitter < Cerberus::Publisher::Base
   def self.publish(state, manager, options)
     begin
-      gem 'twitter4r', '>=0.3.0'
       require 'twitter'
 
       twitter_options = options[:publisher, :twitter]
