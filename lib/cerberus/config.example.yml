@@ -7,6 +7,7 @@ publisher:
     authentication: plain
     user_name: someuser
     password: somepassword
+    sender: cerberus@example.com
 #    on_event: all
 #  jabber:
 #    jid: somemailbox@gmail.com/cerberus
