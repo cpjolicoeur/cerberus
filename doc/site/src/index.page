@@ -11,12 +11,16 @@ Cerberus works perfectly both on Windows and \*nix platforms and supports popula
 
 Cerberus requires: 
 * [ruby](http://ruby-lang.org/en/) - 1.8.2 or higher
+
+Optional requirements:
 * [rake](http://rubyforge.org/projects/rake) - 0.7 or higher
-* [subversion](http://subversion.tigris.org/) client - 1.2 or higher (optional)
-* [darcs](http://darcs.net/) client - 1.0.7 or higher (optional)
-* [bjam](http://www.boost.org/tools/build/v2/index.html) (optional)
-* [perforce](http://www.perforce.com/) (optional)
-* [git](http://git.or.cz) (optional)
+* [subversion](http://subversion.tigris.org/)
+* [git](http://git.or.cz)
+* [bazaar](http://bazaar-vcs.org/)
+* [darcs](http://darcs.net/) client - 1.0.7 or higher
+* [bjam](http://www.boost.org/tools/build/v2/index.html)
+* [perforce](http://www.perforce.com/)
+
 
 #### What does 'Cerberus' name mean?
 
