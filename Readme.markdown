@@ -35,10 +35,7 @@ Main advantages of Cerberus over other solutions include:
 * rake - 0.7.3 or higher (optional)
 * actionmailer - 1.3.3 or higher (optional)
 * activesupport - 1.4.2 or higher (optional)
-* xmpp4r - 0.3.1 or higher (optional)
-* Ruby-IRC - 1.0.7 or higher (optional)
 * gmailer - 0.1.7 or higher (optional)
-* twitter4r - 0.3.0 or higher (optional)
 
 ## Usage
  
@@ -89,6 +86,7 @@ Cerberus currently supports the following SCM tools:
   * Darcs
   * Perforce
   * CVS
+  * Bazaar
 
 Cerberus currently supports the following notification systems: 
 

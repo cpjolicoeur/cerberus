@@ -1,0 +1,23 @@
+= Ruby-IRC
+
+Framework for IRC clients
+
+== What is it?
+
+Ruby-IRC is a simple framework for creating clients for IRC. It will
+monitor multiple IO sockets for data. Allows user defined handlers
+for IRC events.
+
+== A simple usage example
+
+    bot = IRC.new("Nickname", "server.example.com", "6667", "Realname")
+    IRCEvent.add_callback('endofmotd') { |event| bot.add_channel('#eris') }
+    IRCEvent.add_callback('join') { |event|
+        bot.send_message(event.channel, "Hello #{event.from}")
+    }
+    bot.connect
+
+== Author
+Chris Boyer
+
+email: cboyer@musiciansfriend.com

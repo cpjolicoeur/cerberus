@@ -1,4 +1,3 @@
-gem 'twitter4r', '>=0.3.0'
 require 'twitter'
 
 class Twitter::Client
