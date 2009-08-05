@@ -4,7 +4,7 @@ require 'rake/testtask'
 require 'rake/packagetask'
 require 'rake/gempackagetask'
 
-require "./lib/cerberus/constants"
+require './lib/cerberus/constants'
 
 PKG_BUILD     = ENV['PKG_BUILD'] ? '.' + ENV['PKG_BUILD'] : ''
 PKG_NAME      = 'cerberus'
@@ -54,8 +54,7 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.add_dependency 'rake', '>= 0.7.3'
 
   s.files = Dir.glob("{bin,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
-  s.files += %w(License.txt Readme.markdown Changelog.txt Rakefile)
-  s.files += Dir.glob("doc/*").delete_if { |item| item.include?('__workdir') }
+  s.files += %w(License.txt Readme.markdown Changelog.txt Authors.txt Copyright.txt Rakefile)
 
   s.bindir = "bin"
   s.executables = ["cerberus"]
@@ -87,7 +86,7 @@ end
 
 desc "Look for TODO and FIXME tags in the code"
 task :todo do
-  FileList.new(File.dirname(__FILE__)+'/**/*.rb').egrep(/#.*(FIXME|TODO|TBD|DEPRECATED)/i) 
+  FileList.new(File.dirname(__FILE__)+'/lib/cerberus/**/*.rb').egrep(/#.*(FIXME|TODO|TBD|DEPRECATED)/i) 
 end
 
 task :reinstall => [:uninstall, :install]
@@ -96,14 +95,14 @@ begin
   require 'rcov/rcovtask'
   Rcov::RcovTask.new do |t|
     t.test_files = FileList['test/*_test.rb']
-    t.output_dir = File.dirname(__FILE__) + "/coverage"
+    t.output_dir = File.join( File.dirname(__FILE__),'coverage' )
     t.verbose = true
   end
 rescue Object
 end
 
 task :site_coverage => [:rcov] do
-  sh %{ scp -r test/coverage/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/coverage/ }
+  sh %{ scp -r coverage/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/coverage/ }
 end
 
 task :release_files => [:clean, :package] do
