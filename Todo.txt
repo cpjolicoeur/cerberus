@@ -7,13 +7,12 @@
 | FUTURE |
 ==========
 
-* Ruby 1.9 compatibility
 * Update or split-out the bin_path setting
 * add test suite for Bazaar SCM
 * make --verbose option work with all SCM, Builders and Publishers
 * update rake builder to only check exit status or aborted msg
 * Add smart algorithm for calculating of person's name who broke release
-* Add on_success on_failure and on_finish opions to builders
+* Add on_success on_failure and on_finish options to builders
 
 
 =============
