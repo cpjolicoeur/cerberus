@@ -154,3 +154,13 @@ If you want to add Darcs (or other custom SCM) project to cerberus, you should e
 <pre>cerberus add PROJECT_DIR SCM=darcs</pre>
 
 Currently supported SCM systems are SVN, Darcs, Perforce and CVS.
+
+### How to be notified of all activity (including successful builds)
+
+By default, Cerberus does not publish a notification after a successful build,
+unless the previous build was unsuccessful.
+
+To always be notified of successful builds, add the following to your projects config file:
+
+<pre>publisher:
+  on_even: all</pre>
