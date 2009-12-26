@@ -163,4 +163,4 @@ unless the previous build was unsuccessful.
 To always be notified of successful builds, add the following to your projects config file:
 
 <pre>publisher:
-  on_even: all</pre>
+  on_event: all</pre>
