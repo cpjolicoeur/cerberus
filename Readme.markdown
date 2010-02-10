@@ -126,7 +126,7 @@ is included in the License.txt file.
 
 
 [1]:http://www.martinfowler.com/articles/continuousIntegration.html
-[2]:http://wiki.github.com/cpjolicoeur/cerberusci
+[2]:http://wiki.github.com/cpjolicoeur/cerberus
 [3]:http://groups.google.com/group/cerberusci
 [4]:http://cpjolicoeur.lighthouseapp.com/projects/22299-cerberus
 [5]:http://rubyforge.org/frs/?group_id=1794
