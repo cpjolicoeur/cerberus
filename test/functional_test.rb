@@ -330,6 +330,70 @@ class FunctionalTest < Test::Unit::TestCase
     build.run
     assert_equal false, build.scm.has_changes?
   end
+  
+  def test_mercurial
+    add_application('hgapp', HG_URL, :scm => {:type => 'hg'})
+
+    build = Cerberus::BuildCommand.new('hgapp')
+    build.run
+    assert build.scm.has_changes?
+    assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
+    mail = ActionMailer::Base.deliveries[0]
+    output = mail.body
+
+    #Check output that run needed tasks
+    assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
+    assert output !~ /Task 'custom1' has been invoked/
+    assert_match  /\[hgapp\] Cerberus set up for project/, mail.subject
+    
+    status_file = HOME + '/work/hgapp/status.log'
+    assert File.exists?(status_file)
+    assert build_successful?(status_file)
+    assert 1, Dir[HOME + "/work/hgapp/logs/*.log"].size
+    
+    #There were no changes - no reaction should be
+    build = Cerberus::BuildCommand.new('hgapp')
+    build.run
+    assert_equal false, build.scm.has_changes?
+    assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
+    assert 1, Dir[HOME + "/work/hgapp/logs/*.log"].size
+    
+    #now we add new broken test
+    rand_val = rand(10000)
+    test_case_name = "test/#{rand_val}_test.rb"
+    File.open(HG_REPO + '/' + test_case_name, 'w') { |f|
+      f << %Q( require 'test/unit'
+        class A#{rand_val}Test < Test::Unit::TestCase
+          def test_ok
+            assert false
+          end
+        end )
+    }
+    
+    curr_dir = Dir.pwd
+    Dir.chdir HG_REPO
+    `hg add #{test_case_name}`
+    `hg commit -m 'somepatch'`
+    Dir.chdir curr_dir
+    
+    build = Cerberus::BuildCommand.new('hgapp')
+    build.run
+    assert build.scm.has_changes?
+    assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup plus new alert email
+    assert 2, Dir[HOME + "/work/hgapp/logs/*.log"].size
+    
+    build = Cerberus::BuildCommand.new('hgapp')
+    build.run
+    assert_equal false, build.scm.has_changes?
+    assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
+    assert 2, Dir[HOME + "/work/hgapp/logs/*.log"].size
+    
+    #Now we broke remote repository (imitate that network unaccessable)
+    FileUtils.rm_rf HG_REPO
+    build = Cerberus::BuildCommand.new('hgapp')
+    build.run
+    assert_equal false, build.scm.has_changes?
+  end
 
   def test_campfire_publisher
     # there were not any messages causing login/password is incorrect. We just check that there was no any exceptions
