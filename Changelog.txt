@@ -4,6 +4,7 @@
 New configuration options for publisher
 
 * added "extra_subject" publisher option
+* added Mercurial SCM support
 
 == Version 0.7
 New config options, Bazaar SCM support, removed GMailer bugfixes

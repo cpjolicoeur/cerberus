@@ -87,6 +87,7 @@ Cerberus currently supports the following SCM tools:
   * Perforce
   * CVS
   * Bazaar
+  * Mercurial
 
 Cerberus currently supports the following notification systems: 
 
