@@ -3,6 +3,7 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/packagetask'
 require 'rake/gempackagetask'
+require 'rake/clean'
 
 require './lib/cerberus/constants'
 
@@ -25,6 +26,7 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = true
 end
 
+CLEAN.include %w(**/*~)
 desc "Clean all generated files"
 task :clean => :clobber_package do
   root = File.dirname(__FILE__)
