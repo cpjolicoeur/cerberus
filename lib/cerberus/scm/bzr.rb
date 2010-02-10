@@ -64,7 +64,7 @@ class Cerberus::SCM::Bazaar
     # message:
     #   sidfugsdiufgsdifusdg
  
-    @revision = lastlog.match(/^revno: (\d+)$/)[1].to_i
+    @revision = lastlog.match(/^revno: (\d+).*$/)[1].to_i
     @author   = lastlog.match(/^committer: (.+)$/)[1]
     @date     = Time.parse(lastlog.match(/^timestamp: (.+)$/)[1])
     @message  = lastlog.match(/message:\n  (.*)/m)[1]
