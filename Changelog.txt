@@ -1,5 +1,9 @@
 = Cerberus Changelog
 
+== Version 0.7.6
+
+* Update usage documentation
+
 == Version 0.7.5
 New SCM and configuration options for publisher
 

@@ -66,7 +66,7 @@ module Cerberus
     Cerberus is a lightweight command-line Continuous Integration tool for Ruby.
 
     Usage:
-      cerberus add <URL>     --- add project from svn repository to list watched of applications
+      cerberus add <URL>     --- add project from a repository to list watched of applications
       cerberus add <PATH>    --- add project from local path to list of watched applications
       cerberus remove <NAME> --- remove given project from cerberus
       cerberus build <NAME>  --- build watched application
