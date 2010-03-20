@@ -1,6 +1,6 @@
 = Cerberus Changelog
 
-== Version 0.7.2
+== Version 0.7.6
 Bugfixes and updates to RSS publisher
 
 * Fix mercurial builder to properly read revision number of merged commits
