@@ -23,6 +23,8 @@ publisher:
 #    url: http://someemail:password@cerberustool.campfirenow.com/room/51660
 #  rss:
 #    file: /usr/www/rss.xml
+#    channel_link: http://example.com/rss.xml
+#    keep: 1
 #  extra_subject: "#deployment #tags"
 #builder:
 #  rake:

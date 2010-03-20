@@ -16,6 +16,7 @@
 * move away from using meta_project gem to package and release source
 * add "file" Builder to create raw txt file output
 * Add on_success on_failure and on_finish options to builders
+* Allow cerberus to run in daemon mode as a long running process instead of running via CRON
 
 
 =============
