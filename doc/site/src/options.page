@@ -38,6 +38,8 @@ publisher:
     on_event:
   rss:
     file:
+    channel_link:
+    keep:
     on_event:
   campfire:
     url:
