@@ -1,5 +1,11 @@
 = Cerberus Changelog
 
+== Version 0.7.1
+New configuration options for publisher
+
+* added "extra_subject" publisher option
+* added Mercurial SCM support
+
 == Version 0.7
 New config options, Bazaar SCM support, removed GMailer bugfixes
 
@@ -8,8 +14,7 @@ New config options, Bazaar SCM support, removed GMailer bugfixes
 * removed GMailer library.  Use default Mail publisher instead
 * added 'build_dir' option for setting custom build directory
 * added 'setup_script' option for a custom script to be run before build command
-* Projects using the Git SCM were not getting the full diff output in their
-Publishers
+* Projects using the Git SCM were not getting the full diff output in their Publishers
 
 == Version 0.6
 New Ruby builder, bugfixes, and refactoring
