@@ -13,6 +13,7 @@
 * update rake builder to only check exit status or aborted msg
 * Add smart algorithm for calculating of person's name who broke release
 * Add on_success on_failure and on_finish options to builders
+* Allow cerberus to run in daemon mode as a long running process instead of running via CRON
 
 
 =============
