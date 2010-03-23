@@ -221,7 +221,7 @@ module Cerberus
       else
         puts "List of active projects:"
         
-        projects.each do |fn|
+        projects.sort.each do |fn|
           fn =~ %r{#{HOME}/config/(.*).yml}
           
           puts "  * #{$1}"
@@ -237,7 +237,7 @@ module Cerberus
     end
     
     def run
-      projects = Dir["#{HOME}/config/*.yml"].map { |fn| fn.gsub(/.*\/(.*).yml$/, '\1') }
+      projects = Dir["#{HOME}/config/*.yml"].sort.map { |fn| fn.gsub(/.*\/(.*).yml$/, '\1') }
       if projects.empty?
         puts "There are not any active projects" 
       else
