@@ -1,12 +1,37 @@
 = Cerberus Changelog
 
-== Version 0.6.1
-New configuration options, and bugfixes
+== Version 0.7.6
+Bugfixes and updates to RSS publisher
 
+* Fix mercurial builder to properly read revision number of merged commits
+* Updated RSS publisher to output a properly formatted RSS feed with the
+ability to keep a certain number of previous builds in the feed.  For more 
+info on the changes please see the commit message on the following commit:
+http://github.com/cpjolicoeur/cerberus/commit/1f7176a6a611f30a0d70e0f75ec90724f6302043
+* Update usage documentation
+
+== Version 0.7.5
+New SCM and configuration options for publisher
+
+== Version 0.7.2
+
+** Mangled release.  This is really just version 0.7.5 and 0.7.6 combined
+
+== Version 0.7.1
+New configuration options for publisher
+
+* added "extra_subject" publisher option
+* added Mercurial SCM support
+
+== Version 0.7
+New config options, Bazaar SCM support, removed GMailer bugfixes
+
+* added support for bazaar scm
+* fixed bug with ActionMailer 2.3.3
+* removed GMailer library.  Use default Mail publisher instead
 * added 'build_dir' option for setting custom build directory
 * added 'setup_script' option for a custom script to be run before build command
-* Projects using the Git SCM were not getting the full diff output in their
-Publishers
+* Projects using the Git SCM were not getting the full diff output in their Publishers
 
 == Version 0.6
 New Ruby builder, bugfixes, and refactoring

@@ -1,5 +1,10 @@
 require 'yaml'
 
+# Load in vendor libraries
+for dir in Dir[File.join(File.dirname(__FILE__), '..', 'vendor', '*')]
+  $: << File.join(dir, 'lib')
+end
+
 module Cerberus
   module Utils
     def say(msg)

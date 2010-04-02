@@ -11,6 +11,6 @@ Authors.txt) so that your work may be made available to all of our users.
 If you wish to help out but are unsure as to what you can do or what needs to
 be done, read the file Todo.txt or check out Cerberus's GitHub wiki or
 Lighthouse issue tracker.  There is also a developers mailing list (see:
-Readme.txt) which is publicly accessible, but please try to read all the
+Readme.markdown) which is publicly accessible, but please try to read all the
 accompanying documentation and search the mailing list archives before
 posting.

@@ -7,16 +7,23 @@ sort_info: 1
 
 Cerberus is a lightweight and easy-to-use Continuous Builder software for Ruby. It could be run periodically from a scheduler and check if application tests are broken. In case of failed tests Cerberus sends notification to developers.
 
-Cerberus works perfectly both on Windows and \*nix platforms and supports popular version control systems like Subversion, Git, Darcs and Perforce. It also has many ways in publishing build results such as e-mail, jabber, [Twitter](http://twitter.com), [Campfire](http://www.campfirenow.com), IRC and RSS files.
+Cerberus works perfectly both on Windows and \*nix platforms and supports popular version control systems like Subversion, Git, Mercurial, Bazaar, Darcs and Perforce. It also has many ways in publishing build results such as e-mail, jabber, [Twitter](http://twitter.com), [Campfire](http://www.campfirenow.com), IRC and RSS files.
 
-Cerberus requires: 
+Cerberus requires:
+
 * [ruby](http://ruby-lang.org/en/) - 1.8.2 or higher
+
+Optional requirements:
+
 * [rake](http://rubyforge.org/projects/rake) - 0.7 or higher
-* [subversion](http://subversion.tigris.org/) client - 1.2 or higher (optional)
-* [darcs](http://darcs.net/) client - 1.0.7 or higher (optional)
-* [bjam](http://www.boost.org/tools/build/v2/index.html) (optional)
-* [perforce](http://www.perforce.com/) (optional)
-* [git](http://git.or.cz) (optional)
+* [subversion](http://subversion.tigris.org/)
+* [git](http://git.or.cz)
+* [mercurial](http://mercurial.selenic.com/)
+* [bazaar](http://bazaar-vcs.org/)
+* [darcs](http://darcs.net/) client - 1.0.7 or higher
+* [bjam](http://www.boost.org/tools/build/v2/index.html)
+* [perforce](http://www.perforce.com/)
+
 
 #### What does 'Cerberus' name mean?
 

@@ -11,7 +11,7 @@ class IntegrationTest < Test::Unit::TestCase
     FileUtils.rm_rf HOME
   end
 
-  def test_add_project_as_url
+  def test_add_project_as_url_subversion
     output = run_cerb("  add   #{SVN_URL}  ")
     assert_match /has been added to Cerberus successfully/, output
     assert File.exists?(HOME + '/config/svn_repo.yml')
@@ -31,8 +31,13 @@ class IntegrationTest < Test::Unit::TestCase
   end
 
   def test_status_command
-    # FIXME: add real tests
-    assert true
+    run_cerb("  add   #{SVN_URL}  APPLICATION_NAME=mamba ")
+    output = run_cerb(" status ")
+    assert_match /Project Name/, output
+    assert_match /Revision/, output
+    assert_match /Status/, output
+    assert_match /mamba/, output
+    assert_match /(Pass|Fail)/, output
   end
 
   def test_add_project_with_parameters
@@ -80,7 +85,7 @@ class IntegrationTest < Test::Unit::TestCase
 
   def test_run_unexist_project
     output = run_cerb("build some_project")
-    assert_match /Project 'some_project' does not present in Cerberus/, output
+    assert_match /Project 'some_project' does not exist in Cerberus/, output
     assert !test(?d, HOME + '/work/some_project')
   end
 
@@ -104,7 +109,7 @@ class IntegrationTest < Test::Unit::TestCase
 
   def test_hook
     some_number = rand(100000)
-    tmp_file = File.join(TEMP_DIR, 'some_number')
+    tmp_file = File.join(TEMP_DIR, '/some_number')
     config_file = HOME + '/config/hooks.yml'
 
     add_application('hooks', SVN_URL, 'quiet' => true)
@@ -113,7 +118,7 @@ class IntegrationTest < Test::Unit::TestCase
     cfg['hook'] = {'echo' => {'action' => "echo #{some_number} > #{tmp_file}"}}
     dump_yml(config_file, cfg)
 
-    File.rm_f tmp_file
+    # File.rm_f tmp_file
     run_cerb("build hooks")
     assert_equal some_number.to_s, IO.read(tmp_file).strip
     File.rm_f tmp_file

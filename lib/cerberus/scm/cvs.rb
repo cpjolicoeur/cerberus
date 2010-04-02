@@ -1,12 +1,7 @@
 require 'cerberus/utils'
+require 'cerberus/scm/base'
 
-class Cerberus::SCM::CVS
-  def initialize(path, config = {})
-    raise "Path can't be nil" unless path
-
-    @path, @config = path.strip, config
-    @encoded_path = (@path.include?(' ') ? "\"#{@path}\"" : @path)
-  end
+class Cerberus::SCM::CVS < Cerberus::SCM::Base
 
   def installed?
     exec_successful? "#{@config[:bin_path]}cvs --version"

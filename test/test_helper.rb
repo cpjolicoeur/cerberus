@@ -21,6 +21,9 @@ class Test::Unit::TestCase
 
   GIT_REPO = TEMP_DIR + '/git_repo'
   GIT_URL = 'file:///' + GIT_REPO.gsub(/\\/,'/').gsub(/^\//,'').gsub(' ', '%20')
+  
+  HG_REPO = TEMP_DIR + '/hg_repo'
+  HG_URL  = 'file:///' + HG_REPO.gsub(/\\/, '/').gsub(/^\//, '').gsub(' ', '%20')
 
   def self.refresh_repos
     # setup base subversion repos
@@ -46,6 +49,16 @@ class Test::Unit::TestCase
     Zip::ZipFile::open("#{File.dirname(__FILE__)}/data/git.zip") {|zf|
       zf.each { |e|
         fpath = File.join(GIT_REPO, e.name)
+        FileUtils.mkdir_p(File.dirname(fpath))
+        zf.extract(e, fpath)
+      }
+    }
+    
+    # setup base hg repos
+    FileUtils.mkpath HG_REPO
+    Zip::ZipFile::open("#{File.dirname(__FILE__)}/data/mercurial.zip") { |zf|
+      zf.each { |e|
+        fpath = File.join(HG_REPO, e.name)
         FileUtils.mkdir_p(File.dirname(fpath))
         zf.extract(e, fpath)
       }

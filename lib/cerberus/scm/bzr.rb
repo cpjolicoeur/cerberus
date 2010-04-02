@@ -1,14 +1,8 @@
 require 'cerberus/utils'
+require 'cerberus/scm/base'
 require 'time'
 
-class Cerberus::SCM::Bazaar
-
-  def initialize(path, config = {})
-    raise "Path can't be nil" unless path
-
-    @path, @config = path.strip, config
-    @encoded_path = (@path.include?(' ') ? "\"#{@path}\"" : @path)
-  end
+class Cerberus::SCM::Bazaar < Cerberus::SCM::Base
 
   def installed?
     exec_successful? "#{@config[:bin_path]}bzr --version"
@@ -35,10 +29,6 @@ class Cerberus::SCM::Bazaar
 
   def current_revision
     @revision
-  end
-
-  def url
-    @path
   end
 
   def last_commit_message

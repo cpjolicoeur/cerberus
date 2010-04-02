@@ -8,7 +8,7 @@ sort_info: 6
 The following people made notable contributions to the Cerberus tool: 
 
 * [Anatol Pomozov](http://pomozov.info) - original creator of Cerberus tool
-* Xavier Shay - several patches related to RSS publisher
+* [Xavier Shay](http://rhnh.net/) - several patches related to RSS publisher
 * Mark Noworolski - patches related to Subversion SCM
 * [Rob Kaufman](http://notch8.com) - Git SCM support
 * [Craig Jolicoeur](http://craigjolicoeur.com) - Twitter publisher support & project maintenance
@@ -17,3 +17,6 @@ The following people made notable contributions to the Cerberus tool:
 * [Mike Gunderloy](http://afreshcup.com/) - Custom ruby Builder support
 * [Joe Van Dyk](http://fixieconsulting.com/) - Git SCM cleanup
 * [Andrew Timberlake](http://ramblingsonrails.com) - Custom build script support
+* [Paul Hinze](http://phinze.com/) - Bazaar SCM support
+* [McClain Looney](http://github.com/mlooney) - Mercurial Support
+* [Michael](http://github.com/iconoclast) - RSS Publisher updates

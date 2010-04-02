@@ -1,12 +1,12 @@
 require 'cerberus/utils'
+require 'cerberus/scm/base'
 
-class Cerberus::SCM::Perforce
+class Cerberus::SCM::Perforce < Cerberus::SCM::Base
+  
   CHANGES_LOG_REGEXP = /^Change (\d+) on (.*) by (.*)\n\n(.*)/m
 
   def initialize(path, config = {})
-    @config = config
-    @path = path.strip
-
+    super
     @p4_view = @config[:scm, :view]
     @client_name = Socket.gethostname + ":" + @path.gsub(' ', ':')
   end

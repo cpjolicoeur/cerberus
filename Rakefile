@@ -3,8 +3,9 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/packagetask'
 require 'rake/gempackagetask'
+require 'rake/clean'
 
-require "./lib/cerberus/constants"
+require './lib/cerberus/constants'
 
 PKG_BUILD     = ENV['PKG_BUILD'] ? '.' + ENV['PKG_BUILD'] : ''
 PKG_NAME      = 'cerberus'
@@ -25,6 +26,7 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = true
 end
 
+CLEAN.include %w(**/*~)
 desc "Clean all generated files"
 task :clean => :clobber_package do
   root = File.dirname(__FILE__)
@@ -52,14 +54,9 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.add_dependency 'actionmailer', '>= 1.3.3'
   s.add_dependency 'activesupport', '>= 1.4.2'
   s.add_dependency 'rake', '>= 0.7.3'
-  s.add_dependency 'xmpp4r', '>= 0.3.1'
-  s.add_dependency 'Ruby-IRC', '>= 1.0.7'
-  s.add_dependency 'gmailer', '>= 0.1.7'
-  s.add_dependency 'twitter4r', '>= 0.3.0'
 
   s.files = Dir.glob("{bin,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
-  s.files += %w(License.txt Readme.markdown Changelog.txt Rakefile)
-  s.files += Dir.glob("doc/*").delete_if { |item| item.include?('__workdir') }
+  s.files += %w(License.txt Readme.markdown Changelog.txt Authors.txt Copyright.txt Rakefile)
 
   s.bindir = "bin"
   s.executables = ["cerberus"]
@@ -91,7 +88,7 @@ end
 
 desc "Look for TODO and FIXME tags in the code"
 task :todo do
-  FileList.new(File.dirname(__FILE__)+'/**/*.rb').egrep(/#.*(FIXME|TODO|TBD|DEPRECATED)/i) 
+  FileList.new(File.dirname(__FILE__)+'/lib/cerberus/**/*.rb').egrep(/#.*(FIXME|TODO|TBD|DEPRECATED)/i) 
 end
 
 task :reinstall => [:uninstall, :install]
@@ -100,14 +97,14 @@ begin
   require 'rcov/rcovtask'
   Rcov::RcovTask.new do |t|
     t.test_files = FileList['test/*_test.rb']
-    t.output_dir = File.dirname(__FILE__) + "/coverage"
+    t.output_dir = File.join( File.dirname(__FILE__),'coverage' )
     t.verbose = true
   end
 rescue Object
 end
 
 task :site_coverage => [:rcov] do
-  sh %{ scp -r test/coverage/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/coverage/ }
+  sh %{ scp -r coverage/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/coverage/ }
 end
 
 task :release_files => [:clean, :package] do
@@ -142,10 +139,16 @@ task :publish_news do
   end
 end
 
-require 'webgen/webgentask'
-Webgen::WebgenTask.new do |t|
-  t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
-  t.clobber_outdir = true
+begin
+  gem 'webgen', '>=0.5.6'
+  require 'webgen/webgentask'
+
+  Webgen::WebgenTask.new do |t|
+    t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
+    t.clobber_outdir = true
+  end
+rescue Gem::LoadError
+  puts "webgen gem is required to build website output"
 end
 
 task :publish_site => :webgen do

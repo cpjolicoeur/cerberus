@@ -6,7 +6,8 @@ module Cerberus
       :perforce => 'Perforce',
       :cvs => 'CVS',
       :bzr => 'Bazaar',
-      :git => 'Git'
+      :git => 'Git',
+      :hg => 'Mercurial'
     }
 
     def self.get(type)
@@ -30,6 +31,8 @@ module Cerberus
           'bzr'          
         when test(?d, path+'/.git')
           'git'          
+        when test(?d, path+'/.hg')
+          'hg'          
         end
       else
         #guess SCM type by its url
@@ -45,8 +48,7 @@ module Cerberus
 
   module Publisher
     TYPES = {
-      :mail => 'Mail', #Cerberus::Publisher
-      :gmailer => 'Gmailer',
+      :mail => 'Mail',
       :jabber => 'Jabber',
       :irc => 'IRC',
       :rss => 'RSS',
