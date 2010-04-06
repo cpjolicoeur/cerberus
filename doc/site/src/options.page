@@ -54,6 +54,7 @@ scm:
   password:
   view: #for perforce only
   branch: #for git only
+setup_script:
 builder:
   type:
   rake:                                         

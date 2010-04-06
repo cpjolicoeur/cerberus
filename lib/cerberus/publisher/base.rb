@@ -38,7 +38,7 @@ module Cerberus
         if options[:changeset_url]
           body << options[:changeset_url] + manager.scm.current_revision.to_s + "\n"
         end
-        body += [ manager.builder.output, generated_by ]
+        body += [ manager.setup_script_output, manager.builder.output, generated_by ].compact
 
         return subject, body.join("\n")
       end

@@ -79,7 +79,7 @@ module Cerberus
   end
   
   class BuildCommand
-    attr_reader :builder, :success, :scm, :status
+    attr_reader :builder, :success, :scm, :status, :setup_script_output
     
     DEFAULT_CONFIG = {:scm => {:type => 'svn'}, 
       :log => {:enable => true},
@@ -114,7 +114,9 @@ module Cerberus
           
           if @scm.has_changes? or @config[:force] or @status.previous_build_successful.nil?
             Dir.chdir File.join(@config[:application_root], @config[:build_dir] || '')
-            `#{@config[:setup_script]}` if @config[:setup_script]
+# require 'rubygems'; require 'ruby-debug'; Debugger.start
+# debugger if caller.join.include? "functional_test.rb:201"
+            @setup_script_output = `#{@config[:setup_script]}` if @config[:setup_script]
 
             build_successful = @builder.run
             @status.keep(build_successful, @scm.current_revision, @builder.brokeness)
@@ -126,7 +128,7 @@ module Cerberus
               
               time = Time.now.strftime("%Y%m%d%H%M%S")
               file_name = "#{log_dir}/#{time}-#{@status.current_state.to_s}.log"
-              body = [ scm.last_commit_message, builder.output ].join("\n\n")
+              body = [ @setup_script_output, scm.last_commit_message, builder.output ].join("\n\n")
               IO.write(file_name, body)
             end
             
