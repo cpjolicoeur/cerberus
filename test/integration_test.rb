@@ -121,6 +121,6 @@ class IntegrationTest < Test::Unit::TestCase
     # File.rm_f tmp_file
     run_cerb("build hooks")
     assert_equal some_number.to_s, IO.read(tmp_file).strip
-    File.rm_f tmp_file
+    FileUtils.rm_f tmp_file
   end
 end
