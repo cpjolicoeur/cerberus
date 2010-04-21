@@ -373,7 +373,7 @@ class FunctionalTest < Test::Unit::TestCase
     curr_dir = Dir.pwd
     Dir.chdir HG_REPO
     `hg add #{test_case_name}`
-    `hg commit -m 'somepatch'`
+    `hg commit -m 'somepatch' --config ui.username='Fake User <fake.user@example.com>'`
     Dir.chdir curr_dir
     
     build = Cerberus::BuildCommand.new('hgapp')
