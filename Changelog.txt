@@ -1,11 +1,13 @@
 = Cerberus Changelog
 
 == Version 0.7.7
-Update to Setup Script configuration
+Bugfixes and config options updates
 
+* Projects are now sorted when displayed via Cerberus CLI
+* Git builder now includes the full commit message and diff in publisher
+output log file
 * Updated output/reporting of :setup_script during Manager#run.  Results
 are included in Publisher's formatted_message
-* Update site options.page
 
 == Version 0.7.6
 Bugfixes and updates to RSS publisher
