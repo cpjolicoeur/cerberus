@@ -1,6 +1,11 @@
 = Cerberus Changelog
 
 == Version 0.7.7
+Update to Setup Script configuration
+
+* Updated output/reporting of :setup_script during Manager#run.  Results
+are included in Publisher's formatted_message
+* Update site options.page
 
 == Version 0.7.6
 Bugfixes and updates to RSS publisher

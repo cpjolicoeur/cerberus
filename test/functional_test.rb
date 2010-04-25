@@ -190,6 +190,21 @@ class FunctionalTest < Test::Unit::TestCase
     assert_match /Task 'custom2' has been invoked/, output
   end
 
+  def test_build_setup_script
+    add_application('rake_cust', SVN_URL, {
+        'builder' => {'rake' => {'task' => 'custom1'}},
+        'setup_script' => "echo 'setup script has been invoked' ",
+      }
+    )
+    
+    build = Cerberus::BuildAllCommand.new
+    build.run
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    output = ActionMailer::Base.deliveries[0].body
+    assert_match /setup script has been invoked/, output
+    assert_match /Task 'custom1' has been invoked/, output
+  end
+
   def test_logs_disabled
     add_application('rake_cust', SVN_URL, 'log' => {'enable' => false})
     build = Cerberus::BuildAllCommand.new
