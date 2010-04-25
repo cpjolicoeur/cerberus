@@ -33,9 +33,7 @@ Main advantages of Cerberus over other solutions include:
 
 * ruby - 1.8.2 or higher
 * rake - 0.7.3 or higher (optional)
-* actionmailer - 1.3.3 or higher (optional)
-* activesupport - 1.4.2 or higher (optional)
-* gmailer - 0.1.7 or higher (optional)
+* actionmailer - 2.0 or higher (optional)
 
 ## Usage
  
