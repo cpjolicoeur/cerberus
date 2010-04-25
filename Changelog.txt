@@ -10,6 +10,7 @@ in the publisher output and log file
 are included in Publisher's formatted_message
 * Require a version of the ActionMailer gem from the 2.x branch.  The new 3.0 branch
 line isn't currently compatible with Cerberus
+* IRC publisher how uses Shout-Bot instead of the older IRC library code
 
 == Version 0.7.6
 Bugfixes and updates to RSS publisher

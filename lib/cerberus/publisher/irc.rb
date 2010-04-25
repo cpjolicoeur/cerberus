@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'IRC'
+require 'shout-bot'
 require 'cerberus/publisher/base'
 
 class Cerberus::Publisher::IRC < Cerberus::Publisher::Base
@@ -9,19 +9,14 @@ class Cerberus::Publisher::IRC < Cerberus::Publisher::Base
     subject,body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
     message = subject + "\n" + '*' * subject.length + "\n" + body
 
+    port    = irc_options[:port] || 6667
+    nick    = irc_options[:nick] || 'cerberus'
+    server  = irc_options[:server]
     channel = '#' + irc_options[:channel]
-    bot = IRC.new(irc_options[:nick] || 'cerberus', irc_options[:server], irc_options[:port] || 6667)
-
-    silence_stream(STDOUT) do
-      IRCEvent.add_callback('endofmotd') do |event| 
-        bot.add_channel(channel) 
-        message.split("\n").each do |line|
-          bot.send_message(channel, line)
-        end
-        bot.send_quit
-      end
-      bot.connect
+    
+    ShoutBot.shout("irc://#{nick}@#{server}:#{port}/#{channel}") do |channel|
+      message.split("\n").each { |line| channel.say line }
     end
-
+    
   end
 end
