@@ -15,14 +15,22 @@ class Cerberus::Publisher::Campfire < Cerberus::Publisher::Base
     
     subject,body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
     
-    campfire = if token.nil?
-      Tinder::Campfire.new( subdomain, :token => token )
-    else
-      Tinder::Campfire.new( subdomain, :username => username, :password => password)
-    end
+    begin
+      campfire = if token.nil?
+        Tinder::Campfire.new( subdomain, :token => token )
+      else
+        Tinder::Campfire.new( subdomain, :username => username, :password => password)
+      end
+      
+      puts "rooms: #{campfire.rooms.to_yaml}"
     
-    room = campfire.find_room_by_name( name )
-    room.speak( subject )
-    room.paste( body )
+      room = campfire.find_room_by_name( name )
+      room.speak( subject )
+      room.paste( body )
+    rescue Tinder::AuthenticationFailed
+      say("Campfire authentication error. Please check your login credentials in your config file.")
+    rescue Tinder::SSLRequiredError
+      say("Campfire SSL error")
+    end
   end
 end
