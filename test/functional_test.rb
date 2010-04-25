@@ -136,7 +136,7 @@ class FunctionalTest < Test::Unit::TestCase
     # assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
-  def test_multiply_publishers_without_configuration
+  def test_multiple_publishers_without_configuration
     add_application('myapp', SVN_URL, 'publisher' => {'active' => 'mail ,  jabber , irc,    dddd'})
 
     build = Cerberus::BuildCommand.new('myapp')
@@ -348,14 +348,14 @@ class FunctionalTest < Test::Unit::TestCase
   
   def test_mercurial
     add_application('hgapp', HG_URL, :scm => {:type => 'hg'})
-
+    
     build = Cerberus::BuildCommand.new('hgapp')
     build.run
     assert build.scm.has_changes?
     assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
     mail = ActionMailer::Base.deliveries[0]
     output = mail.body
-
+    
     #Check output that run needed tasks
     assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
     assert output !~ /Task 'custom1' has been invoked/
