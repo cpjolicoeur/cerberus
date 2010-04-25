@@ -8,14 +8,14 @@ class IRCConnection
   @@last_send     = Time.now.to_f
   @@message_delay = 0.2 # Default delay to 1 fifth of a second.
   # Creates a socket connection and then yields.
-  def IRCConnection.handle_connection(server, port, nick='ChangeMe', realname='MeToo', options = nil)
+  def IRCConnection.handle_connection(server, port, nick='ChangeMe', realname='MeToo', options = {}) #nil)
     @server = server;
     @port = port
     @nick = nick
     @realname = realname
     @@options = options
     if options.nil?
-      @@options = Array.new(0)
+      @@options = {} #Array.new(0)
     end
     socket = create_tcp_socket(server, port)
     add_IO_socket(socket) {|sock|
