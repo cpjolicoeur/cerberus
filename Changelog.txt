@@ -1,7 +1,7 @@
 = Cerberus Changelog
 
 == Version 0.7.7
-Bugfixes and config options updates
+Bugfixes, publisher and config options updates
 
 * Projects are now sorted when displayed via Cerberus CLI
 * Git builder now includes the full commit message and diff in publisher
