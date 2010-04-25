@@ -4,3 +4,6 @@
 [submodule "lib/vendor/shout-bot"]
 	path = lib/vendor/shout-bot
 	url = git://github.com/sr/shout-bot.git
+[submodule "lib/vendor/tinder"]
+	path = lib/vendor/tinder
+	url = git://github.com/collectiveidea/tinder.git
