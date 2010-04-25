@@ -51,8 +51,8 @@ GEM_SPEC = Gem::Specification.new do |s|
     Cerberus could be easily invoked from Cron (for Unix) or nnCron (for Windows) utilities.
   DESC
 
-  s.add_dependency 'actionmailer', '>= 1.3.3'
-  s.add_dependency 'activesupport', '>= 1.4.2'
+  s.add_dependency 'actionmailer', '~> 2.0'
+  s.add_dependency 'activesupport', '~> 2.0'
   s.add_dependency 'rake', '>= 0.7.3'
 
   s.files = Dir.glob("{bin,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
