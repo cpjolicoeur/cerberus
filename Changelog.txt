@@ -4,7 +4,7 @@
 Bugfixes, publisher and config options updates, ActionMailer gem version requirements
 
 * Projects are now sorted when displayed via Cerberus CLI
-* Git builder now includes just the full commit message instead of the commit diff 
+* Git builder now includes just the commit message instead of the commit diff 
 in the publisher output and log file
 * Updated output/reporting of :setup_script during Manager#run.  Results
 are included in Publisher's formatted_message

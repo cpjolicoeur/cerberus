@@ -1,8 +1,9 @@
-==================
-| BEFORE RELEASE |
-==================
+===========================
+| BEFORE RELEASE - v0.7.7 |
+===========================
 
 * Cerberus doesn't work with Rails 3.x ActionMailer gems.  Either require AM < 3.x or make work with both
+* Functional test is not completely passing
 
 
 ==========
