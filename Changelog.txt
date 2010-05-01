@@ -1,5 +1,10 @@
 = Cerberus Changelog
 
+== Version 0.7.8
+Added channel password option to IRC publisher
+
+* New channel_password config option under publisher/irc
+
 == Version 0.7.7
 Bugfixes, publisher and config options updates, ActionMailer gem version requirements
 
