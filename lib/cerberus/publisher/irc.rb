@@ -9,12 +9,13 @@ class Cerberus::Publisher::IRC < Cerberus::Publisher::Base
     subject,body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
     message = subject + "\n" + '*' * subject.length + "\n" + body
 
-    port    = irc_options[:port] || 6667
-    nick    = irc_options[:nick] || 'cerberus'
-    server  = irc_options[:server]
-    channel = '#' + irc_options[:channel]
+    port             = irc_options[:port] || 6667
+    nick             = irc_options[:nick] || 'cerberus'
+    server           = irc_options[:server]
+    channel          = '#' + irc_options[:channel]
+    channel_password = irc_options[:channel_password]
     
-    ShoutBot.shout("irc://#{nick}@#{server}:#{port}/#{channel}") do |channel|
+    ShoutBot.shout("irc://#{nick}@#{server}:#{port}/#{channel}", channel_password) do |channel|
       message.split("\n").each { |line| channel.say line }
     end
     
