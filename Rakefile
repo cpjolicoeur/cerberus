@@ -78,10 +78,12 @@ Rake::GemPackageTask.new(GEM_SPEC) do |p|
   p.need_zip = true
 end
 
+desc "install gem from pkg/ directory after running clean and test"
 task :install => [:clean, :test, :package] do
   system "gem install pkg/#{PKG_NAME}-#{PKG_VERSION}.gem"
 end
 
+desc "uninstall gem"
 task :uninstall => [:clean] do
   system "gem uninstall #{PKG_NAME}"
 end
@@ -91,6 +93,7 @@ task :todo do
   FileList.new(File.dirname(__FILE__)+'/lib/cerberus/**/*.rb').egrep(/#.*(FIXME|TODO|TBD|DEPRECATED)/i) 
 end
 
+desc "uninstall and reinstall gem"
 task :reinstall => [:uninstall, :install]
 
 begin
@@ -103,10 +106,12 @@ begin
 rescue Object
 end
 
+desc "copy coverage directory to RubyForge site"
 task :site_coverage => [:rcov] do
   sh %{ scp -r coverage/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/coverage/ }
 end
 
+desc "Release files to RubyForge"
 task :release_files => [:clean, :package] do
   require 'meta_project'
   project = MetaProject::Project::XForge::RubyForge.new(RUBYFORGE_PROJECT)
@@ -127,6 +132,7 @@ task :release_files => [:clean, :package] do
 
 end
 
+desc "Publish news update to RubyForge"
 task :publish_news do
   require 'meta_project'
 
@@ -151,8 +157,10 @@ rescue Gem::LoadError
   puts "webgen gem is required to build website output"
 end
 
+desc "Update cerberus.rubyforge.org website"
 task :publish_site => :webgen do
   sh %{scp -r -q doc/site/out/* #{RUBYFORGE_USER}@rubyforge.org:/var/www/gforge-projects/#{RUBYFORGE_PROJECT}/}
 end
 
+desc "Run release_files, publish_news, publish_site"
 task :release => [:release_files, :publish_news, :publish_site]
