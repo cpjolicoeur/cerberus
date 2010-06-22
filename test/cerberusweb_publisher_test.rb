@@ -4,8 +4,13 @@ require 'cerberus/publisher/cerberusweb'
 require 'cerberus/manager'
 require 'mock/manager'
 
-class CerberuswebPublisherText < Test::Unit::TestCase
+class CerberusWebPublisherText < Test::Unit::TestCase
   def test_publisher
+    options = Cerberus::Config.new(nil, :publisher => {:cerberusweb => {:db_path => './cerberusweb.sqlite'}}, :application_name => 'CerberusWebApp')
+    build = DummyManager.new('last message', 'this is output', 1232, 'anatol')
+
+    Cerberus::Publisher::CerberusWeb.publish( build_status(true), build, options)
+
     # TODO: replace with real tests
     assert true
   end
