@@ -79,7 +79,7 @@ module Cerberus
   end
   
   class BuildCommand
-    attr_reader :builder, :success, :scm, :status
+    attr_reader :builder, :success, :scm, :status, :setup_script_output
     
     DEFAULT_CONFIG = {:scm => {:type => 'svn'}, 
       :log => {:enable => true},
@@ -114,7 +114,7 @@ module Cerberus
           
           if @scm.has_changes? or @config[:force] or @status.previous_build_successful.nil?
             Dir.chdir File.join(@config[:application_root], @config[:build_dir] || '')
-            `#{@config[:setup_script]}` if @config[:setup_script]
+            @setup_script_output = `#{@config[:setup_script]}` if @config[:setup_script]
 
             build_successful = @builder.run
             @status.keep(build_successful, @scm.current_revision, @builder.brokeness)
@@ -126,7 +126,7 @@ module Cerberus
               
               time = Time.now.strftime("%Y%m%d%H%M%S")
               file_name = "#{log_dir}/#{time}-#{@status.current_state.to_s}.log"
-              body = [ scm.last_commit_message, builder.output ].join("\n\n")
+              body = [ @setup_script_output, scm.last_commit_message, builder.output ].join("\n\n")
               IO.write(file_name, body)
             end
             
@@ -221,7 +221,7 @@ module Cerberus
       else
         puts "List of active projects:"
         
-        projects.each do |fn|
+        projects.sort.each do |fn|
           fn =~ %r{#{HOME}/config/(.*).yml}
           
           puts "  * #{$1}"
@@ -237,7 +237,7 @@ module Cerberus
     end
     
     def run
-      projects = Dir["#{HOME}/config/*.yml"].map { |fn| fn.gsub(/.*\/(.*).yml$/, '\1') }
+      projects = Dir["#{HOME}/config/*.yml"].sort.map { |fn| fn.gsub(/.*\/(.*).yml$/, '\1') }
       if projects.empty?
         puts "There are not any active projects" 
       else

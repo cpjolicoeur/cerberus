@@ -19,4 +19,6 @@ The following people made notable contributions to the Cerberus tool:
 * [Andrew Timberlake](http://ramblingsonrails.com) - Custom build script support
 * [Paul Hinze](http://phinze.com/) - Bazaar SCM support
 * [McClain Looney](http://github.com/mlooney) - Mercurial Support
-* [Michael](http://github.com/iconoclast) - RSS Publisher updates
+* [Michael Turner](http://github.com/iconoclast) - RSS Publisher updates
+* [Peter Fitzgibbons](http://github.com/pjfitzgibbons) - Setup Script support
+* [Kai Chen](http://chenk85.com) - IRC channel passsword support

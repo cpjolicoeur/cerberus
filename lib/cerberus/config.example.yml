@@ -19,6 +19,7 @@ publisher:
 #    nick: cerb
 #    server: irc.freenode.net
 #    channel: cerberus
+#    channel_password: secert
 #  campfire:
 #    url: http://someemail:password@cerberustool.campfirenow.com/room/51660
 #  rss:

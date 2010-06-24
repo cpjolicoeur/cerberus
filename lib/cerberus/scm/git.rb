@@ -71,7 +71,7 @@ class Cerberus::SCM::Git < Cerberus::SCM::Base
   end
 
   def extract_commit_info( commit=remote_head )
-    message = execute("show", "#{ commit } --pretty='format:%an(%ae)|%ai|%H|%s'").split("|")
+    message = execute("log", "#{ commit } -1 --pretty='format:%an(%ae)|%ai|%H|%s%n%n%b'").split("|")
     return { :author => message[0], :date => message[1], :revision => message[2], :message => message[3] }
   end
 

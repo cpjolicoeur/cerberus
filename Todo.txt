@@ -1,12 +1,14 @@
-==================
-| BEFORE RELEASE |
-==================
+===========================
+| BEFORE RELEASE - v0.7.7 |
+===========================
+
 
 
 ==========
 | FUTURE |
 ==========
 
+* Functional test is not completely passing (test_darcs)
 * Update or split-out the bin_path setting
 * add test suite for Bazaar SCM
 * make --verbose option work with all SCM, Builders and Publishers

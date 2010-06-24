@@ -136,7 +136,7 @@ class FunctionalTest < Test::Unit::TestCase
     # assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
-  def test_multiply_publishers_without_configuration
+  def test_multiple_publishers_without_configuration
     add_application('myapp', SVN_URL, 'publisher' => {'active' => 'mail ,  jabber , irc,    dddd'})
 
     build = Cerberus::BuildCommand.new('myapp')
@@ -188,6 +188,21 @@ class FunctionalTest < Test::Unit::TestCase
     output = ActionMailer::Base.deliveries[0].body
     assert_match /Task 'custom1' has been invoked/, output
     assert_match /Task 'custom2' has been invoked/, output
+  end
+
+  def test_build_setup_script
+    add_application('rake_cust', SVN_URL, {
+        'builder' => {'rake' => {'task' => 'custom1'}},
+        'setup_script' => "echo 'setup script has been invoked' ",
+      }
+    )
+    
+    build = Cerberus::BuildAllCommand.new
+    build.run
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    output = ActionMailer::Base.deliveries[0].body
+    assert_match /setup script has been invoked/, output
+    assert_match /Task 'custom1' has been invoked/, output
   end
 
   def test_logs_disabled
@@ -333,14 +348,14 @@ class FunctionalTest < Test::Unit::TestCase
   
   def test_mercurial
     add_application('hgapp', HG_URL, :scm => {:type => 'hg'})
-
+    
     build = Cerberus::BuildCommand.new('hgapp')
     build.run
     assert build.scm.has_changes?
     assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
     mail = ActionMailer::Base.deliveries[0]
     output = mail.body
-
+    
     #Check output that run needed tasks
     assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
     assert output !~ /Task 'custom1' has been invoked/
@@ -373,7 +388,7 @@ class FunctionalTest < Test::Unit::TestCase
     curr_dir = Dir.pwd
     Dir.chdir HG_REPO
     `hg add #{test_case_name}`
-    `hg commit -m 'somepatch'`
+    `hg commit -m 'somepatch' --config ui.username='Fake User <fake.user@example.com>'`
     Dir.chdir curr_dir
     
     build = Cerberus::BuildCommand.new('hgapp')

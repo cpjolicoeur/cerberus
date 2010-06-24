@@ -1,4 +1,5 @@
 require 'rubygems'
+gem 'actionmailer', '~> 2.0' 
 require 'action_mailer'
 require 'cerberus/publisher/base'
 

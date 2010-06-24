@@ -1,5 +1,22 @@
 = Cerberus Changelog
 
+== Version 0.7.8
+Added channel password option to IRC publisher
+
+* New channel_password config option under publisher/irc
+
+== Version 0.7.7
+Bugfixes, publisher and config options updates, ActionMailer gem version requirements
+
+* Projects are now sorted when displayed via Cerberus CLI
+* Git builder now includes just the commit message instead of the commit diff 
+in the publisher output and log file
+* Updated output/reporting of :setup_script during Manager#run.  Results
+are included in Publisher's formatted_message
+* Require a version of the ActionMailer gem from the 2.x branch.  The new 3.0 branch
+line isn't currently compatible with Cerberus
+* IRC publisher how uses Shout-Bot instead of the older IRC library code
+
 == Version 0.7.6
 Bugfixes and updates to RSS publisher
 

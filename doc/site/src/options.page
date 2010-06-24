@@ -35,6 +35,7 @@ publisher:
     server:                                     
     port:                                       
     channel:                                    
+    channel_password:                           
     on_event:
   rss:
     file:
@@ -54,6 +55,7 @@ scm:
   password:
   view: #for perforce only
   branch: #for git only
+setup_script:
 builder:
   type:
   rake:                                         

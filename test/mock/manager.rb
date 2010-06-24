@@ -1,5 +1,5 @@
 class DummyManager
-  attr_reader :builder, :scm
+  attr_reader :builder, :scm, :setup_script_output
 
   DummyScm = Struct.new(:last_commit_message, :current_revision, :last_author)
   DummyBuilder = Struct.new(:output)
