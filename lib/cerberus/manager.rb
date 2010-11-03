@@ -111,8 +111,7 @@ module Cerberus
       begin
         Latch.lock("#{HOME}/work/#{@config[:application_name]}/.lock", :lock_ttl => 2 * LOCK_WAIT) do
           @scm.update!
-          
-          if @scm.has_changes? or @config[:force] or @status.previous_build_successful.nil?
+          if @scm.has_changes? or @config[:force] or !@status.previous_build_successful
             Dir.chdir File.join(@config[:application_root], @config[:build_dir] || '')
             @setup_script_output = `#{@config[:setup_script]}` if @config[:setup_script]
 
