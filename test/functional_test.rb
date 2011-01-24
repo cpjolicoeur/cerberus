@@ -2,6 +2,7 @@ require File.dirname(__FILE__) + '/test_helper'
 require 'mock/marshmallow'
 require 'cerberus/cli'
 
+gem 'actionmailer', '~> 2.0' 
 require 'action_mailer'
 
 class FunctionalTest < Test::Unit::TestCase
