@@ -1,5 +1,11 @@
 = Cerberus Changelog
 
+== Veresion 0.7.9
+Bugfixes
+
+* Fix issue with tests and mailer with Rails 3 installed
+* Fix error with checking if build status was successful
+
 == Version 0.7.8
 Added channel password option to IRC publisher
 
