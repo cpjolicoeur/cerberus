@@ -84,6 +84,8 @@ module Cerberus
     DEFAULT_CONFIG = {:scm => {:type => 'svn'},
       :log => {:enable => true},
       :at_time => '* *',
+      :max_wait_time => LOCK_WAIT,
+      :require_revision_change => false
     }
 
     def initialize(application_name, cli_options = {})
@@ -109,9 +111,9 @@ module Cerberus
 
     def run
       begin
-        Latch.lock("#{HOME}/work/#{@config[:application_name]}/.lock", :lock_ttl => 2 * LOCK_WAIT) do
+        Latch.lock("#{HOME}/work/#{@config[:application_name]}/.lock", :lock_ttl => @config[:max_wait_time]) do
           @scm.update!
-          if @scm.has_changes? or @config[:force] or !@status.previous_build_successful
+          if ( @config[:force] || @scm.has_changes? || ( @status.previous_build_failed && !@config[:require_revision_change] ) )
             Dir.chdir File.join(@config[:application_root], @config[:build_dir] || '')
             @setup_script_output = `#{@config[:setup_script]}` if @config[:setup_script]
 
@@ -342,7 +344,11 @@ module Cerberus
 
       @already_kept = true
     end
-
+    
+    def previous_build_failed?
+      @previous_build_successful.nil? ? false : !@previous_build_successful
+    end
+    
     def current_state
       raise "Invalid project state. Before calculating status please do keeping of it." unless @already_kept
 
