@@ -71,7 +71,9 @@ class Cerberus::SCM::Git < Cerberus::SCM::Base
   end
 
   def extract_commit_info( commit=remote_head )
-    message = execute("log", "#{ commit } -1 --pretty='format:%an(%ae)|%ai|%H|%s%n%n%b'").split("|")
+    message = String.new.respond_to?(:force_encoding) ?
+      execute("log", "#{ commit } -1 --pretty='format:%an(%ae)|%ai|%H|%s%n%n%b'").force_encoding('utf-8').split("|") :
+      execute("log", "#{ commit } -1 --pretty='format:%an(%ae)|%ai|%H|%s%n%n%b'").split("|")
     return { :author => message[0], :date => message[1], :revision => message[2], :message => message[3] }
   end
 
