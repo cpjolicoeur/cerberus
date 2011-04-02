@@ -1,11 +1,16 @@
 = Cerberus Changelog
 
 == Version 0.8.0
-Ruby 1.9 bugfixes
+Ruby 1.9 bugfixes & new config options
 
 * Fixed Ruby 1.9 string encoding bug [git SCM]
+* :require_revision_change - set to true to avoid Cerberus rebuilding a project
+if the SCM revision hasn't changed, even if the prior build was unsuccessful
+(default false - for backwards compatibility)
+* :max_wait_time - set to Integer (number of seconds) for the build command to
+wait for a timeout before cancelling build (default 30 minutes).
 
-== Veresion 0.7.9
+== Version 0.7.9
 Bugfixes
 
 * Fix issue with tests and mailer with Rails 3 installed
