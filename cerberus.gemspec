@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Cerberus is a Continuous Integration tool that could be easily run from Cron.}
   s.description = %q{Cerberus is a Continuous Integration software for Ruby projects. CI helps you keep your project in a good shape. Cerberus could be easily invoked from Cron (for Unix) or nnCron (for Windows) utilities.}
   s.email = %q{cpjolicoeur@gmail.com}
+  s.license = %q{MIT}
 
   s.homepage = %q{http://rubyforge.org/projects/cerberus}
   s.require_paths = ["lib"]
