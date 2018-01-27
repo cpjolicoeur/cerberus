@@ -22,7 +22,7 @@ class MailPublisherTest < Test::Unit::TestCase
     mails = ActionMailer::Base.deliveries
     assert_equal 1, mails.size
     mail = mails[0]
-    assert_equal 'cerberus@example.com', mail.from_addrs[0].address
+    assert_equal 'cerberus@example.com', mail.from_addrs[0]
     assert_equal '[MyApp][#deployment] Cerberus set up for project (1232)', mail.subject
   end
 end
