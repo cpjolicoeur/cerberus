@@ -2,7 +2,7 @@ require_relative 'test_helper'
 require 'mock/marshmallow'
 require 'cerberus/cli'
 
-gem 'actionmailer', '~> 2.0'
+gem 'actionmailer'
 require 'action_mailer'
 
 class FunctionalTest < Test::Unit::TestCase

@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
 
   # tests
   s.add_development_dependency 'test-unit'
+  s.add_development_dependency 'minitest'
   s.add_development_dependency 'power_assert'
   s.add_development_dependency 'rubyzip'
   s.add_development_dependency 'builder'
