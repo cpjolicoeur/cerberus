@@ -14,13 +14,13 @@ class IntegrationTest < Test::Unit::TestCase
   def test_add_project_as_url_subversion
     output = run_cerb("  add   #{SVN_URL}  ")
     assert_match /has been added to Cerberus successfully/, output
-    assert File.exists?(HOME + '/config/svn_repo.yml')
+    assert File.exist?(HOME + '/config/svn_repo.yml')
     assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['scm']['url']
 
     #try to add second time
     output = run_cerb("add #{SVN_URL}")
     assert_match /already present/, output
-    assert File.exists?(HOME + '/config/svn_repo.yml')
+    assert File.exist?(HOME + '/config/svn_repo.yml')
     assert_equal SVN_URL, load_yml(HOME + '/config/svn_repo.yml')['scm']['url']
   end
 
@@ -44,7 +44,7 @@ class IntegrationTest < Test::Unit::TestCase
     output = run_cerb("  add   #{SVN_URL}  APPLICATION_NAME=hello_world  RECIPIENTS=aa@gmail.com   BUILDER=maven2")
     assert_match /has been added to Cerberus successfully/, output
 
-    assert File.exists?(HOME + '/config/hello_world.yml')
+    assert File.exist?(HOME + '/config/hello_world.yml')
     cfg = load_yml(HOME + '/config/hello_world.yml')
 
     assert_equal 'svn', cfg['scm']['type']
@@ -57,7 +57,7 @@ class IntegrationTest < Test::Unit::TestCase
     add_application('svn_repo', SVN_URL, 'quiet' => true)
 
     run_cerb("build svn_repo")
-    assert File.exists?(HOME + '/work/svn_repo/status.log')
+    assert File.exist?(HOME + '/work/svn_repo/status.log')
     assert build_successful?(HOME + '/work/svn_repo/status.log')
   end
 
@@ -65,7 +65,7 @@ class IntegrationTest < Test::Unit::TestCase
     output = run_cerb("  add   #{DARCS_URL}  SCM=darcs")
     assert_match /has been added to Cerberus successfully/, output
 
-    assert File.exists?(HOME + '/config/darcs_repo.yml')
+    assert File.exist?(HOME + '/config/darcs_repo.yml')
     cfg = load_yml(HOME + '/config/darcs_repo.yml')
 
     assert_equal 'darcs', cfg['scm']['type']
@@ -76,7 +76,7 @@ class IntegrationTest < Test::Unit::TestCase
     output = run_cerb("  add   #{GIT_URL}  SCM=git")
     assert_match /has been added to Cerberus successfully/, output
 
-    assert File.exists?(HOME + '/config/git_repo.yml')
+    assert File.exist?(HOME + '/config/git_repo.yml')
     cfg = load_yml(HOME + '/config/git_repo.yml')
 
     assert_equal 'git', cfg['scm']['type']

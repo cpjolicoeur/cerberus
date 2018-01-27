@@ -25,7 +25,7 @@ module Cerberus
       create_example_config
 
       config_name = "#{HOME}/config/#{application_name}.yml"
-      say "Application #{application_name} already present in Cerberus" if File.exists?(config_name)
+      say "Application #{application_name} already present in Cerberus" if File.exist?(config_name)
 
       app_config = {'scm' => {
         'url' => scm.url,
@@ -55,7 +55,7 @@ module Cerberus
     # classes a lot.
 
     def initialize(application_name, cli_options = {})
-      unless File.exists?("#{HOME}/config/#{application_name}.yml")
+      unless File.exist?("#{HOME}/config/#{application_name}.yml")
         say "Project '#{application_name}' does not exist in Cerberus. Type 'cerberus list' to see the list of all active projects."
       end
       @app_root = "#{HOME}/work/#{application_name}"
@@ -69,7 +69,7 @@ module Cerberus
 
       config_name = "#{HOME}/config/#{application_name}.yml"
 
-      if not File.exists?(config_name)
+      if not File.exist?(config_name)
         say "Unknown application #{application_name}"
         exit(1)
       end
@@ -89,7 +89,7 @@ module Cerberus
                       :require_revision_change => false}
 
     def initialize(application_name, cli_options = {})
-      unless File.exists?("#{HOME}/config/#{application_name}.yml")
+      unless File.exist?("#{HOME}/config/#{application_name}.yml")
         say "Project '#{application_name}' does not exist in Cerberus. Type 'cerberus list' to see the list of all active projects."
       end
 

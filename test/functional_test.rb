@@ -19,17 +19,17 @@ class FunctionalTest < Test::Unit::TestCase
   end
 
   def test_add_by_url
-    assert !File.exists?(HOME + '/config/svn_repo.yml')
+    assert !File.exist?(HOME + '/config/svn_repo.yml')
 
     command = Cerberus::AddCommand.new("    #{SVN_URL}   ", :quiet => true)
     command.run
 
-    assert File.exists?(HOME + '/config/svn_repo.yml')
+    assert File.exist?(HOME + '/config/svn_repo.yml')
     scm_conf = load_yml(HOME + '/config/svn_repo.yml')['scm']
     assert_equal 'svn', scm_conf['type']
     assert_equal SVN_URL, scm_conf['url']
 
-    assert File.exists?(HOME + '/config.yml')
+    assert File.exist?(HOME + '/config.yml')
   end
 
   def test_add_by_dir
@@ -42,14 +42,14 @@ class FunctionalTest < Test::Unit::TestCase
 
     project_config = HOME + "/config/#{File.basename(File.expand_path(sources_dir))}.yml" #name of added application should be calculated from File System path
 
-    assert File.exists?(project_config)
+    assert File.exist?(project_config)
     scm_conf = load_yml(project_config)['scm']
     assert_equal 'svn', scm_conf['type']
     scm_uri = URI.parse(scm_conf['url'])
     # FIXME - this assert needs to be fixed
     # assert_match 'rubyforge.org', scm_uri.host
 
-    assert File.exists?(HOME + '/config.yml')
+    assert File.exist?(HOME + '/config.yml')
   end
 
   def test_build
@@ -68,14 +68,14 @@ class FunctionalTest < Test::Unit::TestCase
     assert output =~ %r{http://someurl.changeset.com/2}
 
     status_file = HOME + '/work/myapp/status.log'
-    assert File.exists?(status_file)
+    assert File.exist?(status_file)
     assert build_successful?(status_file)
     assert 1, Dir[HOME + "/work/rake_cust/logs/*-setup.log"].size
 
     FileUtils.rm status_file
     build = Cerberus::BuildCommand.new('myapp')
     build.run
-    assert File.exists?(status_file)
+    assert File.exist?(status_file)
     assert build_successful?(status_file)
     assert_equal :setup, build.status.current_state
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
@@ -176,7 +176,7 @@ class FunctionalTest < Test::Unit::TestCase
 
     for i in 1..4
       status_file = HOME + "/work/myapp#{i}/status.log"
-      assert File.exists?(status_file)
+      assert File.exist?(status_file)
       assert build_successful?(status_file)
     end
   end
@@ -210,7 +210,7 @@ class FunctionalTest < Test::Unit::TestCase
     build = Cerberus::BuildAllCommand.new
     build.run
 
-    assert !File.exists?(HOME + "/work/rake_cust/logs")
+    assert !File.exist?(HOME + "/work/rake_cust/logs")
   end
 
   def test_darcs
@@ -229,7 +229,7 @@ class FunctionalTest < Test::Unit::TestCase
     # assert_equal '[darcsapp] Cerberus set up for project (#20061010090920)', mail.subject
 
     # status_file = HOME + '/work/darcsapp/status.log'
-    # assert File.exists?(status_file)
+    # assert File.exist?(status_file)
     # assert build_successful?(status_file)
     # assert 1, Dir[HOME + "/work/darcsapp/logs/*.log"].size
 
@@ -292,7 +292,7 @@ class FunctionalTest < Test::Unit::TestCase
     assert_match /\[gitapp\] Cerberus set up for project/, mail.subject
 
     status_file = HOME + '/work/gitapp/status.log'
-    assert File.exists?(status_file)
+    assert File.exist?(status_file)
     assert build_successful?(status_file)
     assert 1, Dir[HOME + "/work/gitapp/logs/*.log"].size
 
@@ -362,7 +362,7 @@ class FunctionalTest < Test::Unit::TestCase
     assert_match /\[hgapp\] Cerberus set up for project/, mail.subject
 
     status_file = HOME + '/work/hgapp/status.log'
-    assert File.exists?(status_file)
+    assert File.exist?(status_file)
     assert build_successful?(status_file)
     assert 1, Dir[HOME + "/work/hgapp/logs/*.log"].size
 

@@ -4,7 +4,7 @@ module Cerberus
   class Latch
     #Emulate File.flock
     def self.lock(lock_file, options = {})
-      if File.exists?(lock_file)
+      if File.exist?(lock_file)
         modif_time = File::Stat.new(lock_file).mtime
         ttl = options[:lock_ttl]
 

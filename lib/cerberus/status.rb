@@ -18,7 +18,7 @@ module Cerberus
         @already_kept = true
       else
         @path = param
-        value = File.exists?(@path) ? YAML.load(IO.read(@path)) : nil
+        value = File.exist?(@path) ? YAML.load(IO.read(@path)) : nil
 
         @hash =
           case value
