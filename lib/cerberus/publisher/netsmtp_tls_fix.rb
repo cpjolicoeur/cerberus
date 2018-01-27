@@ -3,11 +3,12 @@ require "net/smtp"
 
 Net::SMTP.class_eval do
   private
+
   def do_start(helodomain, user, secret, authtype)
     raise IOError, 'SMTP session already started' if @started
 
     # Ruby 1.8.7 changes the param list for check_auth_args
-    if method( :check_auth_args ).arity == 2
+    if method(:check_auth_args).arity == 2
       check_auth_args user, secret if user or secret
     else
       check_auth_args user, secret, authtype if user or secret
@@ -43,7 +44,7 @@ Net::SMTP.class_eval do
   end
 
   def do_helo(helodomain)
-     begin
+    begin
       if @esmtp
         ehlo helodomain
       else

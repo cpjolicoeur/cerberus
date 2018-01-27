@@ -27,11 +27,11 @@ module Cerberus
       config_name = "#{HOME}/config/#{application_name}.yml"
       say "Application #{application_name} already present in Cerberus" if File.exists?(config_name)
 
-      app_config = { 'scm' => {
-          'url' => scm.url,
-          'type' =>  scm_type },
-          'publisher' => {'mail' => {'recipients' => @cli_options[:recipients]}}
-      }
+      app_config = {'scm' => {
+        'url' => scm.url,
+        'type' => scm_type,
+      },
+                    'publisher' => {'mail' => {'recipients' => @cli_options[:recipients]}}}
       app_config['builder'] = {'type' => @cli_options[:builder]} if @cli_options[:builder]
       dump_yml(config_name, app_config)
       puts "Application '#{application_name}' has been added to Cerberus successfully" unless @cli_options[:quiet]
@@ -41,7 +41,7 @@ module Cerberus
 
     def extract_project_name(path)
       path = File.expand_path(path) if test(?d, path)
-      File.basename(path).strip.gsub( /\.git$/, '' )
+      File.basename(path).strip.gsub(/\.git$/, '')
     end
 
     def create_example_config
@@ -83,11 +83,10 @@ module Cerberus
     attr_reader :builder, :success, :scm, :status, :setup_script_output
 
     DEFAULT_CONFIG = {:scm => {:type => 'svn'},
-      :log => {:enable => true},
-      :at_time => '* *',
-      :max_wait_time => LOCK_WAIT,
-      :require_revision_change => false
-    }
+                      :log => {:enable => true},
+                      :at_time => '* *',
+                      :max_wait_time => LOCK_WAIT,
+                      :require_revision_change => false}
 
     def initialize(application_name, cli_options = {})
       unless File.exists?("#{HOME}/config/#{application_name}.yml")
@@ -114,7 +113,7 @@ module Cerberus
       begin
         Latch.lock("#{HOME}/work/#{@config[:application_name]}/.lock", :lock_ttl => @config[:max_wait_time]) do
           @scm.update!
-          if ( @config[:force] || @scm.has_changes? || ( @status.previous_build_failed? && !@config[:require_revision_change] ) )
+          if (@config[:force] || @scm.has_changes? || (@status.previous_build_failed? && !@config[:require_revision_change]))
             Dir.chdir File.join(@config[:application_root], @config[:build_dir] || '')
             @setup_script_output = `#{@config[:setup_script]}` if @config[:setup_script]
 
@@ -128,14 +127,13 @@ module Cerberus
 
               time = Time.now.strftime("%Y%m%d%H%M%S")
               file_name = "#{log_dir}/#{time}-#{@status.current_state.to_s}.log"
-              body = [ @setup_script_output, scm.last_commit_message, builder.output ].join("\n\n")
+              body = [@setup_script_output, scm.last_commit_message, builder.output].join("\n\n")
               IO.write(file_name, body)
             end
 
             #send notifications
             active_publishers = get_configuration_option(@config[:publisher], :active, 'mail')
             active_publishers.split(/\W+/).each do |pub|
-
               publisher_config = @config[:publisher, pub]
               raise "Publisher have no configuration: #{pub}" unless publisher_config
 
@@ -145,23 +143,22 @@ module Cerberus
 
             #Process hooks
             hooks = @config[:hook]
-            hooks.each_pair{|name, hook|
+            hooks.each_pair { |name, hook|
               events = interpret_state(hook[:on_event] || 'all', false)
               if events.include?(@status.current_state)
                 `#{hook[:action]}`
               end
             } if hooks
           end
-
         end #lock
       rescue Exception => e
         if ENV['CERBERUS_ENV'] == 'TEST'
           raise e
         else
-          File.open("#{HOME}/error.log", File::WRONLY|File::APPEND|File::CREAT) do |f|
+          File.open("#{HOME}/error.log", File::WRONLY | File::APPEND | File::CREAT) do |f|
             f.puts Time.now.strftime("%a, %d %b %Y %H:%M:%S [#{@config[:application_name]}] --  #{e.class}")
             f.puts e.message unless e.message.empty?
-            f.puts e.backtrace.collect{|line| ' '*5 + line}
+            f.puts e.backtrace.collect { |line| ' ' * 5 + line }
             f.puts "\n"
           end
         end
@@ -178,6 +175,7 @@ module Cerberus
     end
 
     private
+
     def get_configuration_option(hash, defining_key = nil, default_option = nil)
       if hash
         return hash[defining_key] if hash[defining_key]
@@ -244,11 +242,11 @@ module Cerberus
         puts "There are not any active projects"
       else
         delim = ' | '
-        cols  = [
+        cols = [
           ['Project Name', 30, lambda { |p, s| p }],
-          ['Revision',     10, lambda { |p, s| "#{s.revision.to_s.slice( 0, 8 ) }"}],
-          ['Status',       10, lambda { |p, s| s.previous_build_successful ? 'Pass' : 'Fail' }],
-          ['Last Success', 10, lambda { |p, s| "#{s.successful_build_revision.to_s.slice( 0, 8 )}"}],
+          ['Revision', 10, lambda { |p, s| "#{s.revision.to_s.slice(0, 8)}" }],
+          ['Status', 10, lambda { |p, s| s.previous_build_successful ? 'Pass' : 'Fail' }],
+          ['Last Success', 10, lambda { |p, s| "#{s.successful_build_revision.to_s.slice(0, 8)}" }],
         ]
         header = cols.map { |head, size, lamb| head.ljust(size) }.join(delim)
         puts '-' * header.length
@@ -256,7 +254,7 @@ module Cerberus
         puts '-' * header.length
         projects.each do |proj|
           status = Status.read("#{HOME}/work/#{proj}/status.log")
-          row    = cols.map { |head, size, lamb| lamb.call(proj, status).to_s.ljust(size) }.join(delim)
+          row = cols.map { |head, size, lamb| lamb.call(proj, status).to_s.ljust(size) }.join(delim)
           puts status.previous_build_successful ? ansi_green(row) : ansi_red(row)
         end
         puts '-' * header.length
@@ -274,7 +272,5 @@ module Cerberus
     def ansi_escape(code, str)
       "\033[#{code}" + str + "\033[0m"
     end
-
   end
-
 end

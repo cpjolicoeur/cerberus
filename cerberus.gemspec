@@ -1,7 +1,7 @@
 require './lib/cerberus/constants'
 
 Gem::Specification.new do |s|
-  s.platform    = Gem::Platform::RUBY
+  s.platform = Gem::Platform::RUBY
 
   s.name = %q{cerberus}
   s.version = Cerberus::VERSION

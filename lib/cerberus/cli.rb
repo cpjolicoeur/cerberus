@@ -3,7 +3,7 @@ require 'cerberus/utils'
 require 'cerberus/constants'
 
 module Cerberus
-  class CLI     
+  class CLI
     def initialize(*args)
       say HELP if args.empty?
 
@@ -22,7 +22,7 @@ module Cerberus
       when 'build'
         say HELP if args.empty?
 
-        application_name  = args.shift
+        application_name = args.shift
 
         command = Cerberus::BuildCommand.new(application_name, cli_options)
         command.run
@@ -35,12 +35,13 @@ module Cerberus
       when 'status'
         command = Cerberus::StatusCommand.new(cli_options)
         command.run
-      else 
+      else
         say HELP
       end
     end
 
-    private 
+    private
+
     def extract_options(args)
       result = {}
       args_copy = args.dup
@@ -77,5 +78,5 @@ module Cerberus
     Version: #{Cerberus::VERSION}
     Cerberus Path: "#{Cerberus::HOME}"
     Cerberus Homepage: http://cerberus.rubyforge.org
-    }.gsub("\n    ","\n")
+    }.gsub("\n    ", "\n")
 end

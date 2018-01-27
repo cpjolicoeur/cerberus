@@ -11,9 +11,10 @@ class MailPublisherTest < Test::Unit::TestCase
 
   def test_publisher
     options = Cerberus::Config.new(nil, :publisher => {
-       :mail => {:recipients => 'anatol.pomozov@hello.com', :sender => "cerberus@example.com", :delivery_method => 'test'},
-       :extra_subject => "[#deployment]"}, 
-       :application_name => 'MyApp')
+                                          :mail => {:recipients => 'anatol.pomozov@hello.com', :sender => "cerberus@example.com", :delivery_method => 'test'},
+                                          :extra_subject => "[#deployment]",
+                                        },
+                                        :application_name => 'MyApp')
     build = DummyManager.new('last message', 'this is output', 1232, 'anatol')
 
     Cerberus::Publisher::Mail.publish(build_status(true), build, options)

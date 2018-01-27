@@ -7,7 +7,7 @@ module Cerberus
       :cvs => 'CVS',
       :bzr => 'Bazaar',
       :git => 'Git',
-      :hg => 'Mercurial'
+      :hg => 'Mercurial',
     }
 
     def self.get(type)
@@ -17,22 +17,21 @@ module Cerberus
       const_get(class_name)
     end
 
-
     def self.guess_type(path)
       if test(?d, path)
         case
-        when test(?d, path+'/.svn')
+        when test(?d, path + '/.svn')
           'svn'
-        when test(?d, path+'/_darcs')
+        when test(?d, path + '/_darcs')
           'darcs'
-        when test(?d, path+'/.cvs')
+        when test(?d, path + '/.cvs')
           'cvs'
-        when test(?d, path+'/.bzr')
-          'bzr'          
-        when test(?d, path+'/.git')
-          'git'          
-        when test(?d, path+'/.hg')
-          'hg'          
+        when test(?d, path + '/.bzr')
+          'bzr'
+        when test(?d, path + '/.git')
+          'git'
+        when test(?d, path + '/.hg')
+          'hg'
         end
       else
         #guess SCM type by its url
@@ -53,7 +52,7 @@ module Cerberus
       :irc => 'IRC',
       :rss => 'RSS',
       :campfire => 'Campfire',
-      :twitter => 'Twitter'
+      :twitter => 'Twitter',
     }
 
     def self.get(type, config)
@@ -76,7 +75,7 @@ module Cerberus
       :rspec => 'RSpec',
       :rant => 'Rant',
       :bjam => 'Bjam',
-      :ruby => 'Ruby'
+      :ruby => 'Ruby',
     }
 
     def self.get(type)

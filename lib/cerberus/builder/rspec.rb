@@ -7,10 +7,10 @@ class Cerberus::Builder::RSpec < Cerberus::Builder::RubyBase
 
   def run
     @output = if @config[:builder, @name.to_sym, :task]
-      `#{@config[:bin_path]}rake #{@config[:builder, @name.to_sym, :task]} 2>&1`
-    else
-      `#{@config[:bin_path]}rake #{choose_exec()} 2>&1`
-    end
+                `#{@config[:bin_path]}rake #{@config[:builder, @name.to_sym, :task]} 2>&1`
+              else
+                `#{@config[:bin_path]}rake #{choose_exec()} 2>&1`
+              end
     successful?
   end
 

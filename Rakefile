@@ -7,15 +7,15 @@ require 'rake/clean'
 
 require './lib/cerberus/constants'
 
-PKG_BUILD     = ENV['PKG_BUILD'] ? '.' + ENV['PKG_BUILD'] : ''
-PKG_NAME      = 'cerberus'
-PKG_VERSION   = Cerberus::VERSION + PKG_BUILD
+PKG_BUILD = ENV['PKG_BUILD'] ? '.' + ENV['PKG_BUILD'] : ''
+PKG_NAME = 'cerberus'
+PKG_VERSION = Cerberus::VERSION + PKG_BUILD
 PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 
-RELEASE_NAME  = "REL #{PKG_VERSION}"
+RELEASE_NAME = "REL #{PKG_VERSION}"
 
 RUBYFORGE_PROJECT = "cerberus"
-RUBYFORGE_USER    = ENV['RUBYFORGE_USER'] || "cpjolicoeur"
+RUBYFORGE_USER = ENV['RUBYFORGE_USER'] || "cpjolicoeur"
 
 task :default => [:test, :clean]
 
@@ -35,7 +35,6 @@ task :clean => :clobber_package do
   rm_rf "#{root}/doc/site/out"
   rm_rf "#{root}/doc/site/webgen.cache"
 end
-
 
 GEM_SPEC = Gem::Specification.new do |s|
   s.name = PKG_NAME
@@ -71,7 +70,6 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.rubyforge_project = RUBYFORGE_PROJECT
 end
 
-
 Rake::GemPackageTask.new(GEM_SPEC) do |p|
   p.gem_spec = GEM_SPEC
   p.need_tar = true
@@ -90,7 +88,7 @@ end
 
 desc "Look for TODO and FIXME tags in the code"
 task :todo do
-  FileList.new(File.dirname(__FILE__)+'/lib/cerberus/**/*.rb').egrep(/#.*(FIXME|TODO|TBD|DEPRECATED)/i) 
+  FileList.new(File.dirname(__FILE__) + '/lib/cerberus/**/*.rb').egrep(/#.*(FIXME|TODO|TBD|DEPRECATED)/i)
 end
 
 desc "uninstall and reinstall gem"
@@ -100,7 +98,7 @@ begin
   require 'rcov/rcovtask'
   Rcov::RcovTask.new do |t|
     t.test_files = FileList['test/*_test.rb']
-    t.output_dir = File.join( File.dirname(__FILE__),'coverage' )
+    t.output_dir = File.join(File.dirname(__FILE__), 'coverage')
     t.verbose = true
   end
 rescue Object
@@ -126,10 +124,9 @@ task :release_files => [:clean, :package] do
     release.user_name = RUBYFORGE_USER
     release.password = ENV['RUBYFORGE_PASSWORD']
     release.files = release_files.to_a
-    release.package_name    = PKG_NAME
+    release.package_name = PKG_NAME
     release.release_name = "Cerberus #{PKG_VERSION}"
   end
-
 end
 
 desc "Publish news update to RubyForge"
@@ -150,7 +147,7 @@ begin
   require 'webgen/webgentask'
 
   Webgen::WebgenTask.new do |t|
-    t.directory = File.join( File.dirname( __FILE__ ), 'doc/site')
+    t.directory = File.join(File.dirname(__FILE__), 'doc/site')
     t.clobber_outdir = true
   end
 rescue Gem::LoadError

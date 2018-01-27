@@ -20,14 +20,13 @@ class Maven2BuilderTest < Test::Unit::TestCase
     IO.write(reports_dir + 'wicket.markup.html.form.persistence.CookieValuePersisterTest.txt', SUREFIRE2_OUTPUT)
 
     builder.output = MVN_OUTPUT
-    builder.send( 'add_error_information' )
+    builder.send('add_error_information')
     assert builder.output.include?('at wicket.markup.html.basic.SimplePageTest.testRenderHomePage_3(SimplePageTest.java:285)')
     assert builder.output.include?('This is for wicket.util.resource.ResourceTest :=')
   end
 end
 
-
-MVN_OUTPUT =<<-END
+MVN_OUTPUT = <<-END
 -------------------------------------------------------
  T E S T S
 -------------------------------------------------------
@@ -56,7 +55,7 @@ Tests run: 449, Failures: 4, Errors: 9, Skipped: 0
 [INFO] There are test failures.
     END
 
-SUREFIRE1_OUTPUT =<<-END
+SUREFIRE1_OUTPUT = <<-END
 -------------------------------------------------------------------------------
 Test set: wicket.markup.html.basic.SimplePageTest
 -------------------------------------------------------------------------------
@@ -66,7 +65,7 @@ This is for wicket.util.resource.ResourceTest :=
 
 END
 
-SUREFIRE2_OUTPUT =<<-END
+SUREFIRE2_OUTPUT = <<-END
 -------------------------------------------------------------------------------
 Test set: wicket.markup.html.basic.SimplePageTest
 -------------------------------------------------------------------------------

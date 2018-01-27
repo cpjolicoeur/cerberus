@@ -3,7 +3,6 @@ require File.dirname(__FILE__) + '/test_helper'
 require 'cerberus/utils'
 
 class CronStringTest < Test::Unit::TestCase
-
   def test_simple_number
     assert "1".cron_match?(1)
   end
@@ -27,7 +26,7 @@ class CronStringTest < Test::Unit::TestCase
     assert(!str.cron_match?(4))
     assert(!str.cron_match?(6))
   end
-  
+
   def test_range
     str = "2-4"
     assert(!str.cron_match?(1))
@@ -90,5 +89,4 @@ class CronStringTest < Test::Unit::TestCase
     assert(!"*-12".cron_match?('1'))
     assert(!"*-12/2".cron_match?('2'))
   end
-
 end

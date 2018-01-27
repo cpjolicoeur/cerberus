@@ -24,7 +24,7 @@ module Cerberus
     def dump_yml(file, what, overwrite = true)
       if overwrite or not File.exists?(file)
         FileUtils.mkpath(File.dirname(file))
-        File.open(file, 'w') {|f| YAML::dump(what, f) } 
+        File.open(file, 'w') { |f| YAML::dump(what, f) }
       end
     end
 
@@ -52,16 +52,16 @@ module Cerberus
     end
 
     def interpret_state(state, with_default = true)
-       case 
-       when state == 'all'
-         [:setup, :successful, :revival, :broken, :failed]
-       when state == 'none'
-         []
-       when state == 'default' && with_default
-         [:setup, :revival, :broken, :failed] #the same as 'all' except successful
-       else
-         state.scan(/\w+/).map{|s| s.to_sym}
-       end
+      case
+      when state == 'all'
+        [:setup, :successful, :revival, :broken, :failed]
+      when state == 'none'
+        []
+      when state == 'default' && with_default
+        [:setup, :revival, :broken, :failed] #the same as 'all' except successful
+      else
+        state.scan(/\w+/).map { |s| s.to_sym }
+      end
     end
   end
 end
@@ -69,17 +69,18 @@ end
 include Cerberus::Utils
 
 alias __exec `
+
 def `(cmd)
   begin
     __exec(cmd)
-  rescue Exception => e           
+  rescue Exception => e
     raise "Unable to execute: #{cmd}"
   end
 end
 
 class Hash
   def deep_merge!(second)
-    second.each_pair do |k,v|
+    second.each_pair do |k, v|
       if self[k].is_a?(Hash) and second[k].is_a?(Hash)
         self[k].deep_merge!(second[k])
       else
@@ -98,14 +99,14 @@ class HashWithIndifferentAccess < Hash
       super(constructor)
     end
   end
- 
+
   def default(key)
     self[key.to_s] if key.is_a?(Symbol)
-  end  
+  end
 
   alias_method :regular_writer, :[]= unless method_defined?(:regular_writer)
   alias_method :regular_update, :update unless method_defined?(:regular_update)
-  
+
   def []=(key, value)
     regular_writer(convert_key(key), convert_value(value))
   end
@@ -114,7 +115,7 @@ class HashWithIndifferentAccess < Hash
     other_hash.each_pair { |key, value| regular_writer(convert_key(key), convert_value(value)) }
     self
   end
-  
+
   alias_method :merge!, :update
 
   def key?(key)
@@ -130,13 +131,13 @@ class HashWithIndifferentAccess < Hash
   end
 
   def values_at(*indices)
-    indices.collect {|key| self[convert_key(key)]}
+    indices.collect { |key| self[convert_key(key)] }
   end
 
   def dup
     HashWithIndifferentAccess.new(self)
   end
-  
+
   def merge(hash)
     self.dup.update(hash)
   end
@@ -144,20 +145,21 @@ class HashWithIndifferentAccess < Hash
   def delete(key)
     super(convert_key(key))
   end
-    
+
   protected
-    def convert_key(key)
-      key.kind_of?(Symbol) ? key.to_s : key
-    end
-    def convert_value(value)
-      value.is_a?(Hash) ? HashWithIndifferentAccess.new(value) : value
-    end
+
+  def convert_key(key)
+    key.kind_of?(Symbol) ? key.to_s : key
+  end
+
+  def convert_value(value)
+    value.is_a?(Hash) ? HashWithIndifferentAccess.new(value) : value
+  end
 end
 
-
 class IO
-  def self.write(filename, str, mode='w')
-    File.open(filename, mode){|f| f.write str}
+  def self.write(filename, str, mode = 'w')
+    File.open(filename, mode) { |f| f.write str }
   end
 end
 

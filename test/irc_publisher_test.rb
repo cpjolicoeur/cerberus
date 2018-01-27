@@ -14,7 +14,7 @@ class IRCPublisherTest < Test::Unit::TestCase
     Cerberus::Publisher::IRC.publish(build_status(true), build, options)
 
     # assert IRCConnection.connected
-    # assert IRCConnection.messages.first.include?('JOIN') 
+    # assert IRCConnection.messages.first.include?('JOIN')
     # assert_equal 7, IRCConnection.messages.size
   end
 end

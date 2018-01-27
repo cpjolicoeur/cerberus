@@ -2,13 +2,12 @@ require 'cerberus/utils'
 require 'cerberus/scm/base'
 
 class Cerberus::SCM::SVN < Cerberus::SCM::Base
-
   def installed?
     exec_successful? "#{@config[:bin_path]}svn --version"
   end
 
   def update!
-    if test(?d, @path + '/.svn') #check first that it was not locked 
+    if test(?d, @path + '/.svn') #check first that it was not locked
       execute("cleanup") if locked?
       say "Could not unlock svn directory #{@encoded_path}. Please do it manually." if locked? #In case if we could not unlock from command line - ask user to do it
     end
@@ -16,7 +15,7 @@ class Cerberus::SCM::SVN < Cerberus::SCM::Base
     if test(?d, @path + '/.svn')
       @status = execute("update")
     else
-      FileUtils.mkpath(@path) unless test(?d,@path)
+      FileUtils.mkpath(@path) unless test(?d, @path)
       @status = execute("checkout", nil, @config[:scm, :url])
     end
   end
@@ -36,7 +35,7 @@ class Cerberus::SCM::SVN < Cerberus::SCM::Base
   def last_commit_message
     message = execute("log", "--limit 1 -v")
     #strip first line that contains command line itself (svn log --limit ...)
-    if (idx = message.index('-'*72))
+    if (idx = message.index('-' * 72))
       message[idx..-1]
     else
       message
@@ -48,6 +47,7 @@ class Cerberus::SCM::SVN < Cerberus::SCM::Base
   end
 
   private
+
   def locked?
     execute("st") =~ /^..L/
   end
@@ -63,7 +63,7 @@ class Cerberus::SCM::SVN < Cerberus::SCM::Base
     end
     @info
   end
-    
+
   def execute(command, parameters = nil, pre_parameters = nil)
     `#{@config[:bin_path]}svn #{command} #{auth_options()} #{pre_parameters} #{@encoded_path} #{parameters}`
   end

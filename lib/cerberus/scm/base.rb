@@ -1,7 +1,6 @@
 module Cerberus
   module SCM
     class Base
-
       def initialize(path, config = {})
         raise "Path can't be nil" unless path
 
@@ -12,8 +11,6 @@ module Cerberus
       def url
         @path
       end
-
     end
   end
 end
-

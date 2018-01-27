@@ -4,36 +4,36 @@ require 'cerberus/builder/rspec'
 require 'tmpdir'
 
 class Cerberus::Builder::RSpec
- attr_writer :output
+  attr_writer :output
 end
 
 class RSpecBuilderTest < Test::Unit::TestCase
- def test_builder
-   `whoami` # clear $? for tests run via rake
+  def test_builder
+    `whoami` # clear $? for tests run via rake
 
-   tmp = Dir::tmpdir
-   builder = Cerberus::Builder::RSpec.new(:application_root => tmp)
+    tmp = Dir::tmpdir
+    builder = Cerberus::Builder::RSpec.new(:application_root => tmp)
 
-   builder.output = RSPEC_TEST_OK_OUTPUT
-   assert builder.successful?
+    builder.output = RSPEC_TEST_OK_OUTPUT
+    assert builder.successful?
 
-   builder.output = RSPEC_TEST_OK_OUTPUT_ALT
-   assert builder.successful?
+    builder.output = RSPEC_TEST_OK_OUTPUT_ALT
+    assert builder.successful?
 
-   builder.output = RSPEC_TEST_OK_OUTPUT_WITH_PENDING
-   assert builder.successful?
+    builder.output = RSPEC_TEST_OK_OUTPUT_WITH_PENDING
+    assert builder.successful?
 
-   builder.output = RSPEC_TEST_ERROR_OUTPUT
-   assert !builder.successful?
-   assert_equal 1, builder.brokeness
+    builder.output = RSPEC_TEST_ERROR_OUTPUT
+    assert !builder.successful?
+    assert_equal 1, builder.brokeness
 
-   builder.output = RSPEC_TEST_ERROR_OUTPUT_WITH_PENDING
-   assert !builder.successful?
-   assert_equal 3, builder.brokeness
- end
+    builder.output = RSPEC_TEST_ERROR_OUTPUT_WITH_PENDING
+    assert !builder.successful?
+    assert_equal 3, builder.brokeness
+  end
 end
 
-RSPEC_TEST_OK_OUTPUT =<<-END
+RSPEC_TEST_OK_OUTPUT = <<-END
 /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby /Library/Ruby/Gems/1.8/gems/rspec-1.1.12/bin/spec spec/views/clients/show.html.erb_spec.rb spec/models/role_spec.rb spec/models/dashboard_spec.rb spec/models/client_spec.rb spec/helpers/admin/users_helper_spec.rb spec/controllers/sessions_controller_spec.rb spec/models/query_dates_spec.rb spec/helpers/heatmaps_helper_spec.rb spec/helpers/passwords_helper_spec.rb spec/controllers/admin/reports_controller_spec.rb spec/models/role_assignment_spec.rb spec/models/default_role_spec.rb spec/controllers/sites_controller_spec.rb spec/controllers/dashboards_controller_spec.rb spec/models/widget_instance_spec.rb spec/models/widget_spec.rb spec/controllers/admin/roles_controller_spec.rb spec/models/user_spec.rb spec/models/right_spec.rb spec/views/clients/new.html.erb_spec.rb spec/helpers/reports_helper_spec.rb spec/controllers/reports_controller_spec.rb spec/models/site_spec.rb spec/helpers/admin/rights_helper_spec.rb spec/models/data_warehouse_spec.rb spec/helpers/users_helper_spec.rb spec/helpers/clients_helper_spec.rb spec/helpers/admin/roles_helper_spec.rb spec/views/clients/index.html.erb_spec.rb spec/controllers/users_controller_spec.rb spec/controllers/clients_routing_spec.rb spec/controllers/clients_controller_spec.rb spec/controllers/admin/users_controller_spec.rb spec/controllers/access_control_spec.rb spec/models/query_cache_key_spec.rb spec/views/clients/edit.html.erb_spec.rb spec/controllers/passwords_controller_spec.rb spec/controllers/authenticated_system_spec.rb spec/helpers/application_helper_spec.rb spec/models/report_spec.rb spec/models/query_spec.rb spec/helpers/admin/reports_helper_spec.rb spec/controllers/queries_controller_spec.rb spec/controllers/application_controller_spec.rb spec/models/excel_export_spec.rb spec/controllers/admin/rights_controller_spec.rb -O spec/spec.opts 
 ..............................................................................................................................................................................................................................................*....*..................................................................................................................................................................................................................*.................................................................................................................*..*....*.................................................................................................................................................................................................
 
@@ -96,7 +96,7 @@ Finished in 35.621931 seconds
 291 examples, 0 failures
 END
 
-RSPEC_TEST_OK_OUTPUT_WITH_PENDING =<<-END
+RSPEC_TEST_OK_OUTPUT_WITH_PENDING = <<-END
 /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby /Library/Ruby/Gems/1.8/gems/rspec-1.1.12/bin/spec spec/views/clients/show.html.erb_spec.rb spec/models/role_spec.rb spec/models/dashboard_spec.rb spec/models/client_spec.rb spec/helpers/admin/users_helper_spec.rb spec/controllers/sessions_controller_spec.rb spec/models/query_dates_spec.rb spec/helpers/heatmaps_helper_spec.rb spec/helpers/passwords_helper_spec.rb spec/controllers/admin/reports_controller_spec.rb spec/models/role_assignment_spec.rb spec/models/default_role_spec.rb spec/controllers/sites_controller_spec.rb spec/controllers/dashboards_controller_spec.rb spec/models/widget_instance_spec.rb spec/models/widget_spec.rb spec/controllers/admin/roles_controller_spec.rb spec/models/user_spec.rb spec/models/right_spec.rb spec/views/clients/new.html.erb_spec.rb spec/helpers/reports_helper_spec.rb spec/controllers/reports_controller_spec.rb spec/models/site_spec.rb spec/helpers/admin/rights_helper_spec.rb spec/models/data_warehouse_spec.rb spec/helpers/users_helper_spec.rb spec/helpers/clients_helper_spec.rb spec/helpers/admin/roles_helper_spec.rb spec/views/clients/index.html.erb_spec.rb spec/controllers/users_controller_spec.rb spec/controllers/clients_routing_spec.rb spec/controllers/clients_controller_spec.rb spec/controllers/admin/users_controller_spec.rb spec/controllers/access_control_spec.rb spec/models/query_cache_key_spec.rb spec/views/clients/edit.html.erb_spec.rb spec/controllers/passwords_controller_spec.rb spec/controllers/authenticated_system_spec.rb spec/helpers/application_helper_spec.rb spec/models/report_spec.rb spec/models/query_spec.rb spec/helpers/admin/reports_helper_spec.rb spec/controllers/queries_controller_spec.rb spec/controllers/application_controller_spec.rb spec/models/excel_export_spec.rb spec/controllers/admin/rights_controller_spec.rb -O spec/spec.opts 
 ............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
 
@@ -105,7 +105,7 @@ Finished in 23.895298 seconds
 764 examples, 0 failures
 END
 
-RSPEC_TEST_ERROR_OUTPUT =<<-END
+RSPEC_TEST_ERROR_OUTPUT = <<-END
 /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby /Library/Ruby/Gems/1.8/gems/rspec-1.1.12/bin/spec spec/models/site_spec.rb -O spec/spec.opts 
 ...........F...
 
@@ -119,7 +119,7 @@ Finished in 0.433946 seconds
 15 examples, 1 failure
 END
 
-RSPEC_TEST_ERROR_OUTPUT_WITH_PENDING =<<-END
+RSPEC_TEST_ERROR_OUTPUT_WITH_PENDING = <<-END
 /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby /Library/Ruby/Gems/1.8/gems/rspec-1.1.12/bin/spec spec/models/site_spec.rb -O spec/spec.opts 
 ...........F..*
 

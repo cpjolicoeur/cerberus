@@ -8,7 +8,7 @@ class Cerberus::Publisher::Jabber < Cerberus::Publisher::Base
       jabber_options = options[:publisher, :jabber]
       raise "There is no recipients provided for Jabber publisher" unless jabber_options[:recipients]
 
-      subject,body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
+      subject, body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
 
       client = Jabber::Client::new(Jabber::JID.new(jabber_options[:jid]))
       client.connect

@@ -6,7 +6,7 @@ require 'rss'
 class Cerberus::Publisher::RSS < Cerberus::Publisher::Base
   def self.publish(state, manager, options)
     config = options[:publisher, :rss]
-    subject,body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
+    subject, body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
 
     pub_date = Time.now
 
@@ -14,7 +14,7 @@ class Cerberus::Publisher::RSS < Cerberus::Publisher::Base
       feed = RSS::Parser.parse(File.read(config[:file]), false)
       raise RSS::Error unless feed
       keep = config[:keep] || 1
-      feed.items.slice!(keep -1 ..-1)  # one less than keep value, to make room for the new build
+      feed.items.slice!(keep - 1..-1)  # one less than keep value, to make room for the new build
     rescue RSS::Error, Errno::ENOENT
       # if there's no existing file or we can't parse it, start a new one from scratch
       feed = RSS::Maker.make("2.0") do |new_rss|

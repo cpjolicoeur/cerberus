@@ -6,7 +6,7 @@ class Marshmallow
   def self.say(to, what)
     @@counter += 1
   end
-  
+
   def self.paste(to, what)
     @@counter += 1
   end
