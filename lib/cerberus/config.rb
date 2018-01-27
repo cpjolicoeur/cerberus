@@ -1,5 +1,6 @@
 require 'cerberus/constants'
 require 'cerberus/utils'
+require 'active_support/core_ext/hash/indifferent_access'
 require 'erb'
 
 module Cerberus
