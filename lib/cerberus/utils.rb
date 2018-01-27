@@ -74,7 +74,7 @@ def `(cmd)
   begin
     __exec(cmd)
   rescue Exception => e
-    raise "Unable to execute: #{cmd}"
+    raise "Unable to execute #{cmd}: #{e}"
   end
 end
 
@@ -154,12 +154,6 @@ class HashWithIndifferentAccess < Hash
 
   def convert_value(value)
     value.is_a?(Hash) ? HashWithIndifferentAccess.new(value) : value
-  end
-end
-
-class IO
-  def self.write(filename, str, mode = 'w')
-    File.open(filename, mode) { |f| f.write str }
   end
 end
 

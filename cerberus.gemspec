@@ -19,12 +19,19 @@ Gem::Specification.new do |s|
 
   s.files = Dir["CHANGELOG.md", "MIT-LICENSE", "README.rdoc", "lib/**/*"]
 
-  s.add_dependency(%q<actionmailer>, ["~> 2.0"])
-  s.add_dependency(%q<activesupport>, ["~> 2.0"])
-  s.add_dependency(%q<rake>, [">= 0.7.3"])
+  s.add_dependency 'actionamailer'
+  s.add_dependency 'activesupport'
+  s.add_dependency 'rake'
+  s.add_dependency 'xmpp4r'
+  s.add_dependency 'shout-bot'
+  s.add_dependency 'twitter'
+  s.add_dependency 'addressable'
 
   # tests
+  s.add_development_dependency 'test-unit'
+  s.add_development_dependency 'power_assert'
   s.add_development_dependency 'rubyzip'
   s.add_development_dependency 'builder'
   s.add_development_dependency 'json'
+  s.add_development_dependency 'webgen
 end

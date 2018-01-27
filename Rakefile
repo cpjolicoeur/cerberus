@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'rake/testtask'
 require 'rake/packagetask'
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
 require 'rake/clean'
 
 require './lib/cerberus/constants'
@@ -50,9 +50,9 @@ GEM_SPEC = Gem::Specification.new do |s|
     Cerberus could be easily invoked from Cron (for Unix) or nnCron (for Windows) utilities.
   DESC
 
-  s.add_dependency 'actionmailer', '~> 2.0'
-  s.add_dependency 'activesupport', '~> 2.0'
-  s.add_dependency 'rake', '>= 0.7.3'
+  s.add_dependency 'actionmailer'
+  s.add_dependency 'activesupport'
+  s.add_dependency 'rake'
 
   s.files = Dir.glob("{bin,lib,test}/**/*").delete_if { |item| item.include?('__workdir') }
   s.files += %w(License.txt Readme.markdown Changelog.txt Authors.txt Copyright.txt Rakefile)
@@ -70,7 +70,7 @@ GEM_SPEC = Gem::Specification.new do |s|
   s.rubyforge_project = RUBYFORGE_PROJECT
 end
 
-Rake::GemPackageTask.new(GEM_SPEC) do |p|
+Gem::PackageTask.new(GEM_SPEC) do |p|
   p.gem_spec = GEM_SPEC
   p.need_tar = true
   p.need_zip = true
@@ -143,10 +143,10 @@ task :publish_news do
 end
 
 begin
-  gem 'webgen', '>=0.5.6'
-  require 'webgen/webgentask'
+  gem 'webgen'
+  require 'webgen/rake_task'
 
-  Webgen::WebgenTask.new do |t|
+  Webgen::RakeTask.new do |t|
     t.directory = File.join(File.dirname(__FILE__), 'doc/site')
     t.clobber_outdir = true
   end

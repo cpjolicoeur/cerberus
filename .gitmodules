@@ -1,6 +1,0 @@
-[submodule "lib/vendor/addressable"]
-	path = lib/vendor/addressable
-	url = git://github.com/sporkmonger/addressable.git
-[submodule "lib/vendor/shout-bot"]
-	path = lib/vendor/shout-bot
-	url = git://github.com/sr/shout-bot.git

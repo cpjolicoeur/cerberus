@@ -1,7 +1,0 @@
-
-0.3.1 TODO:
-* Add specs for :page, :lite and :since options support in Twitter::Client#my(...), Twitter::Client#user(....) and Twitter::User#followers calls
-* Add specs for :replies support in Twitter::Client#status(...) and Twitter::Client#timeline_for(...)
-* Add RDoc for :replies support
-* Add better RDoc for Twitter::Client.account_info(:rate_limit_status)
-* Add specs for Twitter::Client.account_info(:rate_limit_status)

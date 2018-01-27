@@ -1,6 +1,7 @@
 $:.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
 $:.unshift File.expand_path(File.dirname(__FILE__))
 
+gem "test-unit"
 require 'test/unit'
 require 'fileutils'
 
@@ -34,9 +35,9 @@ class Test::Unit::TestCase
 
     # setup base darcs repos
     require 'rubygems'
-    require 'zip/zip'
+    require 'zip'
     FileUtils.mkpath DARCS_REPO
-    Zip::ZipFile::open("#{File.dirname(__FILE__)}/data/darcs.zip") { |zf|
+    Zip::File::open("#{File.dirname(__FILE__)}/data/darcs.zip") { |zf|
       zf.each { |e|
         fpath = File.join(DARCS_REPO, e.name)
         FileUtils.mkdir_p(File.dirname(fpath))
@@ -46,7 +47,7 @@ class Test::Unit::TestCase
 
     # setup base git repos
     FileUtils.mkpath GIT_REPO
-    Zip::ZipFile::open("#{File.dirname(__FILE__)}/data/git.zip") { |zf|
+    Zip::File::open("#{File.dirname(__FILE__)}/data/git.zip") { |zf|
       zf.each { |e|
         fpath = File.join(GIT_REPO, e.name)
         FileUtils.mkdir_p(File.dirname(fpath))
@@ -56,7 +57,7 @@ class Test::Unit::TestCase
 
     # setup base hg repos
     FileUtils.mkpath HG_REPO
-    Zip::ZipFile::open("#{File.dirname(__FILE__)}/data/mercurial.zip") { |zf|
+    Zip::File::open("#{File.dirname(__FILE__)}/data/mercurial.zip") { |zf|
       zf.each { |e|
         fpath = File.join(HG_REPO, e.name)
         FileUtils.mkdir_p(File.dirname(fpath))
