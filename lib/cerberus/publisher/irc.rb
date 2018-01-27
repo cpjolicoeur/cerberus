@@ -15,8 +15,8 @@ class Cerberus::Publisher::IRC < Cerberus::Publisher::Base
     channel = '#' + irc_options[:channel]
     channel_password = irc_options[:channel_password]
 
-    ShoutBot.shout("irc://#{nick}@#{server}:#{port}/#{channel}", channel_password) do |channel|
-      message.split("\n").each { |line| channel.say line }
+    ShoutBot.shout("irc://#{nick}@#{server}:#{port}/#{channel}", channel_password) do |chan|
+      message.split("\n").each { |line| chan.say line }
     end
   end
 end
