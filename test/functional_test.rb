@@ -62,7 +62,7 @@ class FunctionalTest < Test::Unit::TestCase
     output = mail.body
 
     #Check outpus that run needed tasks
-    assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
+    assert_include output, '1 tests, 1 assertions, 0 failures, 0 errors'
     assert output !~ /Task 'custom1' has been invoked/
     assert_equal '[myapp] Cerberus set up for project (2)', mail.subject
     assert output =~ %r{http://someurl.changeset.com/2}
@@ -103,7 +103,7 @@ class FunctionalTest < Test::Unit::TestCase
     assert_equal :broken, build.status.current_state
 
     subject = ActionMailer::Base.deliveries.last.subject
-    assert_match /and getting worse/, subject
+    assert_include subject, 'and getting worse'
 
     #remove status file to run project again
     FileUtils.rm status_file
@@ -187,8 +187,8 @@ class FunctionalTest < Test::Unit::TestCase
     build.run
     assert_equal 1, ActionMailer::Base.deliveries.size
     output = ActionMailer::Base.deliveries[0].body
-    assert_match /Task 'custom1' has been invoked/, output
-    assert_match /Task 'custom2' has been invoked/, output
+    assert_include output, "Task 'custom1' has been invoked"
+    assert_include output, "Task 'custom2' has been invoked"
   end
 
   def test_build_setup_script
@@ -201,8 +201,8 @@ class FunctionalTest < Test::Unit::TestCase
     build.run
     assert_equal 1, ActionMailer::Base.deliveries.size
     output = ActionMailer::Base.deliveries[0].body
-    assert_match /setup script has been invoked/, output
-    assert_match /Task 'custom1' has been invoked/, output
+    assert_include output, 'setup script has been invoked'
+    assert_include output, "Task 'custom1' has been invoked"
   end
 
   def test_logs_disabled
@@ -224,7 +224,7 @@ class FunctionalTest < Test::Unit::TestCase
     # output = mail.body
 
     # #Check outpus that run needed tasks
-    # assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
+    # assert_include output, '1 tests, 1 assertions, 0 failures, 0 errors'
     # assert output !~ /Task 'custom1' has been invoked/
     # assert_equal '[darcsapp] Cerberus set up for project (#20061010090920)', mail.subject
 
@@ -287,9 +287,9 @@ class FunctionalTest < Test::Unit::TestCase
     output = mail.body
 
     #Check output that run needed tasks
-    assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
+    assert_include output, '1 tests, 1 assertions, 0 failures, 0 errors'
     assert output !~ /Task 'custom1' has been invoked/
-    assert_match /\[gitapp\] Cerberus set up for project/, mail.subject
+    assert_include mail.subject, '[gitapp] Cerberus set up for project'
 
     status_file = HOME + '/work/gitapp/status.log'
     assert File.exist?(status_file)
@@ -357,9 +357,9 @@ class FunctionalTest < Test::Unit::TestCase
     output = mail.body
 
     #Check output that run needed tasks
-    assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
+    assert_include output, '1 tests, 1 assertions, 0 failures, 0 errors'
     assert output !~ /Task 'custom1' has been invoked/
-    assert_match /\[hgapp\] Cerberus set up for project/, mail.subject
+    assert_include mail.subject, '[hgapp] Cerberus set up for project'
 
     status_file = HOME + '/work/hgapp/status.log'
     assert File.exist?(status_file)
