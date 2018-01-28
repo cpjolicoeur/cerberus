@@ -53,7 +53,7 @@ class Cerberus::SCM::SVN < Cerberus::SCM::Base
   end
 
   def info
-    unless @info
+    unless defined?(@info)
       output = execute("info")
       @info = YAML.load(output)
 
