@@ -13,7 +13,7 @@ class JabberPublisherTest < Test::Unit::TestCase
     Cerberus::Publisher::Jabber.publish(build_status(false), build, options)
 
     messages = Jabber::Client.messages
-    assert messages.size > 2
+    assert_equal 2, messages.size
     assert_equal 'google.com', messages[0].to.domain
     assert_equal 'jit1', messages[0].to.node
     assert_equal '[MegaApp] Build still broken (1232)', messages[0].subject
