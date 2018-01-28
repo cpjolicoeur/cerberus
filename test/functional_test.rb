@@ -70,7 +70,7 @@ class FunctionalTest < Test::Unit::TestCase
     status_file = HOME + '/work/myapp/status.log'
     assert File.exist?(status_file)
     assert build_successful?(status_file)
-    assert 1, Dir[HOME + "/work/rake_cust/logs/*-setup.log"].size
+    assert_equal 1, Dir[HOME + "/work/rake_cust/logs/*-setup.log"].size
 
     FileUtils.rm status_file
     build = Cerberus::BuildCommand.new('myapp')
@@ -294,14 +294,14 @@ class FunctionalTest < Test::Unit::TestCase
     status_file = HOME + '/work/gitapp/status.log'
     assert File.exist?(status_file)
     assert build_successful?(status_file)
-    assert 1, Dir[HOME + "/work/gitapp/logs/*.log"].size
+    assert_equal 1, Dir[HOME + "/work/gitapp/logs/*.log"].size
 
     #There were no changes - no reaction should be
     build = Cerberus::BuildCommand.new('gitapp')
     build.run
     assert_equal false, build.scm.has_changes?
     assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
-    assert 1, Dir[HOME + "/work/gitapp/logs/*.log"].size
+    assert_equal 1, Dir[HOME + "/work/gitapp/logs/*.log"].size
 
     #now we add new broken test
     rand_val = rand(10000)
@@ -325,13 +325,13 @@ class FunctionalTest < Test::Unit::TestCase
     build.run
     assert build.scm.has_changes?
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup plus new alert email
-    assert 2, Dir[HOME + "/work/gitsapp/logs/*.log"].size
+    assert_equal 2, Dir[HOME + "/work/gitsapp/logs/*.log"].size
 
     build = Cerberus::BuildCommand.new('gitapp')
     build.run
     assert_equal false, build.scm.has_changes?
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
-    assert 2, Dir[HOME + "/work/gitapp/logs/*.log"].size
+    assert_equal 2, Dir[HOME + "/work/gitapp/logs/*.log"].size
 
     # test git branch features
     add_application('gitapp2', GIT_URL, 'scm' => {'type' => 'git', 'branch' => 'cerberus'})
@@ -364,14 +364,14 @@ class FunctionalTest < Test::Unit::TestCase
     status_file = HOME + '/work/hgapp/status.log'
     assert File.exist?(status_file)
     assert build_successful?(status_file)
-    assert 1, Dir[HOME + "/work/hgapp/logs/*.log"].size
+    assert_equal 1, Dir[HOME + "/work/hgapp/logs/*.log"].size
 
     #There were no changes - no reaction should be
     build = Cerberus::BuildCommand.new('hgapp')
     build.run
     assert_equal false, build.scm.has_changes?
     assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
-    assert 1, Dir[HOME + "/work/hgapp/logs/*.log"].size
+    assert_equal 1, Dir[HOME + "/work/hgapp/logs/*.log"].size
 
     #now we add new broken test
     rand_val = rand(10000)
@@ -395,13 +395,13 @@ class FunctionalTest < Test::Unit::TestCase
     build.run
     assert build.scm.has_changes?
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup plus new alert email
-    assert 2, Dir[HOME + "/work/hgapp/logs/*.log"].size
+    assert_equal 2, Dir[HOME + "/work/hgapp/logs/*.log"].size
 
     build = Cerberus::BuildCommand.new('hgapp')
     build.run
     assert_equal false, build.scm.has_changes?
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
-    assert 2, Dir[HOME + "/work/hgapp/logs/*.log"].size
+    assert_equal 2, Dir[HOME + "/work/hgapp/logs/*.log"].size
 
     #Now we broke remote repository (imitate that network unaccessable)
     FileUtils.rm_rf HG_REPO
