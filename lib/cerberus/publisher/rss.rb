@@ -18,8 +18,8 @@ class Cerberus::Publisher::RSS < Cerberus::Publisher::Base
     rescue RSS::Error, Errno::ENOENT
       # if there's no existing file or we can't parse it, start a new one from scratch
       feed = RSS::Maker.make("2.0") do |new_rss|
-        new_rss.channel.title = "#{options[:application_name].to_xs} build status"
-        new_rss.channel.description = "Cerberus build feed for #{options[:application_name].to_xs}"
+        new_rss.channel.title = "#{options[:application_name].encode(:xml => :text)} build status"
+        new_rss.channel.description = "Cerberus build feed for #{options[:application_name].encode(:xml => :text)}"
         new_rss.channel.generator = "http://rubyforge.org/projects/cerberus"
         new_rss.channel.link = config[:channel_link] || "file://#{config[:file]}"
       end
