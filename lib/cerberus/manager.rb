@@ -113,7 +113,7 @@ module Cerberus
       begin
         Latch.lock("#{HOME}/work/#{@config[:application_name]}/.lock", :lock_ttl => @config[:max_wait_time]) do
           @scm.update!
-          if (@config[:force] || @scm.has_changes? || (@status.previous_build_failed? && !@config[:require_revision_change]))
+          if (@config[:force] || @scm.has_changes? || @status.previous_build_successful.nil? || (@status.previous_build_failed? && !@config[:require_revision_change]))
             Dir.chdir File.join(@config[:application_root], @config[:build_dir] || '')
             @setup_script_output = `#{@config[:setup_script]}` if @config[:setup_script]
 

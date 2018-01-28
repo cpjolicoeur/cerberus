@@ -70,7 +70,7 @@ class FunctionalTest < Test::Unit::TestCase
     status_file = HOME + '/work/myapp/status.log'
     assert File.exist?(status_file)
     assert build_successful?(status_file)
-    assert_equal 1, Dir[HOME + "/work/rake_cust/logs/*-setup.log"].size
+    assert_equal 1, Dir[HOME + "/work/myapp/logs/*-setup.log"].size
 
     FileUtils.rm status_file
     build = Cerberus::BuildCommand.new('myapp')
@@ -79,13 +79,13 @@ class FunctionalTest < Test::Unit::TestCase
     assert build_successful?(status_file)
     assert_equal :setup, build.status.current_state
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
-    assert 2, Dir[HOME + "/work/rake_cust/logs/*.log"].size
+    assert_equal 1, Dir[HOME + "/work/myapp/logs/*.log"].size
 
     build = Cerberus::BuildCommand.new('myapp', :force => true)
     build.run
     assert_equal :successful, build.status.current_state
     assert_equal 2, ActionMailer::Base.deliveries.size #Number of mails not changed
-    assert 2, Dir[HOME + "/work/rake_cust/logs/*.log"].size #even if sources unchanged
+    assert_equal 2, Dir[HOME + "/work/myapp/logs/*.log"].size #even if sources unchanged
 
     #remove status file to run project again
     FileUtils.rm status_file
@@ -325,7 +325,7 @@ class FunctionalTest < Test::Unit::TestCase
     build.run
     assert build.scm.has_changes?
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup plus new alert email
-    assert_equal 2, Dir[HOME + "/work/gitsapp/logs/*.log"].size
+    assert_equal 2, Dir[HOME + "/work/gitapp/logs/*.log"].size
 
     build = Cerberus::BuildCommand.new('gitapp')
     build.run
