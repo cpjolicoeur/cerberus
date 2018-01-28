@@ -95,7 +95,7 @@ end"
   def add_application(app_name, url, options = {})
     opt = {'scm' => {'url' => url},
            'publisher' => {
-      'mail' => {'recipients' => 'somebody@com.com', 'delivery_method' => :test},
+      'mail' => {'recipients' => 'somebody@com.com', 'delivery_method' => 'test'},
     }}
 
     opt.deep_merge!(options)

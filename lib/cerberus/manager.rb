@@ -86,7 +86,7 @@ module Cerberus
                       :log => {:enable => true},
                       :at_time => '* *',
                       :max_wait_time => LOCK_WAIT,
-                      :require_revision_change => false}
+                      :require_revision_change => true}
 
     def initialize(application_name, cli_options = {})
       unless File.exist?("#{HOME}/config/#{application_name}.yml")
