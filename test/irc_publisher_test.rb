@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/test_helper'
+require_relative 'test_helper'
 
 require 'cerberus/publisher/irc'
 require 'cerberus/config'
@@ -14,7 +14,7 @@ class IRCPublisherTest < Test::Unit::TestCase
     Cerberus::Publisher::IRC.publish(build_status(true), build, options)
 
     # assert IRCConnection.connected
-    # assert IRCConnection.messages.first.include?('JOIN') 
+    # assert IRCConnection.messages.first.include?('JOIN')
     # assert_equal 7, IRCConnection.messages.size
   end
 end

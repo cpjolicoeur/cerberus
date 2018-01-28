@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/test_helper'
+require_relative 'test_helper'
 
 require 'cerberus/cli'
 require 'cerberus/scm/perforce'
@@ -13,7 +13,7 @@ class PerforceSCMTest < Test::Unit::TestCase
     assert_equal "dbcis-2356\njust test", $4.strip
   end
 
-  MSG =<<END
+  MSG = <<END
 Change 264179 on 2006/11/29 by someuser@someuser_SOMEUSER
 
         dbcis-2356

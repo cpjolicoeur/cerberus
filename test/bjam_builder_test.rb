@@ -1,31 +1,31 @@
-require File.dirname(__FILE__) + '/test_helper'
+require_relative 'test_helper'
 
 require 'cerberus/builder/bjam'
 require 'tmpdir'
 
 class Cerberus::Builder::Bjam
- attr_writer :output
+  attr_writer :output
 end
 
 class BjamBuilderTest < Test::Unit::TestCase
- def test_builder
-   tmp = Dir::tmpdir
-   builder = Cerberus::Builder::Bjam.new(:application_root => tmp)
-   builder.output = BJAM_INITIAL_BUILD_OK_OUTPUT
-   assert builder.successful?
+  def test_builder
+    tmp = Dir::tmpdir
+    builder = Cerberus::Builder::Bjam.new(:application_root => tmp)
+    builder.output = BJAM_INITIAL_BUILD_OK_OUTPUT
+    assert builder.successful?
 
-   builder.output = BJAM_BUILD_OK_OUTPUT
-   assert builder.successful?
+    builder.output = BJAM_BUILD_OK_OUTPUT
+    assert builder.successful?
 
-   builder.output = BJAM_COMPILER_ERROR_OUTPUT
-   assert !builder.successful?
+    builder.output = BJAM_COMPILER_ERROR_OUTPUT
+    assert !builder.successful?
 
-   builder.output = BJAM_TEST_ERROR_OUTPUT
-   assert !builder.successful?
- end
+    builder.output = BJAM_TEST_ERROR_OUTPUT
+    assert !builder.successful?
+  end
 end
 
-BJAM_INITIAL_BUILD_OK_OUTPUT =<<-END
+BJAM_INITIAL_BUILD_OK_OUTPUT = <<-END
 MkDir1 bin
 MkDir1 bin\cerberus_unit.test
 MkDir1 bin\cerberus_unit.test\msvc-7.1
@@ -40,7 +40,7 @@ testing.capture-output bin\cerberus_unit.test\msvc-7.1\debug\threading-multi\cer
 ...updated 11 targets...
 END
 
-BJAM_BUILD_OK_OUTPUT =<<-END
+BJAM_BUILD_OK_OUTPUT = <<-END
 warning: toolset gcc initialization: can't find tool g++
 warning: initialized from
 Building Boost.Regex with the optional Unicode/ICU support disabled.
@@ -57,8 +57,7 @@ testing.capture-output bin\cerberus_unit.test\msvc-7.1\debug\threading-multi\cer
 ...updated 6 targets...
 END
 
-
-BJAM_COMPILER_ERROR_OUTPUT =<<-END
+BJAM_COMPILER_ERROR_OUTPUT = <<-END
 warning: toolset gcc initialization: can't find tool g++
 warning: initialized from
 Building Boost.Regex with the optional Unicode/ICU support disabled.
@@ -84,7 +83,7 @@ cl  /Zm800 -nologo -TP  /Z7 /Od /Ob0 /GR /MDd /Zc:forScope /Zc:wchar_t  /wd4675 
 ...updated 1 target...
 END
 
-BJAM_TEST_ERROR_OUTPUT =<<-END
+BJAM_TEST_ERROR_OUTPUT = <<-END
 warning: toolset gcc initialization: can't find tool g++
 warning: initialized from
 Building Boost.Regex with the optional Unicode/ICU support disabled.

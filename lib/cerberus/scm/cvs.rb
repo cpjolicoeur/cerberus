@@ -2,7 +2,6 @@ require 'cerberus/utils'
 require 'cerberus/scm/base'
 
 class Cerberus::SCM::CVS < Cerberus::SCM::Base
-
   def installed?
     exec_successful? "#{@config[:bin_path]}cvs --version"
   end
@@ -11,7 +10,7 @@ class Cerberus::SCM::CVS < Cerberus::SCM::Base
     if test(?d, @path + '/CVS')
       @status = execute("update")
     else
-      FileUtils.mkpath(@path) unless test(?d,@path)
+      FileUtils.mkpath(@path) unless test(?d, @path)
       @status = execute("checkout", nil, @config[:scm, :url])
     end
   end
@@ -37,6 +36,7 @@ class Cerberus::SCM::CVS < Cerberus::SCM::Base
   end
 
   private
+
   def execute(command, parameters = nil, pre_parameters = nil)
     `#{@config[:bin_path]}cvs #{command} #{pre_parameters} #{@encoded_path} #{parameters}`
   end

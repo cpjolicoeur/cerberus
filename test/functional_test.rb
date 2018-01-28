@@ -1,8 +1,8 @@
-require File.dirname(__FILE__) + '/test_helper'
+require_relative 'test_helper'
 require 'mock/marshmallow'
 require 'cerberus/cli'
 
-gem 'actionmailer', '~> 2.0' 
+gem 'actionmailer'
 require 'action_mailer'
 
 class FunctionalTest < Test::Unit::TestCase
@@ -15,41 +15,41 @@ class FunctionalTest < Test::Unit::TestCase
   def teardown
     dir = HOME + '/../'
     # We need change working directory to some non-removable dir otherwise we would have warning after removing that working directory absent
-    Dir.chdir(dir) if test(?d, dir) 
+    Dir.chdir(dir) if test(?d, dir)
   end
 
   def test_add_by_url
-    assert !File.exists?(HOME + '/config/svn_repo.yml')
+    assert !File.exist?(HOME + '/config/svn_repo.yml')
 
     command = Cerberus::AddCommand.new("    #{SVN_URL}   ", :quiet => true)
     command.run
 
-    assert File.exists?(HOME + '/config/svn_repo.yml')
+    assert File.exist?(HOME + '/config/svn_repo.yml')
     scm_conf = load_yml(HOME + '/config/svn_repo.yml')['scm']
     assert_equal 'svn', scm_conf['type']
     assert_equal SVN_URL, scm_conf['url']
 
-    assert File.exists?(HOME + '/config.yml')
+    assert File.exist?(HOME + '/config.yml')
   end
 
   def test_add_by_dir
     sources_dir = File.expand_path(File.dirname(__FILE__) + '/__workdir/svn_working_dir')
     FileUtils.rm_rf(sources_dir)
     `svn co #{SVN_URL} #{sources_dir}`
-    
+
     command = Cerberus::AddCommand.new(sources_dir, :quiet => true)
     command.run
 
     project_config = HOME + "/config/#{File.basename(File.expand_path(sources_dir))}.yml" #name of added application should be calculated from File System path
 
-    assert File.exists?(project_config)
+    assert File.exist?(project_config)
     scm_conf = load_yml(project_config)['scm']
     assert_equal 'svn', scm_conf['type']
     scm_uri = URI.parse(scm_conf['url'])
     # FIXME - this assert needs to be fixed
     # assert_match 'rubyforge.org', scm_uri.host
 
-    assert File.exists?(HOME + '/config.yml')
+    assert File.exist?(HOME + '/config.yml')
   end
 
   def test_build
@@ -62,30 +62,30 @@ class FunctionalTest < Test::Unit::TestCase
     output = mail.body
 
     #Check outpus that run needed tasks
-    assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
+    assert_include output, '1 tests, 1 assertions, 0 failures, 0 errors'
     assert output !~ /Task 'custom1' has been invoked/
     assert_equal '[myapp] Cerberus set up for project (2)', mail.subject
     assert output =~ %r{http://someurl.changeset.com/2}
 
     status_file = HOME + '/work/myapp/status.log'
-    assert File.exists?(status_file)
+    assert File.exist?(status_file)
     assert build_successful?(status_file)
-    assert 1, Dir[HOME + "/work/rake_cust/logs/*-setup.log"].size
+    assert_equal 1, Dir[HOME + "/work/myapp/logs/*-setup.log"].size
 
     FileUtils.rm status_file
     build = Cerberus::BuildCommand.new('myapp')
     build.run
-    assert File.exists?(status_file)
+    assert File.exist?(status_file)
     assert build_successful?(status_file)
     assert_equal :setup, build.status.current_state
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
-    assert 2, Dir[HOME + "/work/rake_cust/logs/*.log"].size
+    assert_equal 1, Dir[HOME + "/work/myapp/logs/*.log"].size
 
     build = Cerberus::BuildCommand.new('myapp', :force => true)
     build.run
     assert_equal :successful, build.status.current_state
     assert_equal 2, ActionMailer::Base.deliveries.size #Number of mails not changed
-    assert 2, Dir[HOME + "/work/rake_cust/logs/*.log"].size #even if sources unchanged
+    assert_equal 2, Dir[HOME + "/work/myapp/logs/*.log"].size #even if sources unchanged
 
     #remove status file to run project again
     FileUtils.rm status_file
@@ -101,9 +101,9 @@ class FunctionalTest < Test::Unit::TestCase
     build.run
     assert !build_successful?(status_file)
     assert_equal :broken, build.status.current_state
-  
+
     subject = ActionMailer::Base.deliveries.last.subject
-    assert_match /and getting worse/, subject
+    assert_include subject, 'and getting worse'
 
     #remove status file to run project again
     FileUtils.rm status_file
@@ -129,8 +129,8 @@ class FunctionalTest < Test::Unit::TestCase
     # build = Cerberus::BuildCommand.new('myapp')
     # build.run
     # assert_equal 0, ActionMailer::Base.deliveries.size
-    # 
-    # 
+    #
+    #
     # add_application('myapp', SVN_URL, 'publisher' => {'mail' => {'on_event' => 'all'}, 'on_event' => 'none'})
     # build = Cerberus::BuildCommand.new('myapp')
     # build.run
@@ -174,9 +174,9 @@ class FunctionalTest < Test::Unit::TestCase
     build = Cerberus::BuildAllCommand.new
     build.run
 
-    for i in 1..4 do
+    for i in 1..4
       status_file = HOME + "/work/myapp#{i}/status.log"
-      assert File.exists?(status_file)
+      assert File.exist?(status_file)
       assert build_successful?(status_file)
     end
   end
@@ -187,23 +187,22 @@ class FunctionalTest < Test::Unit::TestCase
     build.run
     assert_equal 1, ActionMailer::Base.deliveries.size
     output = ActionMailer::Base.deliveries[0].body
-    assert_match /Task 'custom1' has been invoked/, output
-    assert_match /Task 'custom2' has been invoked/, output
+    assert_include output, "Task 'custom1' has been invoked"
+    assert_include output, "Task 'custom2' has been invoked"
   end
 
   def test_build_setup_script
     add_application('rake_cust', SVN_URL, {
-        'builder' => {'rake' => {'task' => 'custom1'}},
-        'setup_script' => "echo 'setup script has been invoked' ",
-      }
-    )
-    
+      'builder' => {'rake' => {'task' => 'custom1'}},
+      'setup_script' => "echo 'setup script has been invoked' ",
+    })
+
     build = Cerberus::BuildAllCommand.new
     build.run
     assert_equal 1, ActionMailer::Base.deliveries.size
     output = ActionMailer::Base.deliveries[0].body
-    assert_match /setup script has been invoked/, output
-    assert_match /Task 'custom1' has been invoked/, output
+    assert_include output, 'setup script has been invoked'
+    assert_include output, "Task 'custom1' has been invoked"
   end
 
   def test_logs_disabled
@@ -211,7 +210,7 @@ class FunctionalTest < Test::Unit::TestCase
     build = Cerberus::BuildAllCommand.new
     build.run
 
-    assert !File.exists?(HOME + "/work/rake_cust/logs")
+    assert !File.exist?(HOME + "/work/rake_cust/logs")
   end
 
   def test_darcs
@@ -225,12 +224,12 @@ class FunctionalTest < Test::Unit::TestCase
     # output = mail.body
 
     # #Check outpus that run needed tasks
-    # assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
+    # assert_include output, '1 tests, 1 assertions, 0 failures, 0 errors'
     # assert output !~ /Task 'custom1' has been invoked/
     # assert_equal '[darcsapp] Cerberus set up for project (#20061010090920)', mail.subject
 
     # status_file = HOME + '/work/darcsapp/status.log'
-    # assert File.exists?(status_file)
+    # assert File.exist?(status_file)
     # assert build_successful?(status_file)
     # assert 1, Dir[HOME + "/work/darcsapp/logs/*.log"].size
 
@@ -288,21 +287,21 @@ class FunctionalTest < Test::Unit::TestCase
     output = mail.body
 
     #Check output that run needed tasks
-    assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
+    assert_include output, '1 tests, 1 assertions, 0 failures, 0 errors'
     assert output !~ /Task 'custom1' has been invoked/
-    assert_match  /\[gitapp\] Cerberus set up for project/, mail.subject
+    assert_include mail.subject, '[gitapp] Cerberus set up for project'
 
     status_file = HOME + '/work/gitapp/status.log'
-    assert File.exists?(status_file)
+    assert File.exist?(status_file)
     assert build_successful?(status_file)
-    assert 1, Dir[HOME + "/work/gitapp/logs/*.log"].size
+    assert_equal 1, Dir[HOME + "/work/gitapp/logs/*.log"].size
 
     #There were no changes - no reaction should be
     build = Cerberus::BuildCommand.new('gitapp')
     build.run
     assert_equal false, build.scm.has_changes?
     assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
-    assert 1, Dir[HOME + "/work/gitapp/logs/*.log"].size
+    assert_equal 1, Dir[HOME + "/work/gitapp/logs/*.log"].size
 
     #now we add new broken test
     rand_val = rand(10000)
@@ -326,13 +325,13 @@ class FunctionalTest < Test::Unit::TestCase
     build.run
     assert build.scm.has_changes?
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup plus new alert email
-    assert 2, Dir[HOME + "/work/gitsapp/logs/*.log"].size
+    assert_equal 2, Dir[HOME + "/work/gitapp/logs/*.log"].size
 
     build = Cerberus::BuildCommand.new('gitapp')
     build.run
     assert_equal false, build.scm.has_changes?
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
-    assert 2, Dir[HOME + "/work/gitapp/logs/*.log"].size
+    assert_equal 2, Dir[HOME + "/work/gitapp/logs/*.log"].size
 
     # test git branch features
     add_application('gitapp2', GIT_URL, 'scm' => {'type' => 'git', 'branch' => 'cerberus'})
@@ -346,34 +345,34 @@ class FunctionalTest < Test::Unit::TestCase
     build.run
     assert_equal false, build.scm.has_changes?
   end
-  
+
   def test_mercurial
     add_application('hgapp', HG_URL, :scm => {:type => 'hg'})
-    
+
     build = Cerberus::BuildCommand.new('hgapp')
     build.run
     assert build.scm.has_changes?
     assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
     mail = ActionMailer::Base.deliveries[0]
     output = mail.body
-    
+
     #Check output that run needed tasks
-    assert_match /1 tests, 1 assertions, 0 failures, 0 errors/, output
+    assert_include output, '1 tests, 1 assertions, 0 failures, 0 errors'
     assert output !~ /Task 'custom1' has been invoked/
-    assert_match  /\[hgapp\] Cerberus set up for project/, mail.subject
-    
+    assert_include mail.subject, '[hgapp] Cerberus set up for project'
+
     status_file = HOME + '/work/hgapp/status.log'
-    assert File.exists?(status_file)
+    assert File.exist?(status_file)
     assert build_successful?(status_file)
-    assert 1, Dir[HOME + "/work/hgapp/logs/*.log"].size
-    
+    assert_equal 1, Dir[HOME + "/work/hgapp/logs/*.log"].size
+
     #There were no changes - no reaction should be
     build = Cerberus::BuildCommand.new('hgapp')
     build.run
     assert_equal false, build.scm.has_changes?
     assert_equal 1, ActionMailer::Base.deliveries.size #first email that project was setup
-    assert 1, Dir[HOME + "/work/hgapp/logs/*.log"].size
-    
+    assert_equal 1, Dir[HOME + "/work/hgapp/logs/*.log"].size
+
     #now we add new broken test
     rand_val = rand(10000)
     test_case_name = "test/#{rand_val}_test.rb"
@@ -385,25 +384,25 @@ class FunctionalTest < Test::Unit::TestCase
           end
         end )
     }
-    
+
     curr_dir = Dir.pwd
     Dir.chdir HG_REPO
     `hg add #{test_case_name}`
     `hg commit -m 'somepatch' --config ui.username='Fake User <fake.user@example.com>'`
     Dir.chdir curr_dir
-    
+
     build = Cerberus::BuildCommand.new('hgapp')
     build.run
     assert build.scm.has_changes?
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup plus new alert email
-    assert 2, Dir[HOME + "/work/hgapp/logs/*.log"].size
-    
+    assert_equal 2, Dir[HOME + "/work/hgapp/logs/*.log"].size
+
     build = Cerberus::BuildCommand.new('hgapp')
     build.run
     assert_equal false, build.scm.has_changes?
     assert_equal 2, ActionMailer::Base.deliveries.size #first email that project was setup
-    assert 2, Dir[HOME + "/work/hgapp/logs/*.log"].size
-    
+    assert_equal 2, Dir[HOME + "/work/hgapp/logs/*.log"].size
+
     #Now we broke remote repository (imitate that network unaccessable)
     FileUtils.rm_rf HG_REPO
     build = Cerberus::BuildCommand.new('hgapp')
@@ -413,9 +412,7 @@ class FunctionalTest < Test::Unit::TestCase
 
   def test_campfire_publisher
     # there were not any messages causing login/password is incorrect. We just check that there was no any exceptions
-    add_application('campapp', SVN_URL, 'publisher' => {'active' => 'campfire', 'campfire' => 
-      {'url' => 'http://mail@gmail.com:somepwd@cerberustool.campfirenow.com/room/5166022'}
-    })
+    add_application('campapp', SVN_URL, 'publisher' => {'active' => 'campfire', 'campfire' => {'url' => 'http://mail@gmail.com:somepwd@cerberustool.campfirenow.com/room/5166022'}})
 
     build = Cerberus::BuildCommand.new('campapp')
     build.run
@@ -429,7 +426,7 @@ class FunctionalTest < Test::Unit::TestCase
     status = Cerberus::Status.new(status_fn)
     assert_equal nil, status.previous_build_successful
     assert_equal nil, status.current_build_successful
-    
+
     IO.write(status_fn, 'failed')
     status = Cerberus::Status.new(status_fn)
     assert_equal nil, status.current_build_successful

@@ -2,7 +2,6 @@ require 'cerberus/utils'
 require 'cerberus/scm/base'
 
 class Cerberus::SCM::Perforce < Cerberus::SCM::Base
-  
   CHANGES_LOG_REGEXP = /^Change (\d+) on (.*) by (.*)\n\n(.*)/m
 
   def initialize(path, config = {})
@@ -16,7 +15,7 @@ class Cerberus::SCM::Perforce < Cerberus::SCM::Base
   end
 
   def update!
-    FileUtils.mkpath(@path) unless test(?d,@path)
+    FileUtils.mkpath(@path) unless test(?d, @path)
     create_client
 
     @status = execute("sync")
@@ -35,11 +34,12 @@ class Cerberus::SCM::Perforce < Cerberus::SCM::Base
   attr_reader :last_commit_message
 
   private
+
   def last_revision
     unless @calculated
       msg = execute("changes -m 1 -l")
       msg =~ CHANGES_LOG_REGEXP
-      
+
       @current_revision = $1
       #date = $2
       @last_author = $3

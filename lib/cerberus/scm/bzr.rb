@@ -3,7 +3,6 @@ require 'cerberus/scm/base'
 require 'time'
 
 class Cerberus::SCM::Bazaar < Cerberus::SCM::Base
-
   def installed?
     exec_successful? "#{@config[:bin_path]}bzr --version"
   end
@@ -40,6 +39,7 @@ class Cerberus::SCM::Bazaar < Cerberus::SCM::Base
   end
 
   private
+
   def execute(command, parameters = nil, pre_parameters = nil)
     `#{@config[:bin_path]}bzr #{command} #{pre_parameters} #{@encoded_path} #{parameters}`
   end
@@ -53,10 +53,10 @@ class Cerberus::SCM::Bazaar < Cerberus::SCM::Base
     # timestamp: Tue 2009-04-21 18:52:54 -0500
     # message:
     #   sidfugsdiufgsdifusdg
- 
+
     @revision = lastlog.match(/^revno: (\d+).*$/)[1].to_i
-    @author   = lastlog.match(/^committer: (.+)$/)[1]
-    @date     = Time.parse(lastlog.match(/^timestamp: (.+)$/)[1])
-    @message  = lastlog.match(/message:\n  (.*)/m)[1]
+    @author = lastlog.match(/^committer: (.+)$/)[1]
+    @date = Time.parse(lastlog.match(/^timestamp: (.+)$/)[1])
+    @message = lastlog.match(/message:\n  (.*)/m)[1]
   end
 end

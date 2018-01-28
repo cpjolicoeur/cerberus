@@ -1,7 +1,7 @@
 require 'rubygems'
-gem 'activesupport', '~>2.0'
-gem 'actionpack', '~>2.0'
-gem 'actionmailer', '~> 2.0' 
+gem 'activesupport'
+gem 'actionpack'
+gem 'actionmailer'
 require 'action_mailer'
 require 'cerberus/publisher/base'
 
@@ -16,10 +16,11 @@ class Cerberus::Publisher::Mail < Cerberus::Publisher::Base
     raise "There is no recipients provided for mail publisher" unless mail_opts[:recipients]
 
     configure(mail_opts)
-    ActionMailerPublisher.deliver_message(state, manager, options)
+    ActionMailerPublisher.email(state, manager, options).deliver_now
   end
 
   private
+
   def self.configure(config)
     [:authentication, :delivery_method].each do |k|
       config[k] = config[k].to_sym if config[k]
@@ -30,11 +31,14 @@ class Cerberus::Publisher::Mail < Cerberus::Publisher::Base
   end
 
   class ActionMailerPublisher < ActionMailer::Base
-    def message(state, manager, options)
-      @subject, @body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
-      @recipients, @sent_on = options[:publisher, :mail, :recipients], Time.now
-      @from = options[:publisher, :mail, :sender] || 'cerberus@example.com' 
-      raise "Please specify recipient addresses for application '#{options[:application_name]}'" unless @recipients
+    layout false
+
+    def email(state, manager, options)
+      subject, body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
+      from = options[:publisher, :mail, :sender] || 'cerberus@example.com'
+      to = options[:publisher, :mail, :recipients]
+      raise "Please specify recipient addresses for application '#{options[:application_name]}'" unless to
+      mail(subject: subject, from: from, to: to, sent_on: Time.now, body: body)
     end
   end
 end

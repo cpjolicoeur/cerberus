@@ -1,11 +1,3 @@
-# Twitter4R mistakenly uses ActiveSupport extensions 
-module TimeParse
-  def Time.parse(args)
-    Date.parse(args)
-  end
-end
-Time.extend TimeParse
-
 require 'rubygems'
 require 'cerberus/publisher/base'
 require 'cerberus/utils'
@@ -16,15 +8,18 @@ class Cerberus::Publisher::Twitter < Cerberus::Publisher::Base
       require 'twitter'
 
       twitter_options = options[:publisher, :twitter]
-      raise "There is no login info for Twitter publisher" unless twitter_options[:login] and twitter_options[:password]
+      raise "There is no consumer key/secret info for Twitter publisher" unless twitter_options[:consumer_key] and twitter_options[:consumer_secret]
 
-      subject,body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
+      subject, body = Cerberus::Publisher::Base.formatted_message(state, manager, options)
 
-      client = Twitter::Client.new( :login => twitter_options[:login], :password => twitter_options[:password] )
-      status = client.status( :post, subject )
-
+      config = {
+        consumer_key: twitter_options[:consumer_key],
+        consumer_secret: twitter_options[:consumer_secret],
+      }
+      client = Twitter::REST::Client.new(config)
+      client.update(subject)
     rescue Gem::LoadError
-      puts "Twitter publisher requires that you install the 'twitter4r' gem first." 
+      puts "Twitter publisher requires that you install the 'twitter' gem first."
     end
   end
 end

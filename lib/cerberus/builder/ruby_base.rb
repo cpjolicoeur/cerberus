@@ -25,10 +25,11 @@ class Cerberus::Builder::RubyBase
   end
 
   private
+
   def choose_exec
     ext = ['']
 
-    if os() == :windows 
+    if os() == :windows
       ext << '.bat' << '.cmd'
     end
 

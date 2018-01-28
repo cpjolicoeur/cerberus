@@ -1,5 +1,7 @@
 require 'cerberus/constants'
 require 'cerberus/utils'
+require 'active_support/core_ext/hash/deep_merge'
+require 'active_support/core_ext/hash/indifferent_access'
 require 'erb'
 
 module Cerberus
@@ -15,7 +17,7 @@ module Cerberus
 
     def [](*path)
       c = @config
-      path.each{|p|
+      path.each { |p|
         c = c[p]
         return if c.nil?
       }
@@ -37,8 +39,9 @@ module Cerberus
     end
 
     private
+
     def symbolize_hash(hash)
-      hash.each_pair{|k,v|
+      hash.each_pair { |k, v|
         if v === Hash
           hash[k] = HashWithIndifferentAccess.new(symbolize_hash(v))
         end
